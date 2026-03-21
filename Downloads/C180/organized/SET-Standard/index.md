@@ -1,46 +1,57 @@
-# SET - Execution Governance Standard
+# SET - Standard for Execution Traceability
+
+**Status:** Active Standard  
+**Version:** v1.0
+
+---
 
 ## Definition
-SET (System Execution Trace) is a formal standard that defines execution as a governed system.
 
-## Core Insight
-Between intention and action, there exists a non-observable control window.
+SET defines a formal model for how decisions become actions under governance constraints.
 
-SET formalizes, controls, and makes this window auditable.
+It introduces a non-observable control window between intention and execution, enabling traceability, accountability, and enforcement.
 
 ---
 
-## Standard Layers
+## Scope
 
-### Specification
-Canonical model defining execution structure  
--> `/spec/SET-v1.0.md`
+SET applies to:
 
-### Governance
-Decision-to-action control mechanisms  
--> `/governance/`
-
-### Compliance
-Traceability, auditability, accountability  
--> `/compliance/`
-
-### Architecture
-System implementation of governed execution  
--> `/architecture/`
+- AI systems
+- execution pipelines
+- decision-making architectures
+- governance-critical environments
 
 ---
 
-## Boundary
+## Structure
 
-- **SET Standard -> Public authority surface**
-- **Governance OS -> Private execution layer**
+The standard is composed of three layers:
 
----
-
-## Status
-Canonical Version: v1.0
+1. **Specification** -> normative definition
+2. **Governance** -> execution control
+3. **Compliance** -> verification and enforcement
 
 ---
 
-## Author
-Alaa Atia
+## Canonical Specification
+
+-> [SET v1.0](spec/SET-v1.0.md)
+
+---
+
+## Implementation Surfaces
+
+- Governance Layer -> `/governance`
+- Compliance Layer -> `/compliance`
+- Architecture Layer -> `/architecture`
+
+---
+
+## Statement
+
+SET is not a framework.
+
+It is a **standard**.
+
+All implementations derive from its specification.

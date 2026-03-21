@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-label="SET architecture diagram">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08111c"/>
+      <stop offset="100%" stop-color="#10263d"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fff2c7"/>
+      <stop offset="50%" stop-color="#f0d78a"/>
+      <stop offset="100%" stop-color="#d8b45a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="760" rx="42" fill="url(#bg)"/>
+  <rect x="52" y="52" width="1296" height="656" rx="32" fill="none" stroke="url(#gold)" stroke-width="3"/>
+  <text x="700" y="120" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700">Sovereign Execution Triad (SET)</text>
+  <text x="700" y="158" text-anchor="middle" fill="#a8b8cb" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="400">Only execution authority determines reality</text>
+
+  <g transform="translate(130 210)">
+    <rect x="0" y="0" width="560" height="114" rx="24" fill="#12263a" stroke="url(#gold)" stroke-width="2"/>
+    <text x="34" y="44" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">1. Invariance Layer</text>
+    <text x="34" y="78" fill="#d6dfeb" font-family="Arial, Helvetica, sans-serif" font-size="20">Defines constraints that cannot be violated.</text>
+  </g>
+
+  <g transform="translate(130 338)">
+    <rect x="0" y="0" width="560" height="114" rx="24" fill="#12263a" stroke="url(#gold)" stroke-width="2"/>
+    <text x="34" y="44" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">2. Verification Layer</text>
+    <text x="34" y="78" fill="#d6dfeb" font-family="Arial, Helvetica, sans-serif" font-size="20">Defines what can be proven, audited, and validated.</text>
+  </g>
+
+  <g transform="translate(130 466)">
+    <rect x="0" y="0" width="560" height="114" rx="24" fill="#12263a" stroke="url(#gold)" stroke-width="2"/>
+    <text x="34" y="44" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700">3. Execution Authority Layer (EGA)</text>
+    <text x="34" y="78" fill="#d6dfeb" font-family="Arial, Helvetica, sans-serif" font-size="20">Controls what is allowed to execute in reality.</text>
+  </g>
+
+  <g transform="translate(780 238)">
+    <rect x="0" y="0" width="460" height="342" rx="28" fill="#0f2235" stroke="url(#gold)" stroke-width="2"/>
+    <text x="230" y="44" text-anchor="middle" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Transition Flow</text>
+    <text x="230" y="80" text-anchor="middle" fill="#a8b8cb" font-family="Arial, Helvetica, sans-serif" font-size="18">Proposed action becomes real only if allowed</text>
+    <rect x="72" y="114" width="316" height="42" rx="21" fill="#13263a" stroke="#29435f"/>
+    <text x="230" y="141" text-anchor="middle" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Proposed State</text>
+    <path d="M230 156v30" stroke="url(#gold)" stroke-width="4"/>
+    <polygon points="230,194 220,176 240,176" fill="#f0d78a"/>
+    <rect x="72" y="202" width="316" height="42" rx="21" fill="#13263a" stroke="#29435f"/>
+    <text x="230" y="229" text-anchor="middle" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Execution Authority Gate</text>
+    <path d="M230 244v30" stroke="url(#gold)" stroke-width="4"/>
+    <polygon points="230,282 220,264 240,264" fill="#f0d78a"/>
+    <rect x="72" y="290" width="316" height="42" rx="21" fill="#13263a" stroke="#29435f"/>
+    <text x="230" y="317" text-anchor="middle" fill="#f6e7b3" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">Reality Commit</text>
+  </g>
+</svg>
