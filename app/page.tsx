@@ -71,22 +71,21 @@ export default function Home() {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-10">
-
           {[
             {
               src: "/assets/frameworks/layer.png",
               title: "9-Layer Authority System",
             },
             {
-              src: "/assets/frameworks/Drift.png",
+              src: "/assets/frameworks/drift.png",
               title: "Reality Drift Boundary",
             },
             {
-              src: "/assets/frameworks/Stack.png",
+              src: "/assets/frameworks/stack.png",
               title: "Governance Stack",
             },
             {
-              src: "/assets/frameworks/System.png",
+              src: "/assets/frameworks/system.png",
               title: "System Invariance",
             },
           ].map((item, i) => (
@@ -102,7 +101,7 @@ export default function Home() {
                 alt={item.title}
                 width={1200}
                 height={800}
-                className="scale-100 group-hover:scale-110 transition duration-700 ease-out"
+                className="w-full h-auto"
               />
 
               {/* LIGHT SWEEP 🔥 */}
