@@ -20,8 +20,13 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="max-w-5xl mx-auto text-center pt-48 pb-32 fade-in">
-        
+      <section className="reveal relative max-w-5xl mx-auto text-center pt-48 pb-32">
+
+        {/* Glow */}
+        <div className="absolute inset-0 -z-10 flex justify-center">
+          <div className="w-[500px] h-[500px] bg-white/10 blur-[120px] rounded-full" />
+        </div>
+
         <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
           Control Execution.
         </h1>
@@ -39,14 +44,14 @@ export default function Home() {
 
           <a
             href="https://wa.me/491723256044"
-            className="bg-white text-black px-6 py-3 rounded-lg font-medium hover:scale-105 transition"
+            className="bg-white text-black px-6 py-3 rounded-lg font-medium hover:scale-105 hover:shadow-xl transition duration-300"
           >
             Request a Briefing
           </a>
 
           <a
             href="/authority"
-            className="border border-white/20 px-6 py-3 rounded-lg hover:border-white hover:scale-105 transition"
+            className="border border-white/20 px-6 py-3 rounded-lg hover:border-white hover:scale-105 transition duration-300"
           >
             View Portfolio
           </a>
@@ -59,8 +64,8 @@ export default function Home() {
       <div className="h-px bg-white/10 max-w-6xl mx-auto" />
 
       {/* HOW */}
-      <section id="how" className="max-w-6xl mx-auto py-32 fade-in">
-        
+      <section id="how" className="reveal max-w-6xl mx-auto py-32 bg-white/[0.02] rounded-2xl px-6">
+
         <h2 className="text-3xl text-center mb-16">
           Execution System
         </h2>
@@ -75,7 +80,7 @@ export default function Home() {
           ].map(([title, desc], i) => (
             <div
               key={i}
-              className="bg-white/5 backdrop-blur-md p-6 rounded-xl border border-white/10 hover:border-white/40 hover:scale-105 transition"
+              className="bg-white/5 backdrop-blur-md p-6 rounded-xl border border-white/10 hover:border-white/40 hover:scale-[1.03] hover:-translate-y-1 transition duration-300"
             >
               <h3 className="font-semibold mb-2">{title}</h3>
               <p className="text-gray-400 text-sm">{desc}</p>
@@ -83,11 +88,12 @@ export default function Home() {
           ))}
 
         </div>
+
       </section>
 
       {/* PROOF */}
-      <section className="max-w-5xl mx-auto py-32 text-center fade-in">
-        
+      <section className="reveal max-w-5xl mx-auto py-32 text-center">
+
         <h2 className="text-3xl mb-10">
           What It Proves
         </h2>
@@ -102,15 +108,15 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="text-center py-32 fade-in">
-        
+      <section className="reveal text-center py-32">
+
         <h2 className="text-3xl mb-6">
           Request a Private Briefing
         </h2>
 
         <a
           href="https://wa.me/491723256044"
-          className="bg-white text-black px-8 py-4 rounded-lg text-lg hover:scale-105 transition"
+          className="bg-white text-black px-8 py-4 rounded-lg text-lg hover:scale-105 hover:shadow-xl transition duration-300"
         >
           Contact Now
         </a>
