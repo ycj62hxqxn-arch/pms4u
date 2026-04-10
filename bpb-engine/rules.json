@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "action": "delete_all_data",
+      "status": "blocked",
+      "layer": "EGA"
+    },
+    {
+      "action": "transfer_funds",
+      "status": "review",
+      "layer": "SET"
+    }
+  ],
+  "default": {
+    "status": "executed",
+    "layer": "EBP"
+  }
+}
