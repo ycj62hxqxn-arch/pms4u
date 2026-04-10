@@ -50,8 +50,8 @@ export default function Authority() {
           <div className="grid md:grid-cols-2 gap-8">
 
             {[
-              ["AlCatara — Cairo", "Governance doctrine creation, G-LAW / PMS-LAW systems, market research operations."],
-              ["AlGeneral — UAE", "Capital management and CARSHUNTER logistics funding."],
+              ["Al-Catara Big G Gov — Cairo", "Governance doctrine creation, G-LAW / PMS-LAW systems, market research operations."],
+              ["Value LLC — Al-Sharjah, UAE", "Capital management and CARSHUNTER logistics funding."],
               ["BPB Solutions LTD — UK", "System deployment, governance implementation, client execution."],
               ["AA Investitionen — Germany", "Advisory-only entity with strict separation from execution and capital."],
             ].map(([title, desc], i) => (
