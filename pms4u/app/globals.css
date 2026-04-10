@@ -67,3 +67,15 @@ body::before {
     transform: translate(0px, 0px);
   }
 }
+/* ===== PRO MOTION SYSTEM ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
