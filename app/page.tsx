@@ -1,117 +1,124 @@
 export default function Home() {
   return (
-    <main className="bg-white text-black min-h-screen px-6 py-12">
+    <main className="text-white min-h-screen px-6">
+
+      {/* NAVBAR */}
+      <nav className="fixed top-0 left-0 w-full backdrop-blur-md bg-black/50 border-b border-white/10 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          
+          <div className="font-semibold tracking-wide">PMS4U</div>
+
+          <div className="flex gap-6 text-sm text-gray-400">
+            <a href="#how" className="hover:text-white transition">System</a>
+            <a href="/authority" className="hover:text-white transition">Authority</a>
+            <a href="https://wa.me/491723256044" className="hover:text-white transition">
+              Contact
+            </a>
+          </div>
+
+        </div>
+      </nav>
 
       {/* HERO */}
-      <section className="text-center max-w-3xl mx-auto mb-16">
-        <h1 className="text-5xl font-bold mb-6 leading-tight">
-          Control Your Business. <br /> Eliminate Chaos.
+      <section className="max-w-5xl mx-auto text-center pt-48 pb-32 fade-in">
+        
+        <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
+          Control Execution.
         </h1>
 
-        <p className="text-lg text-gray-600 mb-6">
-          Most businesses don’t fail from lack of ideas — they fail from lack of execution.
+        <p className="text-xl text-gray-300 mb-6">
+          Without Slowing It Down.
         </p>
 
-        <p className="text-md text-gray-500 mb-8">
-          PMS4U helps you build structured systems, track execution, and scale with full control in 48 hours.
+        <p className="text-gray-500 max-w-2xl mx-auto">
+          PMS4U is a governance-first execution system that enforces control, validates decisions,
+          and produces evidence — so operations scale without chaos.
         </p>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 mt-10">
+
           <a
             href="https://wa.me/491723256044"
-            className="bg-black text-white px-6 py-3 rounded-lg"
+            className="bg-white text-black px-6 py-3 rounded-lg font-medium hover:scale-105 transition"
           >
-            Book a Call
+            Request a Briefing
           </a>
 
           <a
-            href="#services"
-            className="border px-6 py-3 rounded-lg"
+            href="/authority"
+            className="border border-white/20 px-6 py-3 rounded-lg hover:border-white hover:scale-105 transition"
           >
-            See How It Works
+            View Portfolio
           </a>
+
+        </div>
+
+      </section>
+
+      {/* DIVIDER */}
+      <div className="h-px bg-white/10 max-w-6xl mx-auto" />
+
+      {/* HOW */}
+      <section id="how" className="max-w-6xl mx-auto py-32 fade-in">
+        
+        <h2 className="text-3xl text-center mb-16">
+          Execution System
+        </h2>
+
+        <div className="grid md:grid-cols-4 gap-6 text-center">
+
+          {[
+            ["Intake", "Capture intent and constraints"],
+            ["Validation", "GO / NO-GO before risk"],
+            ["Execution", "Controlled actions under roles"],
+            ["Evidence", "Immutable proof & traceability"],
+          ].map(([title, desc], i) => (
+            <div
+              key={i}
+              className="bg-white/5 backdrop-blur-md p-6 rounded-xl border border-white/10 hover:border-white/40 hover:scale-105 transition"
+            >
+              <h3 className="font-semibold mb-2">{title}</h3>
+              <p className="text-gray-400 text-sm">{desc}</p>
+            </div>
+          ))}
+
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="text-center mb-16 text-gray-500 text-sm">
-        Trusted by operators, founders, and scaling teams
-      </section>
-
-      {/* PROBLEM */}
-      <section className="max-w-4xl mx-auto mb-16 text-center">
-        <h2 className="text-3xl font-semibold mb-4">
-          The Problem
+      {/* PROOF */}
+      <section className="max-w-5xl mx-auto py-32 text-center fade-in">
+        
+        <h2 className="text-3xl mb-10">
+          What It Proves
         </h2>
 
-        <p className="text-gray-600">
-          Lack of structure, unclear responsibilities, and missing tracking systems 
-          lead to chaos, delays, and lost revenue.
-        </p>
-      </section>
-
-      {/* SOLUTION */}
-      <section className="max-w-4xl mx-auto mb-16 text-center">
-        <h2 className="text-3xl font-semibold mb-4">
-          The Solution
-        </h2>
-
-        <p className="text-gray-600">
-          We implement execution systems that give you full visibility, accountability,
-          and control — without complexity.
-        </p>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="max-w-5xl mx-auto mb-16">
-        <h2 className="text-3xl font-semibold text-center mb-10">
-          What We Do
-        </h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="border p-6 rounded-lg hover:shadow-lg transition">
-            <h3 className="font-bold mb-2">System Setup</h3>
-            <p className="text-gray-600">
-              Build structured workflows tailored to your business operations.
-            </p>
-          </div>
-
-          <div className="border p-6 rounded-lg hover:shadow-lg transition">
-            <h3 className="font-bold mb-2">Execution Tracking</h3>
-            <p className="text-gray-600">
-              Monitor performance, accountability, and progress in real-time.
-            </p>
-          </div>
-
-          <div className="border p-6 rounded-lg hover:shadow-lg transition">
-            <h3 className="font-bold mb-2">Governance Control</h3>
-            <p className="text-gray-600">
-              Define roles, decisions, and structure across your organization.
-            </p>
-          </div>
+        <div className="space-y-4 text-gray-400 text-lg">
+          <p>Human-controlled execution authority</p>
+          <p>Separation of duties across operations</p>
+          <p>Continuity of knowledge across time</p>
+          <p>Evidence-first scalable systems</p>
         </div>
+
       </section>
 
       {/* CTA */}
-      <section className="text-center mb-20">
-        <h2 className="text-3xl font-semibold mb-4">
-          Ready to Take Control?
+      <section className="text-center py-32 fade-in">
+        
+        <h2 className="text-3xl mb-6">
+          Request a Private Briefing
         </h2>
-
-        <p className="text-gray-600 mb-6">
-          Get your operational system implemented in less than 48 hours.
-        </p>
 
         <a
           href="https://wa.me/491723256044"
-          className="bg-black text-white px-8 py-4 rounded-lg text-lg"
+          className="bg-white text-black px-8 py-4 rounded-lg text-lg hover:scale-105 transition"
         >
-          Start Now
+          Contact Now
         </a>
+
       </section>
 
       {/* FOOTER */}
-      <footer className="text-center text-gray-400 text-sm">
+      <footer className="text-center text-gray-600 text-sm pb-10">
         © 2026 PMS4U — BPB Solutions LTD
       </footer>
 
