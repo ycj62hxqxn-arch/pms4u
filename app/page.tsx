@@ -81,7 +81,7 @@ export default function Home() {
               title: "Reality Drift Boundary",
             },
             {
-              src: "/assets/frameworks/stack.png",
+              src: "/assets/frameworks/pms.png",
               title: "Governance Stack",
             },
             {
