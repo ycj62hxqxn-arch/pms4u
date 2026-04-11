@@ -62,7 +62,7 @@ body::after {
   inset: -10%;
   background-image: url("/assets/frameworks/layer.png");
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: 90% auto;
   background-position: center;
   opacity: 0.12;
   mix-blend-mode: screen;
