@@ -56,6 +56,21 @@ body::before {
   z-index: -1;
 }
 
+body::after {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  background-image: url("/assets/frameworks/layer.png");
+  background-repeat: no-repeat;
+  background-size: 120% auto;
+  background-position: center;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: moveLayer 30s linear infinite;
+  z-index: -2;
+}
+
 @keyframes moveGlow {
   0% {
     transform: translate(0px, 0px);
@@ -65,6 +80,18 @@ body::before {
   }
   100% {
     transform: translate(0px, 0px);
+  }
+}
+
+@keyframes moveLayer {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-30px, 20px, 0) scale(1.03);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 /* ===== PRO MOTION SYSTEM ===== */
