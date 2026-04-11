@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ExecutionBoundarySection from "./components/ExecutionBoundarySection";
 
 export default function Home() {
   return (
@@ -150,6 +151,8 @@ export default function Home() {
         </div>
       </section>
 
+      <ExecutionBoundarySection />
+
       {/* PROOF */}
       <section className="max-w-5xl mx-auto py-32 text-center">
         <h2 className="text-3xl mb-10">What It Proves</h2>
@@ -163,7 +166,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="text-center py-32">
+      <section id="contact" className="text-center py-32">
         <h2 className="text-3xl mb-6">
           Request a Private Briefing
         </h2>
