@@ -73,7 +73,7 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-10">
           {[
             {
-              src: "/assets/frameworks/layer.png",
+              src: "/assets/frameworks/stack.png",
               title: "9-Layer Authority System",
             },
             {
