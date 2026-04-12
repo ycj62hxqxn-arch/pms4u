@@ -2,7 +2,7 @@ import FadeIn from "../components/FadeIn";
 
 export default function Authority() {
   return (
-    <main className="text-white min-h-screen px-6 bg-[url('/assets/frameworks/background.png')] bg-cover bg-center">
+    <main className="text-white min-h-screen px-6 authority-bg">
 
       {/* HERO */}
       <FadeIn>

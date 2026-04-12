@@ -106,3 +106,23 @@ body::after {
   opacity: 1;
   transform: translateY(0);
 }
+
+.authority-bg {
+  background-image: url("/assets/frameworks/background.png");
+  background-repeat: no-repeat;
+  background-size: 35% auto;
+  background-position: center;
+  animation: authorityFloat 26s ease-in-out infinite;
+}
+
+@keyframes authorityFloat {
+  0% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 44% 56%;
+  }
+  100% {
+    background-position: 50% 50%;
+  }
+}
