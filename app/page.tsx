@@ -14,6 +14,7 @@ export default function Home() {
             <a href="#framework" className="hover:text-white transition">Framework</a>
             <a href="#how" className="hover:text-white transition">System</a>
             <a href="/authority" className="hover:text-white transition">Authority</a>
+            <a href="/shab-report" className="hover:text-white transition">Shab Report</a>
           </div>
         </div>
       </nav>
