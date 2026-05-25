@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../set-governance-os/governance-os"
+		},
+		{
+			"path": "../egypt-project/images"
+		},
+		{
+			"path": "../Pictures"
+		}
+	],
+	"settings": {}
+}

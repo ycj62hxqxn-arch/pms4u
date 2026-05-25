@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <rect width="1920" height="1080" fill="#0b0b0f" />
+  <text x="140" y="240" fill="#d1b15c" font-size="64" font-family="Segoe UI, Arial" font-weight="700">Architecture</text>
+  <text x="140" y="360" fill="#f5f5f7" font-size="36" font-family="Segoe UI, Arial"><tspan fill="#d1b15c">BIG G</tspan> → مصدر الشرعية</text>
+  <text x="140" y="430" fill="#f5f5f7" font-size="36" font-family="Segoe UI, Arial"><tspan fill="#d1b15c">RAM</tspan> → تحقق من الصلاحية</text>
+  <text x="140" y="500" fill="#f5f5f7" font-size="36" font-family="Segoe UI, Arial"><tspan fill="#d1b15c">QGED</tspan> → تنفيذ القرار</text>
+  <text x="140" y="610" fill="#b7b7c0" font-size="32" font-family="Segoe UI, Arial">حوكمة تنفيذية تربط الشرعية بالقرار</text>
+</svg>
