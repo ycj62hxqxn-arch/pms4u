@@ -1,0 +1,34 @@
+# Governance Transition Policy - The Constitution of Execution
+# This defines the absolute state allowed jumps across the multi-domain runtime.
+
+domains:
+  CARSHUNTER:
+    INTAKE:
+      - VERIFIED
+    VERIFIED:
+      - COMPLIANCE_PENDING
+    COMPLIANCE_PENDING:
+      - PAYMENT_CONFIRMED
+      - GOVERNANCE_REVIEW
+    PAYMENT_CONFIRMED:
+      - GOVERNANCE_REVIEW
+    GOVERNANCE_REVIEW:
+      - EXPORT_APPROVED
+    EXPORT_APPROVED:
+      - EXPORTED
+    EXPORTED:
+      - ARCHIVED
+
+  CLINIC:
+    ADMITTED:
+      - DIAGNOSED
+    DIAGNOSED:
+      - TREATMENT_PLAN_APPROVED
+    TREATMENT_PLAN_APPROVED:
+      - DISCHARGED
+
+authority_scopes:
+  EXPORT_CONTROL:
+    requires: "ed25519_detached_signature"
+    allowed_transitions: ["EXPORT_APPROVED"]
+    min_level: "Level_2"

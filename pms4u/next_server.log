@@ -1,0 +1,111 @@
+
+> pms4u@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 416ms
+
+ GET / 200 in 419ms (next.js: 251ms, application-code: 168ms)
+ GET /console 404 in 62ms (next.js: 29ms, application-code: 33ms)
+ GET /shab-report 200 in 89ms (next.js: 35ms, application-code: 54ms)
+ GET /console 404 in 111ms (next.js: 6ms, application-code: 104ms)
+ GET /authority 200 in 254ms (next.js: 33ms, application-code: 220ms)
+ GET /authority 200 in 87ms (next.js: 9ms, application-code: 77ms)
+ GET /console 404 in 63ms (next.js: 16ms, application-code: 47ms)
+ GET /console 404 in 66ms (next.js: 9ms, application-code: 56ms)
+ GET / 200 in 537ms (next.js: 449ms, application-code: 88ms)
+ GET / 200 in 554ms (next.js: 506ms, application-code: 47ms)
+ GET / 200 in 756ms (next.js: 734ms, application-code: 22ms)
+ GET / 200 in 574ms (next.js: 538ms, application-code: 36ms)
+ GET / 200 in 548ms (next.js: 475ms, application-code: 74ms)
+ GET / 200 in 527ms (next.js: 401ms, application-code: 126ms)
+✓ Compiled in 0ms
+ GET / 200 in 82ms (next.js: 41ms, application-code: 41ms)
+ GET / 200 in 83ms (next.js: 1783µs, application-code: 81ms)
+ GET / 200 in 83ms (next.js: 15ms, application-code: 68ms)
+ GET / 200 in 83ms (next.js: 27ms, application-code: 56ms)
+ GET / 200 in 83ms (next.js: 52ms, application-code: 31ms)
+ GET / 200 in 19ms (next.js: 1477µs, application-code: 17ms)
+ GET / 200 in 52ms (next.js: 1646µs, application-code: 51ms)
+ GET / 200 in 52ms (next.js: 15ms, application-code: 37ms)
+ GET / 200 in 27ms (next.js: 1035µs, application-code: 26ms)
+ GET / 200 in 13ms (next.js: 1189µs, application-code: 12ms)
+ HEAD /console 200 in 1003ms (next.js: 890ms, application-code: 112ms)
+ GET /console 200 in 76ms (next.js: 20ms, application-code: 56ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "trace.gtcs4u.local".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['trace.gtcs4u.local'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET / 200 in 171ms (next.js: 39ms, application-code: 132ms)
+⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 500ms
+⚠ `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+ GET /console 200 in 315ms (next.js: 180ms, application-code: 135ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/console" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+            <SegmentViewNode type="page" pagePath="console/pa...">
+              <SegmentTrieNode>
+              <ClientPageRoot Component={function RuntimeConsole} serverProvidedParams={{...}}>
+                <RuntimeConsole params={Promise} searchParams={Promise}>
+                  <div className="min-h-scre...">
+                    <header>
+                    <div>
+                    <div className="bg-[#1e293...">
+                      <div>
+                      <div className="bg-black r...">
+                        <div className="mb-2 leadi...">
+                          <span className="text-slate...">
++                           01:06:20.02
+-                           01:06:19.83
+                            ...
+                          ...
+                        ...
+                        ...
+                    ...
+            ...
+          ...
+
+    at span (unknown)
+    at <unknown> (app/console/page.tsx:169:15)
+    at map ([native code])
+    at RuntimeConsole (app/console/page.tsx:167:20)
+  167 |           {logs.map((log) => (
+  168 |             <div key={log.id} className="mb-2 leading-relaxed">
+> 169 |               <span className="text-slate-500">[{log.time}]</span>{" "}
+      |               ^
+  170 |               {log.isAuthority && <span className="text-amber-300">[AUTHORITY]</span>}{" "}
+  171 |               {log.primitive && <span className={`font-bold ${statesInfo[log.primitive]?....
+  172 |               {log.msg}
+ GET /authority 200 in 118ms (next.js: 33ms, application-code: 85ms)
+ GET / 200 in 180ms (next.js: 60ms, application-code: 120ms)

@@ -15,6 +15,7 @@ export default function Home() {
             <a href="#how" className="hover:text-white transition">System</a>
             <a href="/authority" className="hover:text-white transition">Authority</a>
             <a href="/shab-report" className="hover:text-white transition">Shab Report</a>
+            <a href="/console" className="hover:text-white transition text-blue-400">Governance Console</a>
           </div>
         </div>
       </nav>

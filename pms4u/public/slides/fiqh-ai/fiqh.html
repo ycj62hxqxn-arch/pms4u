@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الفقه المقارن كنظام حوكمة للـ AI</title>
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --gold:#d1b15c;
+      --text:#f5f5f7;
+      --muted:#b7b7c0;
+      --panel:#14141a;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .deck{
+      scroll-snap-type:y mandatory;
+      height:100vh;
+      overflow:auto;
+    }
+    .slide{
+      height:100vh;
+      padding:64px 56px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      scroll-snap-align:start;
+    }
+    .card{
+      max-width:980px;
+      width:100%;
+      background:var(--panel);
+      border:1px solid rgba(209,177,92,.2);
+      border-radius:24px;
+      padding:56px;
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-40% 20% auto auto;
+      width:360px;
+      height:360px;
+      background:radial-gradient(circle, rgba(209,177,92,.25), transparent 70%);
+      opacity:.8;
+      pointer-events:none;
+    }
+    h1,h2,h3{margin:0 0 16px;}
+    h1{font-size:clamp(2.6rem,4vw,3.6rem);color:var(--gold);} 
+    h2{font-size:clamp(2rem,3vw,2.8rem);color:var(--gold);} 
+    p{font-size:clamp(1.1rem,1.6vw,1.35rem);color:var(--text);margin:0 0 12px;}
+    ul{margin:0;padding-right:18px;color:var(--muted);font-size:1.05rem;}
+    li{margin-bottom:8px;}
+    .sub{color:var(--muted);} 
+    .pill{
+      display:inline-block;
+      border:1px solid rgba(209,177,92,.35);
+      color:var(--gold);
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:.95rem;
+      margin-top:8px;
+    }
+    .icons{font-size:1.4rem;letter-spacing:4px;color:var(--gold);}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+    @media (max-width:900px){
+      .card{padding:36px;}
+      .split{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <section class="slide"><div class="card">
+      <div class="icons">⚖️ 🧠 🏛️</div>
+      <h1>الفقه المقارن ليس تراثًا… بل نظام حوكمة</h1>
+      <p class="sub">سبق أنظمة الذكاء الاصطناعي بقرون</p>
+      <span class="pill">Authority • Culture • Tech</span>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>المشكلة</h2>
+      <p>أنظمة AI اليوم:</p>
+      <ul>
+        <li>تعتمد على نموذج واحد</li>
+        <li>أو منطق واحد</li>
+      </ul>
+      <p class="sub">النتيجة: هشاشة في القرار</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>السؤال الحقيقي</h2>
+      <p>ماذا يحدث عندما:</p>
+      <ul>
+        <li>تختلف النماذج؟</li>
+        <li>تتعارض النتائج؟</li>
+        <li>يتغير السياق؟</li>
+      </ul>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>هنا يظهر الفقه المقارن</h2>
+      <p>لا يبحث عن “إجابة واحدة”</p>
+      <p class="sub">بل يدير الاختلاف</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>Multi-Model System</h2>
+      <ul>
+        <li>مدارس متعددة</li>
+        <li>آراء مختلفة</li>
+        <li>نفس المسألة</li>
+      </ul>
+      <p class="sub">ومع ذلك: القرار ممكن</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>Architecture</h2>
+      <div class="split">
+        <div>
+          <p><b>BIG G</b> → مصدر الشرعية</p>
+          <p><b>RAM</b> → تحقق من الصلاحية</p>
+          <p><b>QGED</b> → تنفيذ القرار</p>
+        </div>
+        <div class="sub">
+          <p>حوكمة تنفيذية تربط الشرعية بالقرار</p>
+        </div>
+      </div>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>الترجيح (Tarjih)</h2>
+      <p>اختيار أفضل رأي بناءً على:</p>
+      <ul>
+        <li>السياق</li>
+        <li>المصلحة</li>
+        <li>الأدلة</li>
+      </ul>
+      <p class="sub">هذا هو الـ Decision Engine الحقيقي</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>بدون هذا النظام</h2>
+      <ul>
+        <li>الأنظمة الحديثة تختار بدون تفسير</li>
+        <li>أو تفرض نموذجًا واحدًا</li>
+      </ul>
+      <p class="sub">النتيجة: Authority Leakage</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>الربط مع AI</h2>
+      <ul>
+        <li>Multi-model reasoning</li>
+        <li>Context awareness</li>
+        <li>Authority validation</li>
+      </ul>
+      <p class="sub">بالضبط ما يفعله الفقه المقارن</p>
+    </div></section>
+
+    <section class="slide"><div class="card">
+      <h2>الخلاصة</h2>
+      <p>المستقبل ليس نموذجًا أقوى…</p>
+      <p class="sub">بل نظام حوكمة أقوى</p>
+    </div></section>
+  </div>
+</body>
+</html>

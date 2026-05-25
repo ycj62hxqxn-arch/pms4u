@@ -1,0 +1,17 @@
+
+> pms4u@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 423ms
+
+ GET / 200 in 381ms (next.js: 225ms, application-code: 156ms)
+ GET /trace 200 in 233ms (next.js: 88ms, application-code: 145ms)
+ GET /trace 200 in 52ms (next.js: 3ms, application-code: 49ms)
+✓ Compiled in 289ms
+ GET /trace 200 in 79ms (next.js: 15ms, application-code: 64ms)
+✓ Compiled in 138ms
+✓ Compiled in 58ms
+ GET /trace 200 in 113ms (next.js: 27ms, application-code: 86ms)

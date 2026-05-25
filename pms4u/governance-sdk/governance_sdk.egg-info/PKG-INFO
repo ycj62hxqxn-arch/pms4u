@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: governance-sdk
+Version: 0.1.0
+Summary: Governance SDK Client for Stateless Execution Authority
+Author-email: Governance Authority <authority@example.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic
+Requires-Dist: requests
+
+# Governance SDK
+Industrial-grade governance execution SDK

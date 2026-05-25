@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="glow" cx="70%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#d1b15c" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#0b0b0f" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="#0b0b0f" />
+  <rect width="1920" height="1080" fill="url(#glow)" />
+  <text x="140" y="210" fill="#d1b15c" font-size="46" font-family="Segoe UI, Arial">⚖️ 🧠 🏛️</text>
+  <text x="140" y="340" fill="#d1b15c" font-size="72" font-family="Segoe UI, Arial" font-weight="700">الفقه المقارن ليس تراثًا… بل نظام حوكمة</text>
+  <text x="140" y="420" fill="#b7b7c0" font-size="38" font-family="Segoe UI, Arial">سبق أنظمة الذكاء الاصطناعي بقرون</text>
+  <rect x="140" y="470" rx="28" ry="28" width="420" height="56" fill="none" stroke="#d1b15c" stroke-opacity="0.6" />
+  <text x="170" y="508" fill="#d1b15c" font-size="26" font-family="Segoe UI, Arial">Authority • Culture • Tech</text>
+</svg>

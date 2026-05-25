@@ -19,6 +19,8 @@ export const metadata: Metadata = {
     "PMS4U is a governance-first execution system that enforces control, validates decisions, and produces evidence.",
 };
 
+import { RuntimeStatusBanner } from './components/governance/RuntimeStatusBanner';
+
 export default function RootLayout({
   children,
 }: {
