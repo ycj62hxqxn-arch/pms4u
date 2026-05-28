@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Constitutional Execution Infrastructure (CEI)
 
-First, run the development server:
+**Runtime governance architecture for consequential autonomous execution.**
+
+## Authority Before Execution
+
+**No irreversible mutation may occur outside the constitutional execution boundary.**
+
+---
+
+![Runtime Constitutional Enforcement Demo](demo_enforcement.gif)
+
+[▶️ Watch the full demo (MOV)](demo_enforcement.mov)
+
+---
+
+## What This System Does
+
+This repository demonstrates **runtime constitutional enforcement** for autonomous and AI-powered systems.
+
+All consequential execution requests are intercepted before mutation occurs. The system evaluates:
+
+- Runtime admissibility
+- Authority integrity
+- Contextual validity
+- Consequence classification
+- Execution boundary conditions
+
+If admissibility fails:
+
+- Execution freezes
+- Mutation is blocked
+- Evidence seals
+- Replay lineage persists
+- Irreversible consequence is prevented
+
+---
+
+## Proof Demos
+
+**Canonical Enforcement Test**
+
+- Governed mutation success
+- Append-only evidence recording
+- Controlled state transition
+- Direct bypass rejection
+- Immutable enforcement boundaries
+
+**Constitutional Execution Gateway**
+
+- Runtime admissibility evaluation
+- Constitutional FREEZE states
+- Evidence-bound escalation
+- Consequence-aware interception
+- Replayable execution lineage
+
+---
+
+## Quick Start (Proof in Seconds)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+python3 test_constitutional_enforcement.py
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+python3 demo_financial_gateway.py
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Why This Is Different
 
-## Learn More
+Traditional governance systems operate:
 
-To learn more about Next.js, take a look at the following resources:
+- After execution
+- Outside runtime
+- Or through retrospective audit
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**This architecture enforces governance before irreversible mutation occurs.**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Execution authority is intercepted at runtime through constitutional admissibility evaluation.
 
-## Deploy on Vercel
+**The application itself no longer possesses unrestricted mutation sovereignty.**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture Snapshot
+
+```
+/execution-proof-stack
+  /admissibility
+  /boundary
+  /failure
+  /ledger
+  /proof-surface
+  /contracts
+  demo_financial_gateway.py
+  test_constitutional_enforcement.py
+  constitutional_gateway.py
+  constitutional_verdict.py
+  README.md
+  docs/DOCTRINE.md
+```
+
+---
+
+## Core Doctrine
+
+**Proof before power.**  
+**Evidence before consequence.**  
+**Authority before execution.**
+
+---
+
+## Public Deployment
+
+Production: [pms4u.vercel.app](https://pms4u.vercel.app)
+
+---
+
+## Category Declaration
+
+**This repository establishes the canonical reference for Constitutional Execution Infrastructure (CEI):**
+
+> “No consequential execution may occur without runtime constitutional admissibility.”
+
+---
+
+For technical details, see [docs/DOCTRINE.md](docs/DOCTRINE.md).
