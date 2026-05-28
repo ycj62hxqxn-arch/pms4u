@@ -1,0 +1,71 @@
+
+.container {
+  max-width: 800px;
+  margin: 2.5rem auto;
+  font-family: 'Geist', 'Inter', system-ui, sans-serif;
+  background: #101014;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px #0008;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+}
+
+.section {
+  background: linear-gradient(120deg, #18181c 80%, #23232a 100%);
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  box-shadow: 0 2px 24px #0004;
+  color: #f3f3f7;
+}
+
+.heading {
+  font-weight: 800;
+  font-size: 2.2rem;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.subheading {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #b6b6c9;
+  margin-top: 1.5rem;
+}
+
+.italic {
+  font-style: italic;
+  color: #b6b6c9;
+}
+
+.hr {
+  margin: 2.2rem 0;
+  border: none;
+  border-top: 1.5px solid #23232a;
+}
+
+.bold {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #f7c873;
+}
+
+.section ul, .section ol {
+  color: #e0e0e6;
+  margin-left: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.section a {
+  color: #7fd7ff;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.section a:hover {
+  color: #f7c873;
+}
+
+.section video {
+  background: #18181c;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px #0002;
+}
