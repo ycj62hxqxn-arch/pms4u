@@ -69,6 +69,22 @@ python3 demo_financial_gateway.py
 
 ---
 
+
+## What This Is NOT
+
+PMS4U is **NOT**:
+
+- an audit platform
+- an observability layer
+- a policy dashboard
+- a compliance reporting tool
+- or retrospective governance software
+
+**PMS4U governs execution itself.**
+It determines whether validated actions are constitutionally admissible before consequence becomes real.
+
+---
+
 ## Why This Is Different
 
 Traditional governance systems operate:
