@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPB Solutions LTD | Authority Infrastructure</title>
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #111111;
+            --surface: #1a1a1a;
+            --accent: #d4af37; /* Gold for authority/premium */
+            --live-green: #00fa9a; /* Cyber/Terminal green for live states */
+            --text-light: #f4f4f4;
+            --text-muted: #888888;
+            --font-main: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+            --spacing: 2rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--primary);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ------------------ HEADER ------------------ */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid #222;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            max-width: 50px;
+            border-radius: 2px;
+            filter: grayscale(100%) contrast(1.2);
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .sys-status {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--live-green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ------------------ LAYER 1: AUTHORITY (HERO) ------------------ */
+        .layer-authority {
+            padding: 180px 5% 100px;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, var(--primary) 70%);
+            border-bottom: 1px solid #222;
+            position: relative;
+        }
+
+        .layer-authority h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .layer-authority h1 auto-text {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .sub-hero {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ------------------ LIVE EXECUTION CHAIN ------------------ */
+        .execution-chain-container {
+            margin: 60px auto 0;
+            max-width: 900px;
+            padding: 40px;
+            background: var(--surface);
+            border: 1px solid #333;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .chain-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: left;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .chain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .chain::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 1px;
+            background: #333;
+            z-index: 1;
+        }
+
+        .node {
+            background: var(--primary);
+            border: 1px solid #444;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #666;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        /* Chain Animation */
+        @keyframes pulseNode {
+            0%, 100% { border-color: #444; color: #666; box-shadow: none; text-shadow: none; }
+            50% { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 15px rgba(212,175,55,0.4); text-shadow: 0 0 5px var(--accent); }
+        }
+
+        .node-1 { animation: pulseNode 4s infinite 0.0s; }
+        .node-2 { animation: pulseNode 4s infinite 0.8s; }
+        .node-3 { animation: pulseNode 4s infinite 1.6s; }
+        .node-4 { animation: pulseNode 4s infinite 2.4s; }
+        .node-5 { animation: pulseNode 4s infinite 3.2s; }
+
+
+        /* ------------------ LAYER 2: SYSTEMS ------------------ */
+        .layer-systems {
+            padding: 100px 5%;
+            background-color: var(--secondary);
+            border-bottom: 1px solid #222;
+        }
+
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-header::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: #333;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .system-card {
+            background-color: var(--surface);
+            border: 1px solid #2a2a2a;
+            border-left: 3px solid #333;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .system-card:hover {
+            border-left-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .sys-title {
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Live Metrics Dashboard within Card */
+        .metrics-board {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            padding: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-radius: 3px;
+            margin-top: 15px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #222;
+        }
+        .metric-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+        .blink-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--live-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px var(--live-green);
+            animation: blink 2s infinite;
+        }
+
+        .text-accent { color: var(--accent); }
+        .text-green { color: var(--live-green); }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ------------------ LAYER 3: EXECUTION ------------------ */
+        .layer-execution {
+            padding: 100px 5%;
+            background-color: var(--primary);
+        }
+
+        .terminal-window {
+            background: #050505;
+            border: 1px solid #333;
+            border-radius: 6px;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 10px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #666;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .terminal-body {
+            padding: 30px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            min-height: 300px;
+            line-height: 1.8;
+        }
+
+        .terminal-line { margin-bottom: 5px; }
+        .tl-sys { color: #555; }
+        .tl-auth { color: var(--accent); }
+        .tl-exec { color: var(--live-green); }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--primary); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER / LIVE NAV -->
+    <header>
+        <div class="logo-container">
+            <img src="public/assets/frameworks/BPB-official-logo.jpg" alt="BPB Base" class="logo-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMzMzIi8+PC9zdmc+';">
+            <div class="brand-name">BPB SOLUTIONS LTD</div>
+        </div>
+        <div class="sys-status">
+            <span class="blink-dot" style="margin:0;"></span> QGED GATE: OPERATIONAL
+        </div>
+    </header>
+
+    <!-- LAYER 1: AUTHORITY FRAMEWORK -->
+    <section class="layer-authority">
+        <h1>Authority-First <auto-text>AI Infrastructure</auto-text></h1>
+        <p class="sub-hero">Engineering Execution Authority for AI, Governance & Enterprise Systems</p>
+
+        <!-- LIVE EXECUTION CHAIN -->
+        <div class="execution-chain-container">
+            <div class="chain-title">// LIVE EXECUTION CHAIN MONITOR //</div>
+            <div class="chain">
+                <div class="node node-1">SIGNAL</div>
+                <div class="node node-2">AUTHORITY</div>
+                <div class="node node-3">VALIDATION</div>
+                <div class="node node-4">EXECUTION</div>
+                <div class="node node-5">AUDIT</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LAYER 2: SYSTEMS INFRASTRUCTURE -->
+    <section class="layer-systems">
+        <div class="section-header">01 // Active Core Systems</div>
+        
+        <div class="grid">
+            
+            <!-- System 1 -->
+            <div class="system-card">
+                <h3 class="sys-title">Execution Authority Engine (EAE)</h3>
+                <div class="metrics-board">
+                    <div class="metric-row">
+                        <span><span class="blink-dot"></span>SYSTEM STATUS</span>
+                        <span class="text-green">ACTIVE NODE</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>AUTHORITY SCORE</span>
+                        <span class="text-accent" id="score-1">97.4</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>EXECUTION LATENCY</span>
+                        <span class="text-accent">0.42s</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>EXECUTION STATE</span>
+                        <span class="text-green">VERIFIED</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>LAST EVENT</span>
+                        <span style="color:#666;" id="time-1">11s ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System 2 -->
+            <div class="system-card">
+                <h3 class="sys-title">QGED Governance Framework</h3>
+                <div class="metrics-board">
+                    <div class="metric-row">
+                        <span><span class="blink-dot"></span>FIQH AI STATE</span>
+                        <span class="text-green">SYNCED</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>ADMISSIBILITY</span>
+                        <span class="text-accent">100%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>POLICY ENGINE</span>
+                        <span class="text-accent">v2.1.0</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>AI STATUS</span>
+                        <span class="text-green">BOUNDARIES SET</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>LAST AUDIT</span>
+                        <span style="color:#666;" id="time-2">4s ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System 3 -->
+            <div class="system-card">
+                <h3 class="sys-title">Enterprise Contract Automation</h3>
+                <div class="metrics-board">
+                    <div class="metric-row">
+                        <span><span class="blink-dot"></span>PARSER ENGINE</span>
+                        <span class="text-green">LISTENING</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>DOCX RENDERER</span>
+                        <span class="text-accent">STANDBY</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>TRANSLATION LATENCY</span>
+                        <span class="text-accent">1.2s</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>INTEGRITY HASH</span>
+                        <span class="text-green" style="font-size:0.75rem;">SHA3-HMAC VALID</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>LAST GEN</span>
+                        <span style="color:#666;" id="time-3">12m ago</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LAYER 3: EXECUTION (INTERACTIVE/AUDIT) -->
+    <section class="layer-execution">
+        <div class="section-header">02 // Adaptive Execution Audit</div>
+        
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <span>TERMINAL: SYSTEM DIAGNOSTICS</span>
+                <span>ROOT@BPB-CORE</span>
+            </div>
+            <div class="terminal-body" id="term-body">
+                <div class="terminal-line tl-sys">[SYS] Initializing connection to BPB Core... OK</div>
+                <div class="terminal-line tl-sys">[SYS] Loading Quantum Governance Execution Directives (QGED)... OK</div>
+                <div class="terminal-line tl-auth">[EGA] Event signal detected: EXTERNAL_ACCESS</div>
+                <div class="terminal-line tl-auth">[EGA] Evaluating Actor Authority parameters...</div>
+                <div class="terminal-line tl-exec">[RAM] Authority Admissible. Clearance granted.</div>
+                <div class="terminal-line tl-sys">[SYS] Awaiting next input...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts to simulate live environment metrics -->
+    <script>
+        // Simulate updating times for cards
+        setInterval(() => {
+            let t1 = document.getElementById('time-1').innerText.replace('s ago', '').replace('m ago', '');
+            if(!t1.includes('m')) {
+                t1 = parseInt(t1) + 1;
+                const score = (97 + (Math.random() * 0.9)).toFixed(1);
+                document.getElementById('score-1').innerText = score;
+                
+                if(t1 < 60) {
+                    document.getElementById('time-1').innerText = t1 + 's ago';
+                } else {
+                    document.getElementById('time-1').innerText = '1m ago';
+                }
+            }
+        }, 1000);
+
+        setInterval(() => {
+            let t2 = parseInt(document.getElementById('time-2').innerText);
+            if(t2 < 59) document.getElementById('time-2').innerText = (t2+1) + 's ago';
+            else document.getElementById('time-2').innerText = '1m ago';
+        }, 3000);
+
+        // Terminal text simulation
+        const lines = [
+            "[AUDIT] Logging external IP payload... Encrypted.",
+            "[EGA] Background systemic heuristics sync complete.",
+            "[SYS] Cross-referencing Fiqh boundaries... Zero anomalies.",
+            "[RAM] Execution queue empty. Ready for operational payloads."
+        ];
+        
+        let counter = 0;
+        const termBody = document.getElementById('term-body');
+        
+        setInterval(() => {
+            if(counter < lines.length) {
+                const el = document.createElement('div');
+                el.className = 'terminal-line tl-sys';
+                el.innerText = lines[counter];
+                termBody.appendChild(el);
+                counter++;
+            }
+        }, 3500);
+    </script>
+</body>
+</html>

@@ -41,3 +41,9 @@ yarn-error.log*
 next-env.d.ts
 *.MOV
 *.mov
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
