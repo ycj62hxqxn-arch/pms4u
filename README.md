@@ -9,9 +9,11 @@
 
 ---
 
-![Runtime Constitutional Proof (GIF)](assets/demo_enforcement.gif)
 
-[▶️ Watch the Canonical Runtime Proof (MOV)](assets/demo_enforcement.mov)
+
+![Runtime Constitutional Proof](/assets/demo_enforcement.gif)
+
+[▶ Runtime Proof](/assets/demo_enforcement.mov)
 
 ---
 
@@ -143,4 +145,4 @@ Production: [pms4u.vercel.app](https://pms4u.vercel.app)
 
 ---
 
-For technical details, see [docs/DOCTRINE.md](docs/DOCTRINE.md).
+For technical details, see [docs/DOCTRINE.md](/docs/DOCTRINE.md).
