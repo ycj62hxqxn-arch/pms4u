@@ -1,0 +1,80 @@
+.main {
+  max-width: 600px;
+  margin: 40px auto;
+  font-family: sans-serif;
+}
+
+.heading {
+  text-align: center;
+  color: #1a237e;
+}
+
+.steps {
+  padding: 0;
+  list-style: none;
+}
+
+.stepDone {
+  margin: 24px 0;
+  padding: 16px 24px;
+  border-radius: 8px;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  color: #1565c0;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #90caf933;
+}
+
+.stepPending {
+  margin: 24px 0;
+  padding: 16px 24px;
+  border-radius: 8px;
+  background: #fffde7;
+  border: 1px solid #ffe082;
+  color: #f9a825;
+  font-weight: 400;
+  box-shadow: 0 2px 8px #ffe08233;
+}
+
+.icon {
+  margin-right: 12px;
+}
+
+.footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #616161;
+}
+
+.buttonNext {
+  margin: 24px 8px 0 0;
+  padding: 8px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  cursor: pointer;
+}
+.buttonNext:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.buttonReset {
+  margin: 24px 0 0 0;
+  padding: 8px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #1976d2;
+  background: #fff;
+  color: #1976d2;
+  cursor: pointer;
+}
+
+.footerInfo {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #757575;
+}
+}
