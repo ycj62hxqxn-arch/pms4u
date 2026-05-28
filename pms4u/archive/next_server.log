@@ -1,0 +1,76 @@
+
+> pms4u@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 2.4s
+⚠ `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+ GET / 200 in 3.8s (next.js: 2.5s, application-code: 1302ms)
+ HEAD / 200 in 1313ms (next.js: 672ms, application-code: 641ms)
+[browser] Image with src "/assets/frameworks/stack.png" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+ GET / 200 in 1250ms (next.js: 397ms, application-code: 853ms)
+ GET /console 200 in 904ms (next.js: 445ms, application-code: 459ms)
+[browser] Uncaught Error: Hydration failed because the server rendered text didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/console" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+            <SegmentViewNode type="page" pagePath="console/pa...">
+              <SegmentTrieNode>
+              <ClientPageRoot Component={function RuntimeConsole} serverProvidedParams={{...}}>
+                <RuntimeConsole params={Promise} searchParams={Promise}>
+                  <div className="min-h-scre...">
+                    <header>
+                    <div>
+                    <div className="bg-[#1e293...">
+                      <div>
+                      <div className="bg-black r...">
+                        <div className="mb-2 leadi...">
+                          <span className="text-slate...">
++                           08:55:27.47
+-                           08:55:26.74
+                            ...
+                          ...
+                        ...
+                        ...
+                    ...
+            ...
+          ...
+
+    at span (unknown)
+    at <unknown> (app/console/page.tsx:169:15)
+    at map ([native code])
+    at RuntimeConsole (app/console/page.tsx:167:20)
+  167 |           {logs.map((log) => (
+  168 |             <div key={log.id} className="mb-2 leading-relaxed">
+> 169 |               <span className="text-slate-500">[{log.time}]</span>{" "}
+      |               ^
+  170 |               {log.isAuthority && <span className="text-amber-300">[AUTHORITY]</span>}{" "}
+  171 |               {log.primitive && <span className={`font-bold ${statesInfo[log.primitive]?....
+  172 |               {log.msg}
+ GET /apple-touch-icon-precomposed.png 404 in 1079ms (next.js: 463ms, application-code: 616ms)
+ GET /apple-touch-icon.png 404 in 885ms (next.js: 654ms, application-code: 231ms)
+node(17061) MallocStackLogging: can't turn off malloc stack logging because it was not enabled.
+ GET / 200 in 978ms (next.js: 310ms, application-code: 668ms)
+ GET / 200 in 1285ms (next.js: 275ms, application-code: 1011ms)
+ GET /apple-touch-icon-precomposed.png 404 in 684ms (next.js: 294ms, application-code: 390ms)
+ GET /apple-touch-icon.png 404 in 142ms (next.js: 50ms, application-code: 91ms)

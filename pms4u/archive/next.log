@@ -1,0 +1,18 @@
+
+> pms4u@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.20.10.2:3000
+✓ Ready in 636ms
+⚠ `eslint` configuration in next.config.ts is no longer supported. See more info here: https://nextjs.org/docs/app/api-reference/cli/next#next-lint-options
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'eslint'
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+
+ GET / 200 in 453ms (next.js: 237ms, application-code: 216ms)
+ GET /console 200 in 458ms (next.js: 288ms, application-code: 171ms)
+ GET /authority 200 in 541ms (next.js: 202ms, application-code: 338ms)
+ GET / 200 in 484ms (next.js: 34ms, application-code: 450ms)
+ HEAD / 200 in 682ms (next.js: 150ms, application-code: 533ms)
