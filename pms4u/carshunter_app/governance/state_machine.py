@@ -17,8 +17,9 @@ ALLOWED_TRANSITIONS: Dict[HuntState, List[HuntState]] = {
     HuntState.COMPLIANCE_PENDING: [HuntState.PAYMENT_CONFIRMED, HuntState.GOVERNANCE_REVIEW],
     HuntState.PAYMENT_CONFIRMED: [HuntState.GOVERNANCE_REVIEW],
     HuntState.GOVERNANCE_REVIEW: [HuntState.EXPORT_APPROVED],
-    HuntState.EXPORT_APPROVED: [HuntState.EXPORTED],
-    HuntState.EXPORTED: [HuntState.ARCHIVED]
+        HuntState.EXPORT_APPROVED: [HuntState.EXPORTED],
+        HuntState.EXPORTED: [HuntState.ARCHIVED]
+    }
 }
 
 class IllegalStateJumpException(Exception):
