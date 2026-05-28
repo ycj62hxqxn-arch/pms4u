@@ -9,9 +9,9 @@
 
 ---
 
-![Runtime Constitutional Enforcement Demo](demo_enforcement.gif)
+![Runtime Constitutional Proof (GIF)](assets/demo_enforcement.gif)
 
-[▶️ Watch the full demo (MOV)](demo_enforcement.mov)
+[▶️ Watch the Canonical Runtime Proof (MOV)](assets/demo_enforcement.mov)
 
 ---
 
@@ -37,9 +37,9 @@ If admissibility fails:
 
 ---
 
-## Proof Demos
+## Canonical Proofs
 
-**Canonical Enforcement Test**
+**Canonical Enforcement Proof**
 
 - Governed mutation success
 - Append-only evidence recording
@@ -47,7 +47,7 @@ If admissibility fails:
 - Direct bypass rejection
 - Immutable enforcement boundaries
 
-**Constitutional Execution Gateway**
+**Constitutional Execution Proof Gateway**
 
 - Runtime admissibility evaluation
 - Constitutional FREEZE states
