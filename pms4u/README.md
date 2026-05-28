@@ -1,15 +1,18 @@
-
 # Constitutional Execution Infrastructure (CEI)
 
+**Category:** Constitutional Execution Infrastructure (CEI)  
+**Standard:** Sovereign Execution Triad (SET)  
+**Implementation:** PMS4U
+
 **Runtime governance architecture for consequential autonomous execution.**
+
+---
 
 ## Authority Before Execution
 
 **No irreversible mutation may occur outside the constitutional execution boundary.**
 
 ---
-
-
 
 ![Runtime Constitutional Proof](/assets/demo_enforcement.gif)
 
@@ -19,58 +22,32 @@
 
 ## What This System Does
 
-This repository demonstrates **runtime constitutional enforcement** for autonomous and AI-powered systems.
+This repository is the canonical reference for **Constitutional Execution Infrastructure (CEI)**:  
+All consequential execution requests are intercepted at runtime. The system enforces:
 
-All consequential execution requests are intercepted before mutation occurs. The system evaluates:
-
-- Runtime admissibility
-- Authority integrity
-- Contextual validity
-- Consequence classification
-- Execution boundary conditions
+- **Admissibility** (is this execution constitutionally allowed?)
+- **Authority integrity**
+- **Contextual validity**
+- **Consequence classification**
+- **Execution boundary conditions**
 
 If admissibility fails:
 
-- Execution freezes
-- Mutation is blocked
-- Evidence seals
-- Replay lineage persists
+- Execution FREEZES (mutation is blocked)
+- Evidence is SEALED
+- Lineage is replayable
 - Irreversible consequence is prevented
 
 ---
 
-## Canonical Proofs
+## Why This Is Different
 
-**Canonical Enforcement Proof**
+Traditional governance = after-the-fact, audit, or observability.  
+**CEI = runtime admissibility, before consequence.**
 
-- Governed mutation success
-- Append-only evidence recording
-- Controlled state transition
-- Direct bypass rejection
-- Immutable enforcement boundaries
-
-**Constitutional Execution Proof Gateway**
-
-- Runtime admissibility evaluation
-- Constitutional FREEZE states
-- Evidence-bound escalation
-- Consequence-aware interception
-- Replayable execution lineage
+> **The application itself no longer possesses unrestricted mutation sovereignty.**
 
 ---
-
-## Quick Start (Proof in Seconds)
-
-```bash
-python3 test_constitutional_enforcement.py
-```
-
-```bash
-python3 demo_financial_gateway.py
-```
-
----
-
 
 ## What This Is NOT
 
@@ -78,56 +55,47 @@ PMS4U is **NOT**:
 
 - an audit platform
 - an observability layer
-- a policy dashboard
-- a compliance reporting tool
+- a compliance dashboard
+- a policy engine
 - or retrospective governance software
 
-**PMS4U governs execution itself.**
+**PMS4U governs execution itself.**  
 It determines whether validated actions are constitutionally admissible before consequence becomes real.
 
 ---
 
-## Why This Is Different
+## Canonical Proofs
 
-Traditional governance systems operate:
+- Governed mutation success
+- Append-only evidence recording
+- Controlled state transition
+- Direct bypass rejection
+- Immutable enforcement boundaries
 
-- After execution
-- Outside runtime
-- Or through retrospective audit
+---
 
-**This architecture enforces governance before irreversible mutation occurs.**
+## Core Doctrine
 
-Execution authority is intercepted at runtime through constitutional admissibility evaluation.
-
-**The application itself no longer possesses unrestricted mutation sovereignty.**
+**Execution is admissible.**  
+**Proof before power.**  
+**Evidence before consequence.**  
+**Authority before execution.**
 
 ---
 
 ## Architecture Snapshot
 
 ```
+/app
 /execution-proof-stack
-  /admissibility
-  /boundary
-  /failure
-  /ledger
-  /proof-surface
-  /contracts
-  demo_financial_gateway.py
-  test_constitutional_enforcement.py
-  constitutional_gateway.py
-  constitutional_verdict.py
-  README.md
-  docs/DOCTRINE.md
+/governance-core
+/governance-sdk
+/public/assets
+/docs
+README.md
+WHITEPAPER.md
+SOVEREIGN_STACK.md
 ```
-
----
-
-## Core Doctrine
-
-**Proof before power.**  
-**Evidence before consequence.**  
-**Authority before execution.**
 
 ---
 
