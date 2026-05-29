@@ -42,8 +42,34 @@ next-env.d.ts
 *.MOV
 *.mov
 
-# python
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.sqlite3
+*.db
+*.log
+
+# VSCode/IDE
+.vscode/
+.idea/
+*.swp
+
+# Ledger/Cache (if not meant for repo)
+carshunter_app/ledger/execution-ledger.jsonl
+
+# Archive/legacy
+archive/
+*.pdf
+*.html
+*.zip
+*.tar.gz
+
+# Docker
+*.pid
+*.sock
+
+# Misc
+*.tmp
+*.cache
