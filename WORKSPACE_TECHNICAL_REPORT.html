@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workspace Technical Report | PMS4U</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --panel: rgba(255, 255, 255, 0.04);
+      --panel-strong: rgba(255, 255, 255, 0.06);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --soft: #94a3b8;
+      --line: rgba(255, 255, 255, 0.10);
+      --cyan: #67e8f9;
+      --amber: #fcd34d;
+      --emerald: #6ee7b7;
+      --rose: #fda4af;
+      --shadow: 0 30px 120px rgba(0, 0, 0, 0.40);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.14), transparent 26%),
+        radial-gradient(circle at 80% 10%, rgba(212, 175, 55, 0.12), transparent 24%),
+        radial-gradient(circle at 50% 110%, rgba(34, 197, 94, 0.08), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #bae6fd;
+    }
+    .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 48px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+      box-shadow: var(--shadow);
+      padding: 30px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(56,189,248,0.14), transparent 26%),
+        radial-gradient(circle at 80% 10%, rgba(212,175,55,0.12), transparent 24%),
+        radial-gradient(circle at 50% 110%, rgba(34,197,94,0.08), transparent 24%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.45fr 0.95fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(252, 211, 77, 0.25);
+      background: rgba(252, 211, 77, 0.10);
+      color: #fef3c7;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    h1, h2, h3 { margin: 0; line-height: 1.15; }
+    h1 { margin-top: 18px; font-size: clamp(2.4rem, 4vw, 4.8rem); letter-spacing: -0.05em; }
+    h2 { font-size: clamp(1.5rem, 2.2vw, 2.1rem); margin-bottom: 10px; }
+    h3 { font-size: 1.1rem; }
+    .lead { margin-top: 16px; max-width: 70ch; color: var(--muted); font-size: 1rem; }
+    .navlinks { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; justify-content: flex-end; }
+    .navlinks a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.55);
+      color: #dbeafe;
+      font-size: 13px;
+    }
+    .navlinks a:hover {
+      border-color: rgba(103, 232, 249, 0.55);
+      background: rgba(15, 23, 42, 0.78);
+      text-decoration: none;
+    }
+    .navlinks a.print {
+      border-color: rgba(252, 211, 77, 0.20);
+      background: rgba(252, 211, 77, 0.10);
+      color: #fef3c7;
+    }
+    .facts {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .fact {
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.35);
+    }
+    .fact .label {
+      color: var(--soft);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .fact .value { margin-top: 8px; font-size: 1.05rem; font-weight: 700; }
+    .section {
+      margin-top: 26px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .section-head {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 24px 24px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+    }
+    .section-body { padding: 24px; }
+    .kicker {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .muted { color: var(--muted); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .card {
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.30);
+      padding: 18px;
+    }
+    .card p { margin: 0; }
+    .callout {
+      border-radius: 18px;
+      border: 1px solid rgba(252, 211, 77, 0.20);
+      background: rgba(252, 211, 77, 0.08);
+      padding: 18px;
+      color: #fff7d6;
+    }
+    .table-wrap {
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.22); }
+    th, td { padding: 14px; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    th {
+      background: rgba(255,255,255,0.04);
+      color: #e2e8f0;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    tr:last-child td { border-bottom: none; }
+    .swot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .strength { border-top: 4px solid var(--emerald); }
+    .weakness { border-top: 4px solid #f59e0b; }
+    .opportunity { border-top: 4px solid var(--cyan); }
+    .threat { border-top: 4px solid var(--rose); }
+    .source-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .source-list li { margin-bottom: 6px; }
+    .footer { margin-top: 18px; text-align: center; color: var(--soft); font-size: 12px; }
+    @media (max-width: 960px) {
+      .hero-grid, .grid-2, .grid-4, .swot, .facts { grid-template-columns: 1fr; }
+      .navlinks { justify-content: flex-start; }
+    }
+    @media print {
+      body { background: #fff; color: #000; }
+      .shell { width: 100%; padding: 0; }
+      .hero, .section, .fact, .card, .callout, .table-wrap { box-shadow: none !important; }
+      .hero, .section { border-color: #ddd; background: #fff; }
+      .hero::before, .navlinks, .no-print, .footer .link { display: none !important; }
+      a[href]::after { content: ""; }
+      .muted { color: #333; }
+      th { background: #f3f4f6; color: #111; }
+      td, th { border-bottom-color: #e5e7eb; }
+      .pill { border-color: #e5e7eb; background: #fef3c7; color: #111; }
+      .fact, .card, .callout { border-color: #e5e7eb; background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="pill">Native workspace report</div>
+          <h1>Workspace Technical Report</h1>
+          <p class="lead">A native report surface for the PMS4U workspace. It covers what the workspace is, when the key milestones happened, how the system is built, why it exists, what changed, where it has impact, which domains and sectors it covers, and which projects have been completed.</p>
+        </div>
+        <div class="navlinks no-print">
+          <a href="/">Home</a>
+          <a href="/authority">Authority</a>
+          <a href="/trace">Trace</a>
+          <a href="/workspace-technical-report/print" class="print">Print / Export</a>
+        </div>
+      </div>
+      <div class="facts"><div class="fact"><div class="label">Repository</div><div class="value">pms4u</div></div><div class="fact"><div class="label">Runtime</div><div class="value">Next.js 16 / React 19</div></div><div class="fact"><div class="label">Governance model</div><div class="value">CEI / SET</div></div><div class="fact"><div class="label">Public surfaces</div><div class="value">7+ routes</div></div><div class="fact"><div class="label">Audit status</div><div class="value">PASS</div></div><div class="fact"><div class="label">Deployment</div><div class="value">Vercel-compatible</div></div></div>
+    </header>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Summary</div><h2>What this workspace is</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="muted"><p>This repository is the canonical reference for Constitutional Execution Infrastructure (CEI) and the Sovereign Execution Triad (SET). The core doctrine is authority before execution: consequential actions should not become real unless they remain admissible at runtime.</p><p>The workspace is not only a landing page. It includes a governance authority page, a doctrine briefing, a proof surface, a live trace viewer, a runtime console, and a client-facing report, plus supporting operational contracts for lead intake and social automation.</p></div>
+          <div class="callout">
+            <strong>Core thesis:</strong>
+            <div style="margin-top:10px; font-size:1.1rem; color:#fff;">Proof before power. Evidence before consequence. Authority before execution.</div>
+            <p style="margin:10px 0 0; color:#fff7d6;">The product category is runtime control of execution, not retrospective audit or compliance reporting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">When</div><h2>Milestones achieved</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><strong>2026-04-10</strong><p class="muted" style="margin-top:8px;">Initial authority-page and UI modernization</p><p class="muted" style="margin-top:8px;">The interface language moved toward a premium governance aesthetic, establishing the design direction reused across the workspace.</p></div><div class="card"><strong>2026-04-10 to 2026-04-12</strong><p class="muted" style="margin-top:8px;">Structural cleanup and component stabilization</p><p class="muted" style="margin-top:8px;">Duplicated structure was removed and component typing was corrected to stabilize the app router implementation.</p></div><div class="card"><strong>2026-05-25</strong><p class="muted" style="margin-top:8px;">Console route launched</p><p class="muted" style="margin-top:8px;">The runtime governance console became a first-class route, turning the execution narrative into an interactive simulation.</p></div><div class="card"><strong>2026-05-28</strong><p class="muted" style="margin-top:8px;">Canonical doctrine consolidation</p><p class="muted" style="margin-top:8px;">The README, whitepaper, and sovereign stack docs were aligned around CEI, admissibility, and authority-before-execution.</p></div><div class="card"><strong>2026-05-31</strong><p class="muted" style="margin-top:8px;">Repository audit passed</p><p class="muted" style="margin-top:8px;">No tracked .env files, databases, runtime logs, or cache files were present in version control.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">How</div><h2>How the workspace is built and how the projects were accomplished</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><h3>Implementation model</h3><p class="muted" style="margin-top:8px;">The app uses Next.js App Router pages and client components where runtime state is needed. Governance UI is split into reusable components for evidence badges, event hashes, authority seals, receipts, and traces.</p></div>
+          <div class="card"><h3>Project delivery model</h3><p class="muted" style="margin-top:8px;">Each major project was delivered as a route-level surface or adjacent operational contract: the landing page framed the doctrine, the authority page mapped entities, the trace page replayed lineage, the proof surface demonstrated freeze vs allow, and the console modeled runtime decisioning.</p></div>
+        </div>
+        <div class="table-wrap" style="margin-top:16px;">
+          <table>
+            <thead><tr><th>Project</th><th>What it shows</th><th>How it was accomplished</th></tr></thead>
+            <tbody>
+              <tr><td>Home page</td><td>Brand narrative and execution-first positioning.</td><td>Next.js route with hero, framework cards, execution steps, and CTA flows.</td></tr><tr><td>Authority page</td><td>Multi-entity governance structure and systems portfolio.</td><td>Structured route with company, entity, and systems cards.</td></tr><tr><td>Doctrine page</td><td>CARSHUNTER investor/member briefing and tri-layer architecture.</td><td>Long-form presentation route with state-machine narrative and roadmap.</td></tr><tr><td>Proof surface</td><td>Constitutional freeze vs allow path.</td><td>Interactive verdict toggle with evidence chain and proof video.</td></tr><tr><td>Trace page</td><td>Evidence-bound lineage replay.</td><td>Live lineage polling, websocket replay, receipt rendering, and hash continuity.</td></tr><tr><td>Console page</td><td>Runtime decision engine simulation.</td><td>State-machine simulation with risk telemetry and authority injection.</td></tr><tr><td>Shab report</td><td>Client-facing governance OS summary.</td><td>Executive report surface with stack summary and operational snapshot.</td></tr><tr><td>Operations core</td><td>Operational intake and social automation primitives.</td><td>Lead registry API contract plus local automation agent documentation.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Why</div><h2>Why the workspace exists</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><h3>Problem statement</h3><p class="muted" style="margin-top:8px;">Traditional governance is retrospective. Autonomous systems can create irreversible consequences before a human or policy process catches up. The workspace exists to move governance into the execution boundary itself.</p></div>
+          <div class="card"><h3>Strategic rationale</h3><p class="muted" style="margin-top:8px;">The repo turns governance into a control plane. That supports enterprise trust, evidence integrity, and operational continuity across multiple businesses and domains.</p></div>
+          <div class="card"><h3>Category distinction</h3><p class="muted" style="margin-top:8px;">The repo explicitly rejects being framed as an audit platform, observability layer, compliance dashboard, or policy engine. The intended category is constitutional runtime control.</p></div>
+          <div class="card"><h3>Business reason</h3><p class="muted" style="margin-top:8px;">The broader ecosystem spans automotive, tourism, corporate presence, and governance documentation. A shared authority model reduces drift between brands, entities, and operational channels.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Changes and impact</div><h2>What changed in the workspace and what it achieved</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><h3>Documentation change</h3><p class="muted" style="margin-top:8px;">The README was rewritten around CEI and runtime admissibility. The sovereign stack and whitepaper tightened the ontology around authority, execution, memory, and evidentiary logic.</p></div>
+          <div class="card"><h3>Asset canonicalization</h3><p class="muted" style="margin-top:8px;">Proof assets were consolidated under a single public /assets path, improving deployment compatibility and reducing broken links.</p></div>
+          <div class="card"><h3>Route hardening</h3><p class="muted" style="margin-top:8px;">The console and trace routes transformed doctrine into interactive proof surfaces rather than static explanation pages.</p></div>
+          <div class="card"><h3>Repo hygiene</h3><p class="muted" style="margin-top:8px;">The latest audit confirmed no tracked environment files, databases, logs, or caches in version control.</p></div>
+        </div>
+        <div class="grid-4" style="margin-top:16px;"><div class="fact"><div class="label">Operational impact</div><div class="value">Runtime control</div></div><div class="fact"><div class="label">Narrative impact</div><div class="value">Clear category</div></div><div class="fact"><div class="label">Delivery impact</div><div class="value">Static-safe</div></div><div class="fact"><div class="label">Execution impact</div><div class="value">Freeze before consequence</div></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Impact</div><h2>Observed and expected technical impact</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><h3>Security posture</h3><p class="muted" style="margin-top:8px;">Evidence-first design reduces untracked state changes and strengthens forensic clarity.</p></div>
+          <div class="card"><h3>Operational trust</h3><p class="muted" style="margin-top:8px;">Runtime admissibility, receipts, traces, and banners make trust conditions visible instead of implicit.</p></div>
+          <div class="card"><h3>Multi-entity coherence</h3><p class="muted" style="margin-top:8px;">Domain maps align multiple businesses under one governance model, improving brand and execution consistency.</p></div>
+          <div class="card"><h3>Maintainability</h3><p class="muted" style="margin-top:8px;">Modular routes, governance components, and source docs lower ambiguity for future work.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Domains and sectors</div><h2>What domains and sectors this workspace covers</h2></div>
+      <div class="section-body">
+        <p class="muted">Automotive, tourism, corporate services, governance software, runtime evidence systems, document automation, lead registry tooling, and social media automation.</p>
+        <p class="muted" style="margin-top:12px;">Business-specific surfaces feed back into a shared governance core so execution logic, evidence, and authority do not have to be rebuilt per brand.</p>
+        <div class="table-wrap" style="margin-top:16px;">
+          <table>
+            <thead><tr><th>Domain</th><th>Repository</th><th>Sector</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td>carshunter.de</td><td>carshunter_app</td><td>Automotive retail / brokerage</td><td>Vehicle sourcing and governed transaction execution.</td></tr><tr><td>aegyptenhautnah.com</td><td>operations-core</td><td>Tourism / cultural operations</td><td>Lead intake, customer operations, and social automation.</td></tr><tr><td>bpbsolutionsltd.com</td><td>corporate</td><td>Corporate presence</td><td>Public brand and business identity layer.</td></tr><tr><td>gtcs4u.info</td><td>governance-os</td><td>Governance documentation</td><td>Reference site for operating doctrine and architecture.</td></tr><tr><td>gtcs4u.com</td><td>holding-site</td><td>Holding / entry point</td><td>Umbrella entry into the broader portfolio.</td></tr><tr><td>pms4u.vercel.app</td><td>pms4u</td><td>Governance runtime demo</td><td>Landing, proof surface, trace, doctrine, console, and report routes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Projects completed</div><h2>Which projects have been done and how they were delivered</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card"><h3>Home page</h3><p class="muted" style="margin-top:8px;">Brand narrative and execution-first positioning.</p><p class="muted" style="margin-top:12px;">Next.js route with hero, framework cards, execution steps, and CTA flows.</p></div><div class="card"><h3>Authority page</h3><p class="muted" style="margin-top:8px;">Multi-entity governance structure and systems portfolio.</p><p class="muted" style="margin-top:12px;">Structured route with company, entity, and systems cards.</p></div><div class="card"><h3>Doctrine page</h3><p class="muted" style="margin-top:8px;">CARSHUNTER investor/member briefing and tri-layer architecture.</p><p class="muted" style="margin-top:12px;">Long-form presentation route with state-machine narrative and roadmap.</p></div><div class="card"><h3>Proof surface</h3><p class="muted" style="margin-top:8px;">Constitutional freeze vs allow path.</p><p class="muted" style="margin-top:12px;">Interactive verdict toggle with evidence chain and proof video.</p></div><div class="card"><h3>Trace page</h3><p class="muted" style="margin-top:8px;">Evidence-bound lineage replay.</p><p class="muted" style="margin-top:12px;">Live lineage polling, websocket replay, receipt rendering, and hash continuity.</p></div><div class="card"><h3>Console page</h3><p class="muted" style="margin-top:8px;">Runtime decision engine simulation.</p><p class="muted" style="margin-top:12px;">State-machine simulation with risk telemetry and authority injection.</p></div><div class="card"><h3>Shab report</h3><p class="muted" style="margin-top:8px;">Client-facing governance OS summary.</p><p class="muted" style="margin-top:12px;">Executive report surface with stack summary and operational snapshot.</p></div><div class="card"><h3>Operations core</h3><p class="muted" style="margin-top:8px;">Operational intake and social automation primitives.</p><p class="muted" style="margin-top:12px;">Lead registry API contract plus local automation agent documentation.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">SWOT</div><h2>In-depth technical SWOT analysis</h2></div>
+      <div class="section-body">
+        <div class="swot">
+          <div class="card"><h3>Strengths</h3><p class="muted" style="margin-top:8px;">Strong doctrinal coherence, clear category framing, reusable governance primitives, and a consistent visual language across routes.</p></div><div class="card"><h3>Weaknesses</h3><p class="muted" style="margin-top:8px;">Some surfaces are still simulation-heavy, and live trace features depend on local backend availability.</p></div><div class="card"><h3>Opportunities</h3><p class="muted" style="margin-top:8px;">Package the trace, receipt, and admissibility patterns into reusable enterprise modules and production APIs.</p></div><div class="card"><h3>Threats</h3><p class="muted" style="margin-top:8px;">Category confusion, backend drift, and overreliance on narrative proof can weaken trust if not kept synchronized.</p></div>
+        </div>
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="card"><h3>SWOT conclusion</h3><p class="muted" style="margin-top:8px;">The strongest asset is the governance architecture itself. The main risk is execution quality and operational hardening, not conceptual originality.</p></div>
+          <div class="card"><h3>Mitigation path</h3><p class="muted" style="margin-top:8px;">Continue formalizing contracts, automate tests around trace integrity, expand backend availability, and keep docs synchronized with shipped routes and assets.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="kicker">Sources</div><h2>Files used to produce this report</h2></div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Primary sources</h3>
+            <ul class="source-list"><li>README.md</li><li>SOVEREIGN_STACK.md</li><li>WHITEPAPER.md</li><li>ARCHITECTURE_MAP_MASTER.md</li><li>PLATFORM_AUTHORITY_MAP.md</li><li>DNS_DEPLOYMENT_MAP.md</li><li>REPOSITORY_AUDIT.md</li><li>BPB_SHAP_Q1_2026_Report.md</li></ul>
+          </div>
+          <div class="card">
+            <h3>Implementation sources</h3>
+            <ul class="source-list"><li>app/page.tsx</li><li>app/authority/page.tsx</li><li>app/doctrine/page.tsx</li><li>app/proof-surface/page.tsx</li><li>app/trace/page.tsx</li><li>app/console/page.tsx</li><li>app/shab-report/page.tsx</li><li>app/components/governance/*</li><li>operations-core/lead_registry/openapi.md</li><li>operations-core/social_agent/README.md</li><li>execution-proof-stack/docs/DOCTRINE.md</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Use the native route for the interactive version. This static HTML is generated from the shared report data module.
+    </div>
+  </div>
+</body>
+</html>

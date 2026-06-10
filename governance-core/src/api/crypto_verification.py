@@ -11,4 +11,8 @@ class VerifierAdapter:
     def verify_signature(self, message: str, signature_hex: str) -> bool:
         return self._core.verify_runtime_signature(message, signature_hex)
 
+    def verify_runtime_signature(self, message: str, signature_hex: str) -> bool:
+        """Alias used by IntegrityValidator during replay."""
+        return self._core.verify_runtime_signature(message, signature_hex)
+
 verifier = VerifierAdapter()

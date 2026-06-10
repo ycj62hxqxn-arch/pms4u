@@ -1,11 +1,13 @@
-from governance.client import GovernanceClient
+from carshunter_app.governance.governance_client import GovernanceRuntimeClient
 from repositories.hunt_repository import HuntRepository
 
 class TransactionService:
     @staticmethod
     def export_hunt(hunt_id, from_state, to_state, authority_token):
         # Request transition from governance
-        verdict = GovernanceClient.request_transition(
+        # Canonical runtime path: use GovernanceRuntimeClient only
+        governance_client = GovernanceRuntimeClient(governance_url="http://localhost:8000")
+        verdict = governance_client.request_transition(
             hunt_id=hunt_id,
             from_state=from_state,
             to_state=to_state,

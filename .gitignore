@@ -63,6 +63,7 @@ carshunter_app/ledger/execution-ledger.jsonl
 archive/
 *.pdf
 *.html
+!WORKSPACE_TECHNICAL_REPORT.html
 *.zip
 *.tar.gz
 

@@ -1,0 +1,23 @@
+Level-2 → Level-3 Escalation Gates (Paper Only)
+
+Gate A – Authority Escalation
+- Explicit written delegation
+- QGED instantiated
+- Dual signer approval
+
+Gate B – Command Formalization
+- Deterministic CLI/API commands
+- Simulation before execution
+- STOP/GO enforcement
+
+Gate C – Ledger Binding
+- Immutable execution ledger
+- Hash-chained persistence
+- Replay-safe auditability
+
+Gate D – Autonomy Risk Declaration
+- Defined failure modes
+- Rollback authority
+- Kill-switch ownership
+
+All gates must be satisfied. Otherwise escalation is prohibited.

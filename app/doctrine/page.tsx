@@ -80,7 +80,7 @@ export default function DoctrineBriefing() {
                         <span className="px-2 py-1 bg-white/5 border border-white/10 rounded font-mono text-xs text-gold">authorization_chain</span>
                         <span className="px-2 py-1 bg-white/5 border border-white/10 rounded font-mono text-xs text-gold">audit_signature</span>
                     </div>
-                    <em className="text-xl text-accent font-display block">"Silence Before Proof."</em>
+                    <em className="text-xl text-accent font-display block">&quot;Silence Before Proof.&quot;</em>
                 </div>
             </div>
         </div>
@@ -391,7 +391,7 @@ export default function DoctrineBriefing() {
                         Die Aufrechterhaltung von kohärenter Ausführung in einer Umgebung sich beschleunigender Komplexität. Ein Sovereign-Grade Framework für institutionalisierte Ordnung.
                     </p>
                     <div className="p-5 border-l-2 border-gold bg-gold/5 max-w-fit">
-                        <p className="text-xl font-display text-gray-200 italic tracking-wide">"Civilizations do not build pyramids during drift."</p>
+                        <p className="text-xl font-display text-gray-200 italic tracking-wide">&quot;Civilizations do not build pyramids during drift.&quot;</p>
                     </div>
                 </div>
             </div>
