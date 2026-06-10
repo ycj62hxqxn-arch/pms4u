@@ -44,5 +44,8 @@ class ProjectionEntity(Base):
     entity_id = Column(String(100), primary_key=True)
     current_state = Column(String(50), nullable=False)
     projection_version = Column(Integer, nullable=False, default=1)
-    last_updated = Column(DateTime, default=datetime.utcnow)
-
+    last_event_hash = Column(String(64), nullable=True)
+    last_transition_id = Column(String(100), nullable=True)
+    last_evidence_id = Column(String(100), nullable=True)
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

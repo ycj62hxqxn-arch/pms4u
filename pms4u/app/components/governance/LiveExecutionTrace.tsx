@@ -1,12 +1,32 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { ExecutionTraceTimeline } from './ExecutionTraceTimeline';
-import { ExecutionTraceData, GovernanceEvent } from './types';
+import { ExecutionTraceData } from './types';
 import { ExecutionReceiptCard } from './ExecutionReceiptCard';
 
 interface Props {
   entityId: string;
 }
+
+type ApiGovernanceEvent = {
+  event_id: string;
+  event_name: string;
+  previous_state: string | null;
+  next_state: string;
+  actor_id: string;
+  authority_level?: string | null;
+  evidence_id?: string;
+  transition_id: string;
+  event_hash: string;
+  previous_event_hash?: string;
+  signature?: string;
+  timestamp: string;
+  status: ExecutionTraceData["lineage"][number]["status"];
+};
+
+type ApiExecutionTraceData = Omit<ExecutionTraceData, "lineage"> & {
+  lineage: ApiGovernanceEvent[];
+};
 
 export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
   const [data, setData] = useState<ExecutionTraceData | null>(null);
@@ -16,51 +36,51 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
   const [replaySessionId, setReplaySessionId] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const fetchLineage = async () => {
-    try {
-      const res = await fetch(`http://localhost:8000/entities/${entityId}/lineage`);
-      if (!res.ok) throw new Error('Live introspection connection failed');
-      const json: ExecutionTraceData = await res.json();
-      
-      // Data normalizer (mapping backend schema to frontend)
-      const normalizedData = {
-        ...json,
-        lineage: json.lineage.map((ev: any) => ({
-          eventId: ev.event_id,
-          eventName: ev.event_name,
-          previousState: ev.previous_state,
-          nextState: ev.next_state,
-          actorId: ev.actor_id,
-          authorityLevel: ev.authority_level,
-          evidenceId: ev.evidence_id,
-          transitionId: ev.transition_id,
-          eventHash: ev.event_hash,
-          previousEventHash: ev.previous_event_hash,
-          signature: ev.signature,
-          timestamp: ev.timestamp,
-          status: ev.status
-        }))
-      };
-      
-      setData(prev => {
-        // Only update playbackIdx if we are not actively replaying and not at a specific cursor
-        if (!isPlaying && (prev === null || playbackIdx === prev.lineage.length)) {
-           setPlaybackIdx(normalizedData.lineage.length);
-        }
-        return normalizedData;
-      });
-      // Initialize Session ID if not present
-      if (!replaySessionId) {
-        setReplaySessionId(`TRACE-${Math.floor(1000 + Math.random() * 9000)}-${entityId.substring(0, 4)}`);
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
   useEffect(() => {
+    const fetchLineage = async () => {
+      try {
+        const res = await fetch(`http://localhost:8000/entities/${entityId}/lineage`);
+        if (!res.ok) throw new Error('Live introspection connection failed');
+        const json = (await res.json()) as ApiExecutionTraceData;
+
+        // Data normalizer (mapping backend schema to frontend)
+        const normalizedData: ExecutionTraceData = {
+          ...json,
+          lineage: json.lineage.map((ev) => ({
+            eventId: ev.event_id,
+            eventName: ev.event_name,
+            previousState: ev.previous_state,
+            nextState: ev.next_state,
+            actorId: ev.actor_id,
+            authorityLevel: ev.authority_level,
+            evidenceId: ev.evidence_id,
+            transitionId: ev.transition_id,
+            eventHash: ev.event_hash,
+            previousEventHash: ev.previous_event_hash,
+            signature: ev.signature,
+            timestamp: ev.timestamp,
+            status: ev.status,
+          })),
+        };
+
+        setData((prev) => {
+          // Only update playbackIdx if we are not actively replaying and not at a specific cursor
+          if (!isPlaying && (prev === null || playbackIdx === prev.lineage.length)) {
+            setPlaybackIdx(normalizedData.lineage.length);
+          }
+          return normalizedData;
+        });
+        // Initialize Session ID if not present
+        if (!replaySessionId) {
+          setReplaySessionId(`TRACE-${Math.floor(1000 + Math.random() * 9000)}-${entityId.substring(0, 4)}`);
+        }
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Live introspection connection failed');
+      }
+    };
+
     fetchLineage();
-    
+
     let ws: WebSocket;
     if (replaySessionId) {
        // Upgrade to Constitutional Event Bus
@@ -94,7 +114,7 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
       if (ws) ws.close();
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [entityId, isPlaying, replaySessionId]);
+  }, [entityId, isPlaying, playbackIdx, replaySessionId]);
 
   const handleReplay = () => {
     if (!data || data.lineage.length === 0) return;

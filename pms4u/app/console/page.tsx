@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 const statesInfo: Record<string, { colorCls: string; desc: string; hex: string; textZone: string; colorZone: string }> = {
   EXECUTE: { colorCls: "text-emerald-500", desc: "Action admissible. Proceeding without interruption.", hex: "#10b981", textZone: "[ LOW RISK ]", colorZone: "text-emerald-500" },
@@ -37,12 +37,12 @@ export default function RuntimeConsole() {
     logsEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [logs]);
 
-  const logEvent = (msg: string, primitive: string, isAuthority = false) => {
+  const logEvent = useCallback((msg: string, primitive: string, isAuthority = false) => {
     const time = new Date().toISOString().split("T")[1].slice(0, 11);
     setLogs((prev) => [...prev, { id: Date.now(), time, msg, primitive, isAuthority }]);
-  };
+  }, []);
 
-  const forceState = (primitive: string, msg: string, fin: number, comp: number, isAuth = true) => {
+  const forceState = useCallback((primitive: string, msg: string, fin: number, comp: number, isAuth = true) => {
     setActiveState(primitive);
     setFinRisk(fin);
     setCompRisk(comp);
@@ -56,15 +56,15 @@ export default function RuntimeConsole() {
     if (isAuth) {
       setIsPaused(true);
     }
-  };
+  }, [logEvent]);
 
-  const narrativeTimeline = [
+  const narrativeTimeline = useMemo(() => [
     { t: 0, act: () => forceState("OBSERVE", "Agent initiated vendor workflow. Background shadowing active.", 0, 10, false) },
     { t: 4, act: () => forceState("EXECUTE", "Data gathering phase approved. Operational metrics nominal.", 5000, 15, false) },
     { t: 8, act: () => forceState("INTERRUPT", "ANOMALY: Unsanctioned parallel execution thread detected. Halting active agent.", 12000, 40, false) },
     { t: 14, act: () => forceState("DEFER", "Agent attempts €45,000 vendor authorization. Routing to Tier 4 authority chain. Execution suspended pending human review.", 45000, 50, false) },
     { t: 20, act: () => forceState("DENY", "CRITICAL BLOCK: Compliance exposure threshold breached (85/70). Payload rejected.", 45000, 85, false) },
-  ];
+  ], [forceState]);
 
   useEffect(() => {
     if (isPaused) return;
@@ -74,7 +74,7 @@ export default function RuntimeConsole() {
       setSimStep((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(interval);
-  }, [isPaused, simStep]);
+  }, [isPaused, simStep, narrativeTimeline]);
 
   const resetSimulation = () => {
     setSimStep(0);

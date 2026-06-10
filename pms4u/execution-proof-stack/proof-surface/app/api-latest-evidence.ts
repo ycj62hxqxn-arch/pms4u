@@ -9,7 +9,7 @@ export async function GET() {
     const lines = data.trim().split("\n");
     const last = lines.length > 0 ? JSON.parse(lines[lines.length - 1]) : null;
     return NextResponse.json({ latest: last });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "No evidence found" }, { status: 404 });
   }
 }

@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - governance-core
+      - observatory
+      - clinic
+      - carshunter
+
+  governance-core:
+    build: ./governance-core
+    networks:
+      - constitutional_mesh
+
+  observatory:
+    build: ./observatory
+    networks:
+      - constitutional_mesh
+
+  clinic:
+    build: ./clinic
+    networks:
+      - constitutional_mesh
+
+  carshunter:
+    build: ./carshunter
+    networks:
+      - constitutional_mesh
+
+networks:
+  constitutional_mesh:
+    driver: bridge

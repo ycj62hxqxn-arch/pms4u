@@ -1,0 +1,39 @@
+# Execution Constitution Contract (Runtime Schema)
+# This YAML schema defines the live constitutional contract for every execution event.
+# All consequential execution must conform to this contract.
+
+execution_constitution:
+  authority:
+    origin: "<Who holds legitimate authority for this execution>"
+    chain:
+      - signer_id: "<Unique ID>"
+        role: "<Role/Title>"
+        signature: "<Cryptographic Signature>"
+  intent:
+    class: "<Intent Class>"  # e.g., 'provision', 'mutation', 'escalation', 'audit'
+    statement: "<Declared intent for this execution>"
+  risk:
+    class: "<Risk Class>"  # e.g., 'low', 'medium', 'high', 'critical'
+    impact_domain: "<Domain of possible impact>"
+    blast_radius: "<Scope of effect>"
+    notes: "<Risk notes>"
+  admissibility:
+    state: "<admissible | denied | escalated | held>"
+    reason: "<Reason for admissibility verdict>"
+    evaluated_by: "<Engine or authority>"
+    correlation_id: "<X-Correlation-ID>"
+  consequence_domain:
+    description: "<Description of consequence domain>"
+    affected_assets:
+      - "<Asset ID or description>"
+    mutation_status: "<pending | committed | reverted>"
+  event_metadata:
+    event_id: "<Unique Event ID>"
+    timestamp: "<ISO8601 UTC>"
+    runtime_hash: "<Hash of execution context>"
+    evidence_id: "<Ledger evidence reference>"
+    execution_trace: "<Trace or log reference>"
+    prev_hash: "<Previous event hash>"
+    current_hash: "<Current event hash>"
+    ledger_position: "<Position in immutable ledger>"
+    seal_state: "<open | sealed>"

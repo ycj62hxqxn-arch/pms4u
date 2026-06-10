@@ -1,0 +1,7 @@
+A Level-2 Execution Environment is a human-controlled operational workspace
+where real systems and assets are accessed and managed while governance,
+authority, and autonomy remain deliberately external.
+
+The environment can act, but it cannot decide authority.
+This separation prevents unauthorized automation, hidden decisions,
+and accidental autonomy.

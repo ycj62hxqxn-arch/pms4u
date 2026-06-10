@@ -31,7 +31,7 @@ export const RuntimeStatusBanner: React.FC = () => {
         } else {
            throw new Error("unhealthy");
         }
-      } catch (e) {
+      } catch {
         setStatus({
           runtime: "OFFLINE",
           event_store: "UNREACHABLE",

@@ -1,4 +1,4 @@
-from governance.governance_client import GovernanceClient
+from carshunter_app.governance.governance_client import GovernanceRuntimeClient
 
 class HuntService:
     @staticmethod
@@ -6,7 +6,9 @@ class HuntService:
         # Example: get hunt info, authority, etc.
         # ...
         # Call governance client for transition
-        result = GovernanceClient.request_transition(
+        # Canonical runtime path: use GovernanceRuntimeClient only
+        governance_client = GovernanceRuntimeClient(governance_url="http://localhost:8000")
+        result = governance_client.request_transition(
             hunt_id=44,
             from_state="VERIFIED",
             to_state="EXPORTED",

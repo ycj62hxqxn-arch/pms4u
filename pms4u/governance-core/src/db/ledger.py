@@ -39,7 +39,7 @@ class EventSourcedLedger:
 
         # 5. Create Event Record
         new_event = ExecutionEvent(
-            event_id=uuid.uuid4(),
+            event_id=str(uuid.uuid4()),
             entity_type="governed_asset", # Generic fallback
             entity_id=entity_id,
             previous_state=previous_state,

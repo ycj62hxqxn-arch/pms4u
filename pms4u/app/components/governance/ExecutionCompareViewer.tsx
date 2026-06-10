@@ -56,8 +56,8 @@ export const ExecutionCompareViewer: React.FC = () => {
         
         <div className="space-y-4 font-mono text-sm">
           <div className="bg-black p-4 rounded text-gray-400 border border-red-900/30">
-            <div className="text-red-400 mb-2">// Direct DB Mutation (CRUD)</div>
-            <code>UPDATE hunts SET status = 'EXPORTED' WHERE id = 123;</code>
+            <div className="text-red-400 mb-2">{`// Direct DB Mutation (CRUD)`}</div>
+            <code>{"UPDATE hunts SET status = 'EXPORTED' WHERE id = 123;"}</code>
           </div>
           
           <ul className="text-gray-500 space-y-2 mt-6">
