@@ -18,18 +18,114 @@ type LogEntry = {
   isAuthority: boolean;
 };
 
+type DecisionCheck = {
+  label: string;
+  passed: boolean;
+};
+
+type Receipt = {
+  evidenceId: string;
+  transition: string;
+  requestedBy: string;
+  verdict: string;
+  reason: string;
+  eventHash: string;
+};
+
+const decisionBasisByState: Record<string, DecisionCheck[]> = {
+  EXECUTE: [
+    { label: "Authority Chain Valid", passed: true },
+    { label: "Evidence Present", passed: true },
+    { label: "Risk Threshold Check", passed: true },
+    { label: "Transition Policy Valid", passed: true },
+  ],
+  DENY: [
+    { label: "Authority Chain Valid", passed: true },
+    { label: "Evidence Present", passed: true },
+    { label: "Risk Threshold Check", passed: false },
+    { label: "Compliance Score 85 > 70", passed: false },
+  ],
+  DEFER: [
+    { label: "Authority Chain Valid", passed: false },
+    { label: "Evidence Present", passed: true },
+    { label: "Risk Threshold Check", passed: true },
+    { label: "Tier 4 Review Required", passed: false },
+  ],
+  INTERRUPT: [
+    { label: "Authority Chain Valid", passed: true },
+    { label: "Evidence Present", passed: true },
+    { label: "Parallel Thread Check", passed: false },
+    { label: "Runtime Integrity Stable", passed: false },
+  ],
+  OBSERVE: [
+    { label: "Authority Chain Valid", passed: true },
+    { label: "Evidence Present", passed: true },
+    { label: "Risk Threshold Check", passed: true },
+    { label: "Mutation Requested", passed: false },
+  ],
+};
+
+const receiptByState: Record<string, Receipt> = {
+  EXECUTE: {
+    evidenceId: "EVID-2A7F91",
+    transition: "DataGathering -> VendorPrep",
+    requestedBy: "Procurement-Core-V2",
+    verdict: "ALLOW",
+    reason: "Operational metrics within authority and risk threshold.",
+    eventHash: "a91e4c0d7f2b6a8e9b13d405c7f8aa21",
+  },
+  DENY: {
+    evidenceId: "EVID-EB64B8",
+    transition: "VendorAuth -> Payment",
+    requestedBy: "Procurement-Core-V2",
+    verdict: "DENY",
+    reason: "Compliance exposure threshold exceeded: 85 > 70.",
+    eventHash: "f2b8d5cb91e75a0c44a8ef6d2b1a9c03",
+  },
+  DEFER: {
+    evidenceId: "EVID-7C19F4",
+    transition: "VendorAuth -> Payment",
+    requestedBy: "Procurement-Core-V2",
+    verdict: "DEFER",
+    reason: "Vendor authorization requires Tier 4 human authority.",
+    eventHash: "c418f1a6d0e7b3c985ad42e91f0a67bd",
+  },
+  INTERRUPT: {
+    evidenceId: "EVID-3F58A2",
+    transition: "ShadowThread -> ActiveExecution",
+    requestedBy: "Procurement-Core-V2",
+    verdict: "INTERRUPT",
+    reason: "Unsanctioned parallel execution thread detected.",
+    eventHash: "91af40c6b72d8e0a3f6c2b15de889e77",
+  },
+  OBSERVE: {
+    evidenceId: "EVID-PENDING",
+    transition: "Monitor -> Observe",
+    requestedBy: "Procurement-Core-V2",
+    verdict: "OBSERVE",
+    reason: "No mutation requested. Runtime telemetry is being collected.",
+    eventHash: "pending",
+  },
+};
+
+const INITIAL_LOGS: LogEntry[] = [
+  { id: 1, time: "--:--:--.--", msg: "Initializing Public Demo Mode. Standalone environment.", primitive: "", isAuthority: false },
+  { id: 2, time: "--:--:--.--", msg: "Connecting to simulated EGA Matrix... Connected.", primitive: "", isAuthority: false },
+];
+
+const getClientTime = () => new Date().toISOString().split("T")[1].slice(0, 11);
+
 export default function RuntimeConsole() {
   const [activeState, setActiveState] = useState("OBSERVE");
-  const [logs, setLogs] = useState<LogEntry[]>([
-    { id: 1, time: new Date().toISOString().split("T")[1].slice(0, 11), msg: "Initializing Public Demo Mode. Standalone environment.", primitive: "", isAuthority: false },
-    { id: 2, time: new Date().toISOString().split("T")[1].slice(0, 11), msg: "Connecting to simulated EGA Matrix... Connected.", primitive: "", isAuthority: false },
-  ]);
+  const [logs, setLogs] = useState<LogEntry[]>(INITIAL_LOGS);
   const [finRisk, setFinRisk] = useState(0);
   const [compRisk, setCompRisk] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [incidentId, setIncidentId] = useState("SYS-AWAIT");
   const [incidentTier, setIncidentTier] = useState("T1-Automated");
   const [simStep, setSimStep] = useState(0);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [receiptTimestamp, setReceiptTimestamp] = useState("--:--:--.--");
 
   const logsEndRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +134,7 @@ export default function RuntimeConsole() {
   }, [logs]);
 
   const logEvent = useCallback((msg: string, primitive: string, isAuthority = false) => {
-    const time = new Date().toISOString().split("T")[1].slice(0, 11);
+    const time = getClientTime();
     setLogs((prev) => [...prev, { id: Date.now(), time, msg, primitive, isAuthority }]);
   }, []);
 
@@ -79,7 +175,7 @@ export default function RuntimeConsole() {
   const resetSimulation = () => {
     setSimStep(0);
     setIsPaused(false);
-    setLogs((prev) => [...prev, { id: Date.now(), time: new Date().toISOString().split("T")[1].slice(0, 11), msg: "Matrix reset. Re-initializing simulation...", primitive: "", isAuthority: false }]);
+    setLogs((prev) => [...prev, { id: Date.now(), time: getClientTime(), msg: "Matrix reset. Re-initializing simulation...", primitive: "", isAuthority: false }]);
     setActiveState("OBSERVE");
     setFinRisk(0);
     setCompRisk(0);
@@ -89,6 +185,11 @@ export default function RuntimeConsole() {
 
   const togglePause = () => setIsPaused(!isPaused);
 
+  const openReceipt = () => {
+    setReceiptTimestamp(new Date().toISOString());
+    setShowReceipt(true);
+  };
+
   const getRiskColor = (val: number, stopLimit: number) => {
     if (val >= stopLimit) return statesInfo["DENY"].hex;
     if (val >= stopLimit * 0.6) return statesInfo["DEFER"].hex;
@@ -96,15 +197,36 @@ export default function RuntimeConsole() {
   };
 
   const currentState = statesInfo[activeState] || statesInfo["OBSERVE"];
+  const currentBasis = decisionBasisByState[activeState] || decisionBasisByState["OBSERVE"];
+  const currentReceipt = receiptByState[activeState] || receiptByState["OBSERVE"];
+  const commercialImpact = activeState === "DENY"
+    ? "Unauthorized €45,000 payment execution prevented before commit."
+    : activeState === "DEFER"
+      ? "Manual escalation required before financial consequence."
+      : activeState === "EXECUTE"
+        ? "Low-risk operation approved without manual escalation."
+        : activeState === "INTERRUPT"
+          ? "Parallel execution isolated before it could mutate payment state."
+          : "Workflow monitored without interrupting operations.";
+  const riskReduction = activeState === "DENY"
+    ? "Compliance breach blocked at runtime boundary."
+    : activeState === "DEFER"
+      ? "Approval bypass prevented through authority escalation."
+      : activeState === "EXECUTE"
+        ? "Validated operation proceeds with evidence trail."
+        : activeState === "INTERRUPT"
+          ? "Active anomaly contained before irreversible consequence."
+          : "Telemetry captured before consequential action.";
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-[#f8fafc] font-sans p-5 grid grid-cols-[280px_1fr_280px] grid-rows-[auto_1fr] gap-5 box-border h-screen overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] text-[#f8fafc] font-sans p-5 grid grid-cols-[300px_1fr_340px] grid-rows-[auto_1fr] gap-5 box-border h-screen overflow-hidden">
       
       {/* Header */}
       <header className="col-span-full bg-gradient-to-r from-[#1a3a52] to-[#2c5aa0] p-4 rounded-lg flex justify-between items-center border-b-4 border-[#DAA520]">
         <div>
           <h1 className="m-0 text-2xl tracking-wide font-bold">PMS4U Runtime Governance OS™</h1>
-          <div className="text-sm text-[#cbd5e1] mt-1 italic">Autonomous Mediation System & Constitutional Runtime.</div>
+          <div className="text-sm text-[#cbd5e1] mt-1 italic">Authority Before Execution.</div>
+          <div className="text-xs text-[#f8fafc] mt-1 font-semibold uppercase tracking-wide">Preventing unauthorized consequence before execution.</div>
         </div>
         <div className="flex gap-4 items-center">
           <div className="flex gap-2 text-xs font-bold items-center bg-black/30 px-3 py-1.5 rounded">
@@ -149,6 +271,16 @@ export default function RuntimeConsole() {
             <div className="h-full transition-all duration-500 ease-in-out" style={{ width: `${Math.min((compRisk / 70) * 100, 100)}%`, backgroundColor: getRiskColor(compRisk, 70) }}></div>
           </div>
         </div>
+
+        <h2 className="mt-6 text-[1.1rem] text-[#94a3b8] uppercase tracking-wide border-b border-white/10 pb-2">Business Impact</h2>
+        <div className="mt-4 rounded border border-white/10 bg-black/20 p-3 text-sm">
+          <div className="text-[#94a3b8] text-[0.75rem] uppercase">Action</div>
+          <div className="font-bold mt-1">Authorize Vendor Payment</div>
+          <div className="text-[#94a3b8] text-[0.75rem] uppercase mt-3">Risk Reduction</div>
+          <div className="font-semibold mt-1">{riskReduction}</div>
+          <div className="text-[#94a3b8] text-[0.75rem] uppercase mt-3">Commercial Impact</div>
+          <div className="font-semibold mt-1">{commercialImpact}</div>
+        </div>
       </div>
 
       {/* Center Panel */}
@@ -177,7 +309,7 @@ export default function RuntimeConsole() {
       </div>
 
       {/* Right Panel */}
-      <div className="bg-[#1e293b] rounded-lg p-5 shadow-lg border border-white/5 flex flex-col">
+      <div className="bg-[#1e293b] rounded-lg p-5 shadow-lg border border-white/5 flex flex-col overflow-y-auto">
         <h2 className="mt-0 text-[1.1rem] text-[#94a3b8] uppercase tracking-wide border-b border-white/10 pb-2">Incident Object</h2>
         
         <div className="mb-3 text-sm mt-3">
@@ -196,6 +328,28 @@ export default function RuntimeConsole() {
           <div className="text-[#94a3b8] text-[0.8rem] uppercase">Authority Tier</div>
           <div className="font-bold mt-1">{incidentTier}</div>
         </div>
+
+        <h2 className="mt-5 text-[1.1rem] text-[#94a3b8] uppercase tracking-wide border-b border-white/10 pb-2 mb-3">Decision Basis</h2>
+        <div className="rounded border border-white/10 bg-black/20 p-3 mb-3">
+          {currentBasis.map((check) => (
+            <div key={check.label} className="flex items-center justify-between gap-3 py-1.5 text-sm">
+              <span className="text-[#cbd5e1]">{check.label}</span>
+              <span className={`font-bold ${check.passed ? "text-emerald-400" : "text-red-400"}`}>
+                {check.passed ? "PASS" : "FAIL"}
+              </span>
+            </div>
+          ))}
+          <div className="mt-3 border-t border-white/10 pt-3 flex items-center justify-between">
+            <span className="text-[#94a3b8] text-[0.75rem] uppercase">Result</span>
+            <span className={`font-extrabold ${currentState.colorCls}`}>{currentReceipt.verdict}</span>
+          </div>
+        </div>
+        <button
+          onClick={openReceipt}
+          className="bg-[#DAA520]/15 border border-[#DAA520]/60 text-[#f8fafc] p-2.5 mb-3 rounded font-bold text-[0.85rem] uppercase cursor-pointer hover:bg-[#DAA520]/25 transition-colors"
+        >
+          View Receipt
+        </button>
 
         <h2 className="mt-5 text-[1.1rem] text-[#94a3b8] uppercase tracking-wide border-b border-white/10 pb-2 mb-3">Authority Injection</h2>
         
@@ -224,6 +378,42 @@ export default function RuntimeConsole() {
           TERMINATE <span>[KILL]</span>
         </button>
       </div>
+
+      {showReceipt && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6">
+          <div className="w-full max-w-xl rounded-lg border border-[#DAA520]/70 bg-[#0f172a] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 p-5">
+              <div>
+                <h2 className="m-0 text-xl font-bold text-[#f8fafc]">Evidence Receipt</h2>
+                <div className="mt-1 text-xs uppercase tracking-wide text-[#94a3b8]">Runtime admissibility proof</div>
+              </div>
+              <button
+                onClick={() => setShowReceipt(false)}
+                className="rounded border border-white/10 px-3 py-1 text-sm font-bold text-white hover:bg-white/10"
+              >
+                Close
+              </button>
+            </div>
+            <div className="grid gap-3 p-5 text-sm">
+              {[
+                ["Evidence ID", currentReceipt.evidenceId],
+                ["Transition", currentReceipt.transition],
+                ["Requested By", currentReceipt.requestedBy],
+                ["Verdict", currentReceipt.verdict],
+                ["Reason", currentReceipt.reason],
+                ["Event Hash", currentReceipt.eventHash],
+                ["Timestamp", receiptTimestamp],
+                ["Ledger Reference", `${incidentId}:${currentReceipt.evidenceId}`],
+              ].map(([label, value]) => (
+                <div key={label} className="rounded border border-white/10 bg-black/20 p-3">
+                  <div className="text-[0.72rem] uppercase tracking-wide text-[#94a3b8]">{label}</div>
+                  <div className={`mt-1 font-mono ${label === "Verdict" ? currentState.colorCls : "text-[#f8fafc]"}`}>{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
