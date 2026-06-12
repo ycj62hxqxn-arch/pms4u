@@ -195,6 +195,38 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="reality-drift" className="border-y border-white/10 bg-white/[0.02] px-5 py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-orange-300">
+              Reality Drift Boundary
+            </div>
+            <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-normal text-white sm:text-5xl">
+              Design before execution is not the same as authority after consequence.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-7 text-gray-400">
+              PMS4U makes the boundary visible: a request may look admissible in design, but the
+              runtime must still prove authority before the action becomes real, owned, and
+              irreversible.
+            </p>
+          </div>
+
+          <figure className="overflow-hidden border border-white/10 bg-black">
+            <Image
+              src="/assets/frameworks/drift.png"
+              alt="Reality Drift Boundary diagram contrasting design before with authority after consequence"
+              width={1536}
+              height={1024}
+              className="h-auto w-full"
+              priority
+            />
+            <figcaption className="border-t border-white/10 px-5 py-4 text-sm font-medium text-gray-300">
+              Reality Drift Boundary — authority is proven after the boundary, not before it.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section id="proof-assets" className="border-y border-white/10 bg-white/[0.02] px-5 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
