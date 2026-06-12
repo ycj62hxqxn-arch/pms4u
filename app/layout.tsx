@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PMS4U — Control Execution",
+  title: "PMS4U — Runtime Governance OS",
   description:
-    "PMS4U is a governance-first execution system that enforces control, validates decisions, and produces evidence.",
+    "PMS4U prevents unauthorized actions before they create consequences by governing state, authority, admissibility, and evidence at runtime.",
 };
 
 export default function RootLayout({
