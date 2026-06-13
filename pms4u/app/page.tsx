@@ -25,6 +25,13 @@ const proofAssets = [
     cta: "Read report",
   },
   {
+    label: "BPB Solutions LTD",
+    title: "Corporate YAI Local surface",
+    body: "Adds YAI Local to the BPB public website as the working assistant layer for execution governance and operator guidance.",
+    href: "/bpbsolutionsltd",
+    cta: "Open BPB site",
+  },
+  {
     label: "GTCS4U",
     title: "Business application surface",
     body: "Connects the governance runtime to a commercial operating domain, revenue path, and market-fit narrative.",
@@ -73,6 +80,9 @@ export default function Home() {
             <Link href="/authority" className="transition hover:text-white">
               Authority
             </Link>
+            <Link href="/bpbsolutionsltd" className="transition hover:text-white">
+              BPB Site
+            </Link>
             <Link href="/shab-report" className="transition hover:text-white">
               Shab Report
             </Link>
@@ -81,6 +91,9 @@ export default function Home() {
             </Link>
             <Link href="/investor-technical-report" className="transition hover:text-white">
               Investor Report
+            </Link>
+            <Link href="/yai" className="transition hover:text-white">
+              YAI Local
             </Link>
             <Link href="/console" className="font-medium text-emerald-300 transition hover:text-emerald-100">
               Governance Console
@@ -108,10 +121,10 @@ export default function Home() {
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
-                href="/console"
+                href="/bpbsolutionsltd/yai"
                 className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-100"
               >
-                Run governance console
+                Open BPB YAI Local
               </Link>
               <a
                 href="#proof-assets"

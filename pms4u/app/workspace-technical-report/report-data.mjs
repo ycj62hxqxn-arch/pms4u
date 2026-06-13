@@ -149,7 +149,7 @@ const reportData = {
       domain: "bpbsolutionsltd.com",
       repo: "corporate",
       sector: "Corporate presence",
-      role: "Public brand and business identity layer.",
+      role: "Public brand and YAI Local execution-governance entry layer.",
     },
     {
       domain: "gtcs4u.info",

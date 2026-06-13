@@ -1,7 +1,25 @@
 export default function ShabReport() {
   return (
-    <main className="text-white min-h-screen px-6 py-20">
-      <section className="max-w-5xl mx-auto text-center">
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#050505] px-6 py-20 text-white">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[440px] bg-no-repeat opacity-[0.14]"
+        style={{
+          backgroundImage: 'url("/assets/frameworks/background.png")',
+          backgroundPosition: "center 28px",
+          backgroundSize: "min(620px, 72vw) auto",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px] bg-[linear-gradient(180deg,rgba(5,5,5,0)_0%,rgba(5,5,5,0.62)_58%,#050505_100%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(circle_at_50%_12%,rgba(16,185,129,0.16),transparent_38%)]"
+      />
+
+      <section className="mx-auto max-w-5xl text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-6">
           BPB Shab Department — Governance-OS Report
         </h1>
@@ -29,7 +47,7 @@ export default function ShabReport() {
         ].map((item) => (
           <div
             key={item.title}
-            className="bg-white/5 border border-white/10 rounded-2xl p-6"
+            className="rounded-lg border border-white/10 bg-black/55 p-6 backdrop-blur-sm"
           >
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-gray-400 text-sm">{item.desc}</p>
@@ -37,7 +55,7 @@ export default function ShabReport() {
         ))}
       </section>
 
-      <section className="max-w-6xl mx-auto mt-16 bg-white/[0.03] border border-white/10 rounded-2xl p-8">
+      <section className="max-w-6xl mx-auto mt-16 rounded-lg border border-white/10 bg-black/55 p-8 backdrop-blur-sm">
         <h2 className="text-2xl mb-4">Execution Governance Pipeline</h2>
         <p className="text-gray-400">
           AI Decision → Admissibility → Authority Verification → Execution Gate → Approved/Blocked →
@@ -46,7 +64,7 @@ export default function ShabReport() {
       </section>
 
       <section className="max-w-6xl mx-auto mt-16 grid md:grid-cols-2 gap-6">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="rounded-lg border border-white/10 bg-black/55 p-6 backdrop-blur-sm">
           <h3 className="text-xl mb-3">Governance Stack</h3>
           <ul className="space-y-2 text-gray-400">
             <li>PMS — Policy management and command validation</li>
@@ -56,7 +74,7 @@ export default function ShabReport() {
             <li>Evidence Freeze — Immutable audit snapshots</li>
           </ul>
         </div>
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div className="rounded-lg border border-white/10 bg-black/55 p-6 backdrop-blur-sm">
           <h3 className="text-xl mb-3">Operational Snapshot</h3>
           <div className="grid grid-cols-2 gap-4 text-gray-400">
             <div>
