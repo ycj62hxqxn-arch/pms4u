@@ -12,6 +12,42 @@ import {
 
 export const runtime = "nodejs";
 
+const allowedOrigins = new Set([
+  "https://pms.bpbsolutionsltd.com",
+  "https://pms4u.vercel.app",
+  "http://127.0.0.1:3000",
+  "http://localhost:3000",
+]);
+
+function corsHeaders(request: Request) {
+  const origin = request.headers.get("origin");
+  const allowOrigin = origin && allowedOrigins.has(origin) ? origin : "https://pms4u.vercel.app";
+
+  return {
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST,OPTIONS",
+    "Access-Control-Allow-Origin": allowOrigin,
+    Vary: "Origin",
+  };
+}
+
+function json(request: Request, payload: unknown, init?: ResponseInit) {
+  return Response.json(payload, {
+    ...init,
+    headers: {
+      ...corsHeaders(request),
+      ...init?.headers,
+    },
+  });
+}
+
+export function OPTIONS(request: Request) {
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders(request),
+  });
+}
+
 export async function POST(request: Request) {
   const traceId = makeTraceId();
 
@@ -21,7 +57,8 @@ export async function POST(request: Request) {
     const mode = normalizeMode(body.mode);
 
     if (messages.length === 0) {
-      return Response.json(
+      return json(
+        request,
         { error: "YAI requires at least one user message.", traceId },
         { status: 400 },
       );
@@ -31,13 +68,14 @@ export async function POST(request: Request) {
     const model = getYaiModel();
 
     if (!apiKey) {
-      return Response.json(localYaiFallback(messages, mode, traceId));
+      return json(request, localYaiFallback(messages, mode, traceId));
     }
 
     const modelValidation = await validateOpenAiModel(apiKey, model);
 
     if (!modelValidation.ok) {
-      return Response.json(
+      return json(
+        request,
         {
           error: modelValidation.message,
           mode,
@@ -74,7 +112,8 @@ export async function POST(request: Request) {
           ? payload.error.message
           : "OpenAI request failed.";
 
-      return Response.json(
+      return json(
+        request,
         {
           error: message,
           mode,
@@ -86,7 +125,7 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json({
+    return json(request, {
       content: extractOpenAiText(payload),
       mode,
       model,
@@ -96,6 +135,6 @@ export async function POST(request: Request) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected YAI runtime error.";
 
-    return Response.json({ error: message, traceId }, { status: 500 });
+    return json(request, { error: message, traceId }, { status: 500 });
   }
 }

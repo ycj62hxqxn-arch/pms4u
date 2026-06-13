@@ -101,7 +101,7 @@ SOVEREIGN_STACK.md
 
 ## YAI Local Demo
 
-YAI Local is available at `/yai`. It uses the integrated Next route at `/api/yai` by default, so the demo works with one local server.
+YAI Local is available at `/yai`. It uses the integrated Next route at `/api/yai` by default, so the demo works with one server-backed local run.
 
 ### One-server setup
 
@@ -144,6 +144,22 @@ Health check:
 
 ```bash
 curl -s http://127.0.0.1:3001/health
+```
+
+### Static export note
+
+The OpenAI-backed YAI route requires a server-backed Next deployment. Static export builds do not include `/api/yai`; in that mode the browser fallback remains available for safe demos only.
+
+Use static export only when you deliberately want a fully static site:
+
+```bash
+NEXT_OUTPUT=export npm run build
+```
+
+For a static host with live YAI, deploy the standalone YAI server separately and set:
+
+```bash
+NEXT_PUBLIC_YAI_API_BASE=https://your-yai-api-host.example
 ```
 
 Operator demo flow:

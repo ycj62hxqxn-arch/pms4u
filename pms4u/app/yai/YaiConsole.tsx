@@ -39,7 +39,7 @@ const starterMessages: Message[] = [
     id: "yai-start",
     role: "assistant",
     content:
-      "YAI local console is ready. Choose a mode or start with a demo prompt. If the OpenAI key is missing, the route stays usable through the local MCV fallback.",
+      "YAI local console is ready. Choose a mode or start with a demo prompt. On static production hosts, YAI uses a browser MCV fallback. On a server-backed local run with OPENAI_API_KEY, it calls OpenAI through /api/yai.",
     source: "local-fallback",
     model: "yai-local",
     traceId: "YAI-BOOT",
@@ -90,30 +90,86 @@ function summarizePrompt(prompt: string) {
   return prompt.length > 240 ? `${prompt.slice(0, 237)}...` : prompt;
 }
 
-function localBrowserFallback(prompt: string, activeMode: Mode, reason: string): Message {
-  const modeGuidance: Record<Mode, string[]> = {
-    governance: [
-      "Decision: DEFER external execution until authority and evidence are attached.",
-      "Required authority: named accountable operator, approved consequence domain, and current permission for the requested action.",
-      "Required evidence: request context, target system, intended mutation, rollback path, and operator note.",
-      "Safe next step: simulate the action locally and record this trace before any production mutation.",
-    ],
-    operator: [
-      "Operator run:",
-      "1. Name the action, owner, target system, and consequence.",
-      "2. Verify authority is explicit and scoped to this action.",
-      "3. Attach request evidence, context evidence, expected mutation, and rollback path.",
+function normalizePrompt(prompt: string) {
+  return prompt.toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function fallbackAnswerFor(prompt: string, activeMode: Mode): string[] {
+  const normalized = normalizePrompt(prompt);
+  const asksMeaning =
+    normalized.includes("what u mean") ||
+    normalized.includes("what you mean") ||
+    normalized.includes("what do you mean") ||
+    normalized.includes("meaning") ||
+    normalized === "what";
+  const asksRoute =
+    normalized === "expl" ||
+    normalized.includes("explain") ||
+    normalized.includes("route") ||
+    normalized.includes("api") ||
+    normalized.includes("architecture") ||
+    normalized.includes("openai");
+
+  if (asksMeaning) {
+    return [
+      "Plain meaning:",
+      "YAI is saying it cannot safely approve or execute a real action unless the basics are clear.",
+      "",
+      "It needs to know:",
+      "1. Who is the accountable operator?",
+      "2. What system or customer record will change?",
+      "3. What evidence proves the request is allowed?",
+      "4. What is the rollback path if the action is wrong?",
+      "",
+      "Until those are attached, the safe answer is: simulate or draft the step, but do not mutate production or notify a customer yet.",
+    ];
+  }
+
+  if (asksRoute) {
+    return [
+      "YAI route explanation:",
+      "1. The page you see is the browser UI.",
+      "2. In a server-backed Next.js run, the UI sends your message to /api/yai.",
+      "3. /api/yai reads OPENAI_API_KEY, calls the OpenAI Responses API, then returns the answer with a trace ID.",
+      "4. On this static production export, /api/yai is not available, so the browser answers with this local MCV fallback.",
+      "5. The fallback is useful for demos, but it is not an external model call.",
+      "",
+      "For real OpenAI reasoning: run the app with OPENAI_API_KEY on a server-backed deployment, or point NEXT_PUBLIC_YAI_API_BASE to a live YAI API host.",
+    ];
+  }
+
+  if (activeMode === "operator") {
+    return [
+      "Operator answer:",
+      "Convert the request into a controlled run before acting.",
+      "1. Name the action, owner, target system, and expected consequence.",
+      "2. Confirm the operator has current authority for this exact action.",
+      "3. Attach request evidence, current context, expected mutation, and rollback path.",
       "4. Execute the smallest reversible step first.",
-      "5. Record the trace ID before handoff.",
-    ],
-    technical: [
-      "Technical path:",
-      "1. The UI posts mode plus recent messages to /api/yai.",
-      "2. If OPENAI_API_KEY is present, the API route calls the OpenAI Responses API.",
-      "3. If the route or key is unavailable, this browser fallback keeps the demo reactive without external calls.",
-      "4. For local live-model testing, set OPENAI_API_KEY in the terminal process or .env.local and restart npm run dev.",
-    ],
-  };
+      "5. Record the trace ID before handoff or customer notification.",
+    ];
+  }
+
+  if (activeMode === "technical") {
+    return [
+      "Technical answer:",
+      "This production page is currently static, so it cannot run the Next.js API route that would call OpenAI.",
+      "The UI still stays reactive through a browser fallback, but the response is generated locally from built-in MCV rules.",
+      "",
+      "To make it fully OpenAI-backed in production, deploy a server endpoint for /api/yai or set NEXT_PUBLIC_YAI_API_BASE to a live YAI API service.",
+    ];
+  }
+
+  return [
+    "Governance answer:",
+    "Do not execute the external action yet.",
+    "Missing items usually are: accountable operator, consequence domain, request evidence, target system, intended mutation, rollback path, and operator note.",
+    "",
+    "Safe next step: draft the action locally, attach evidence, and only then allow a production mutation or customer-facing notification.",
+  ];
+}
+
+function localBrowserFallback(prompt: string, activeMode: Mode, reason: string): Message {
   const traceId = makeTraceId();
 
   return {
@@ -126,13 +182,13 @@ function localBrowserFallback(prompt: string, activeMode: Mode, reason: string):
       "YAI browser fallback is active.",
       "",
       reason,
-      "No external model call was made from this browser fallback.",
+      "No external OpenAI model call was made from this browser fallback.",
       "",
       `Mode: ${modes.find((item) => item.id === activeMode)?.label || "Governance"}`,
       `Trace: ${traceId}`,
       `Received: ${summarizePrompt(prompt)}`,
       "",
-      ...modeGuidance[activeMode],
+      ...fallbackAnswerFor(prompt, activeMode),
     ].join("\n"),
   };
 }
@@ -282,7 +338,7 @@ export default function YaiConsole() {
             </div>
             <div>
               <h1 className="text-xl font-semibold tracking-normal">YAI Local</h1>
-              <p className="text-xs uppercase tracking-[0.22em] text-gray-500">OpenAI-backed MCV</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-gray-500">OpenAI-ready MCV</p>
             </div>
           </div>
 

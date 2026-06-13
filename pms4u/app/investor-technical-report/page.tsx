@@ -4,14 +4,19 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "PMS4U Investor Technical Report",
   description:
-    "Investor technical report for PMS4U, covering CEI architecture, execution authority, proof surfaces, pilot readiness, and roadmap.",
+    "Investor technical report for PMS4U, covering runtime authority infrastructure, CEI architecture, proof surfaces, pilot readiness, and roadmap.",
 };
 
 const facts = [
+  ["Updated", "2026-06-14"],
   ["Category", "Constitutional Execution Infrastructure"],
   ["Doctrine", "Authority Before Execution"],
-  ["Runtime", "Next.js 16.2.1 / React 19.2.4"],
-  ["Status", "Build and lint passing"],
+  ["Runtime", "Next.js 16.2.9 / React 19.2.7"],
+  ["Verification runtime", "Local Node.js v25.6.0 / npm 11.8.0"],
+  ["Toolchain", "TypeScript 5.9.3 / Tailwind CSS 4.3.1 / ESLint 9.39.4"],
+  ["Data and UI", "Prisma 7.8.0 / lucide-react 1.18.0"],
+  ["Python layer", "governance-core Python 3.11-slim / governance-sdk 0.1.0"],
+  ["Status", "Investor demo stable; production hardening remains"],
   ["Investor focus", "Runtime authority for consequential automation"],
   ["Pilot target", "One high-consequence workflow in 90 days"],
 ];
@@ -25,6 +30,20 @@ const architecture = [
   ["Replay and proof", "Execution history can be reconstructed for diligence, audit, and assurance."],
 ];
 
+const costExposure = [
+  ["Wrong payment release", "EUR 5k to EUR 500k"],
+  ["Unauthorized shipment", "EUR 10k to EUR 1M+"],
+  ["Compliance breach", "Regulatory exposure and remediation cost"],
+  ["Data deletion", "Recovery, liability, and operational downtime"],
+];
+
+const pilotEconomics = [
+  ["Scope", "One high-consequence workflow with clear states and authority gates."],
+  ["Buyer pain", "Unauthorized execution, audit reconstruction effort, and approval bypass risk."],
+  ["Proof metrics", "Blocked invalid transitions, evidence retrieval time, replay accuracy, and approval latency."],
+  ["Commercial logic", "One prevented high-consequence event can justify the pilot."],
+];
+
 const surfaces = [
   ["Home", "Positions PMS4U as a governance-first execution system."],
   ["Authority", "Maps the authority structure across companies, systems, and operating surfaces."],
@@ -33,7 +52,7 @@ const surfaces = [
   ["Trace", "Shows lineage, receipts, authority context, and replay patterns."],
   ["Console", "Simulates runtime decisioning, escalation, denial, interruption, and override flows."],
   ["Workspace Report", "Provides broad technical and operational workspace reporting."],
-  ["Investor Report", "Provides this publishable investor and diligence cut."],
+  ["Investor Report", "Provides this investor and diligence cut with current runtime facts."],
 ];
 
 const useCases = [
@@ -59,7 +78,24 @@ const strengths = [
   "Working proof surfaces that demonstrate the execution boundary.",
   "Modular governance UI components.",
   "Static-safe investor and report routes.",
-  "Commercial material already prepared for investor and enterprise discussion.",
+  "Commercial material aligned for investor and enterprise pilot discussion.",
+];
+
+const moat = [
+  "Codified authority model.",
+  "Runtime boundary before mutation, not after-the-fact observation.",
+  "Evidence lineage tied to execution: receipts, hashes, replay, and authority context.",
+  "Transition-specific authority instead of broad user or token permission.",
+  "Reusable authority framework across state-based workflows.",
+  "Reusable pattern across banking, insurance, procurement, and regulated operations.",
+];
+
+const demonstrations = [
+  "Trade approval workflows.",
+  "Shipment authorization.",
+  "Compliance transitions.",
+  "Governance replay reporting.",
+  "Authority-bound state changes.",
 ];
 
 const limitations = [
@@ -72,8 +108,8 @@ const limitations = [
 ];
 
 const roadmap = [
-  ["Phase 1", "Stabilized Runtime Foundation", "Build and lint passing, App Router surfaces active, proof and console demonstrations present."],
-  ["Phase 2", "Commercial Packaging", "Finalize investor report, enterprise deck, banking demo script, pilot offer, and pricing language."],
+  ["Phase 1", "Stabilized Runtime Foundation", "App Router surfaces active, proof and console demonstrations present, current package/runtime facts documented."],
+  ["Phase 2", "Commercial Packaging", "Keep investor report, enterprise deck, banking demo script, pilot offer, and pricing language synchronized."],
   ["Phase 3", "Integration Readiness", "Package governance core, define deployment modes, and provide CRM, ERP, and agent adapters."],
   ["Phase 4", "Assurance Layer", "Add signed receipts, evidence export formats, partner review flows, and ledger-based proof reports."],
   ["Phase 5", "Enterprise Pilot", "Run one controlled workflow pilot and convert results into commercial sales proof."],
@@ -145,7 +181,7 @@ export default function InvestorTechnicalReportPage() {
             Investor Technical Report
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-700">
-            PMS4U is runtime governance infrastructure for enterprises deploying AI agents,
+            PMS4U is runtime authority infrastructure for enterprises deploying AI agents,
             automation, and high-consequence digital workflows. It enforces Authority Before
             Execution: validating state, authority, admissibility, and evidence before operational
             consequence becomes real.
@@ -164,8 +200,9 @@ export default function InvestorTechnicalReportPage() {
           <div className="space-y-4 text-sm leading-7 text-slate-700">
             <p>
               Most governance, compliance, and audit platforms operate before or after execution.
-              PMS4U is positioned at the execution boundary. It validates whether a requested
-              transition is currently admissible before mutation is committed.
+              PMS4U is positioned at the execution boundary as a runtime authority layer. It
+              validates whether a requested transition is currently admissible before mutation is
+              committed.
             </p>
             <p>
               If the action is inadmissible, execution is blocked before consequence. If the action
@@ -188,15 +225,53 @@ export default function InvestorTechnicalReportPage() {
           </p>
         </Section>
 
-        <Section label="03" title="Technical Architecture">
+        <Section label="03" title="Cost of Unauthorized Execution">
+          <div className="space-y-4 text-sm leading-7 text-slate-700">
+            <p>
+              The buying trigger is not the frontend framework. It is the cost of one consequential
+              action that should never have executed.
+            </p>
+            <div className="overflow-hidden border border-slate-200">
+              <table className="w-full border-collapse text-left text-sm">
+                <thead className="bg-slate-100">
+                  <tr>
+                    <th className="border-b border-slate-200 px-4 py-3">Event Type</th>
+                    <th className="border-b border-slate-200 px-4 py-3">Illustrative Exposure</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {costExposure.map(([eventType, exposure]) => (
+                    <tr key={eventType}>
+                      <td className="border-b border-slate-200 px-4 py-3 font-semibold">{eventType}</td>
+                      <td className="border-b border-slate-200 px-4 py-3">{exposure}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <blockquote className="border-l-4 border-slate-950 pl-4 text-base font-semibold text-slate-950">
+              PMS4U introduces an authority boundary before consequential execution.
+            </blockquote>
+          </div>
+        </Section>
+
+        <Section label="04" title="Pilot Economics">
+          <TwoColumnList rows={pilotEconomics} />
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-700">
+            This keeps PMS4U out of generic tooling conversations. The offer is not another
+            dashboard. The offer is an authority boundary before consequence.
+          </p>
+        </Section>
+
+        <Section label="05" title="Technical Architecture">
           <TwoColumnList rows={architecture} />
         </Section>
 
-        <Section label="04" title="Implemented Surfaces">
+        <Section label="06" title="Implemented Surfaces">
           <TwoColumnList rows={surfaces} />
         </Section>
 
-        <Section label="05" title="Evidence Model">
+        <Section label="07" title="Evidence Model">
           <p className="max-w-3xl text-sm leading-7 text-slate-700">
             PMS4U treats evidence as part of execution, not as a retrospective attachment. Evidence
             includes entity identifiers, actors, prior state, requested state, transition identifiers,
@@ -219,11 +294,11 @@ export default function InvestorTechnicalReportPage() {
           </div>
         </Section>
 
-        <Section label="06" title="Commercial Use Cases">
+        <Section label="08" title="Commercial Use Cases">
           <TwoColumnList rows={useCases} />
         </Section>
 
-        <Section label="07" title="Investor Thesis">
+        <Section label="09" title="Investor Thesis">
           <div className="space-y-4 text-sm leading-7 text-slate-700">
             <p>
               AI adoption is moving from generation to execution. The first wave produced content,
@@ -232,13 +307,13 @@ export default function InvestorTechnicalReportPage() {
             </p>
             <p>
               That shift creates a new infrastructure requirement: enterprises need a runtime
-              boundary that proves whether automated execution is allowed before it happens. PMS4U
-              is positioned as that execution authority layer.
+              authority layer that proves whether automated execution is allowed before it happens.
+              PMS4U is positioned as that layer.
             </p>
           </div>
         </Section>
 
-        <Section label="08" title="Competitive Positioning">
+        <Section label="10" title="Competitive Positioning">
           <div className="overflow-hidden border border-slate-200">
             <table className="w-full border-collapse text-left text-sm">
               <thead className="bg-slate-100">
@@ -261,7 +336,37 @@ export default function InvestorTechnicalReportPage() {
           </div>
         </Section>
 
-        <Section label="09" title="Pilot Readiness">
+        <Section label="11" title="Competitive Moat">
+          <ul className="space-y-2 text-sm leading-6 text-slate-700">
+            {moat.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-700">
+            The moat compounds as PMS4U accumulates sector-specific transition maps, evidence
+            schemas, pilot proof, and integration adapters.
+          </p>
+        </Section>
+
+        <Section label="12" title="Evidence of Applicability">
+          <p className="max-w-3xl text-sm leading-7 text-slate-700">
+            PMS4U should not be read as a single-domain CARSHUNTER or PMS4U-only system. The
+            current demonstrations show the same authority model across different operating
+            patterns.
+          </p>
+          <div className="mt-4 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+            {demonstrations.map((item) => (
+              <div key={item} className="border border-slate-200 px-4 py-3 font-medium">
+                {item}
+              </div>
+            ))}
+          </div>
+          <blockquote className="mt-4 border-l-4 border-slate-950 pl-4 text-base font-semibold text-slate-950">
+            Same authority model. Different operational domain.
+          </blockquote>
+        </Section>
+
+        <Section label="13" title="Pilot Readiness">
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <h3 className="text-sm font-semibold">Recommended 90-day pilot structure</h3>
@@ -277,7 +382,7 @@ export default function InvestorTechnicalReportPage() {
             <div className="border border-slate-200 p-4">
               <h3 className="text-sm font-semibold">Pilot success targets</h3>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-                <li>Unauthorized transition prevention: 100% for governed paths.</li>
+                <li>Unauthorized transition prevention target: 100% for governed paths.</li>
                 <li>Evidence retrieval: under 5 minutes.</li>
                 <li>Replay accuracy: 100% for sealed events.</li>
                 <li>Audit preparation: 50% to 80% reduction.</li>
@@ -287,7 +392,7 @@ export default function InvestorTechnicalReportPage() {
           </div>
         </Section>
 
-        <Section label="10" title="Strengths and Limitations">
+        <Section label="14" title="Strengths and Limitations">
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <h3 className="text-sm font-semibold">Technical strengths</h3>
@@ -308,7 +413,7 @@ export default function InvestorTechnicalReportPage() {
           </div>
         </Section>
 
-        <Section label="11" title="Roadmap">
+        <Section label="15" title="Roadmap">
           <div className="space-y-3">
             {roadmap.map(([phase, title, body]) => (
               <div key={phase} className="grid gap-3 border border-slate-200 p-4 md:grid-cols-[120px_1fr]">
@@ -322,19 +427,19 @@ export default function InvestorTechnicalReportPage() {
           </div>
         </Section>
 
-        <Section label="12" title="Publishing Cut Conclusion">
+        <Section label="16" title="Publishing Cut Conclusion">
           <div className="space-y-4 text-sm leading-7 text-slate-700">
             <p>
               PMS4U is ready to be presented as an investor-facing technical category proof. The
-              strongest external positioning is Constitutional Execution Infrastructure for
-              enterprises deploying AI, automation, and high-consequence digital workflows.
+              strongest external positioning is runtime authority infrastructure for enterprises
+              deploying AI, automation, and high-consequence digital workflows.
             </p>
             <p>
               The next value increase comes from one focused enterprise pilot that converts the
               current technical proof into measurable buyer evidence.
             </p>
             <blockquote className="border-l-4 border-slate-950 pl-4 text-base font-semibold text-slate-950">
-              PMS4U enforces Authority Before Execution.
+              PMS4U enforces Authority Before Consequence.
             </blockquote>
           </div>
         </Section>
