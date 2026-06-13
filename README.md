@@ -99,6 +99,79 @@ SOVEREIGN_STACK.md
 
 ---
 
+## YAI Local Demo
+
+YAI Local is available at `/yai`. It uses the integrated Next route at `/api/yai` by default, so the demo works with one server-backed local run.
+
+### One-server setup
+
+```bash
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:3000/yai`.
+
+For a demo without an OpenAI key, leave `OPENAI_API_KEY=` empty. The route returns a local MCV fallback with a trace ID, mode-specific guidance, and a safe next step. No external model call is made.
+
+For live OpenAI-backed answers:
+
+```bash
+OPENAI_API_KEY=your_key_here
+OPENAI_MODEL=gpt-4.1
+```
+
+Then restart `npm run dev`.
+
+### Optional standalone YAI server
+
+Use this only when you want the UI to call a separate local OpenAI bridge.
+
+```bash
+npm run dev:yai
+npm run dev
+```
+
+Set this in `.env.local` before starting Next:
+
+```bash
+NEXT_PUBLIC_YAI_API_BASE=http://127.0.0.1:3001
+YAI_ALLOWED_ORIGIN=http://127.0.0.1:3000
+```
+
+Health check:
+
+```bash
+curl -s http://127.0.0.1:3001/health
+```
+
+### Static export note
+
+The OpenAI-backed YAI route requires a server-backed Next deployment. Static export builds do not include `/api/yai`; in that mode the browser fallback remains available for safe demos only.
+
+Use static export only when you deliberately want a fully static site:
+
+```bash
+NEXT_OUTPUT=export npm run build
+```
+
+For a static host with live YAI, deploy the standalone YAI server separately and set:
+
+```bash
+NEXT_PUBLIC_YAI_API_BASE=https://your-yai-api-host.example
+```
+
+Operator demo flow:
+
+1. Open `/yai`.
+2. Select `Governance`, `Operator`, or `Technical`.
+3. Use one of the starter prompts.
+4. Confirm the response includes `source`, `model`, and a `YAI-...` trace ID.
+5. If fallback mode is active, treat it as simulation only and do not execute external mutations.
+
+---
+
 ## Public Deployment
 
 Production: [pms4u.vercel.app](https://pms4u.vercel.app)

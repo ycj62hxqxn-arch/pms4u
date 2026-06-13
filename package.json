@@ -4,28 +4,31 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:yai": "node scripts/yai-openai-server.mjs",
     "prebuild": "npm run report:html",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "status:pms": "git status --short -- .",
+    "diff:pms": "git diff -- .",
     "report:html": "node scripts/generate-workspace-technical-report-html.mjs"
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",
-    "lucide-react": "^1.16.0",
-    "next": "16.2.1",
+    "lucide-react": "^1.18.0",
+    "next": "16.2.9",
     "prisma": "^7.8.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19.2.17",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
-    "tailwindcss": "^4",
+    "eslint-config-next": "16.2.9",
+    "tailwindcss": "^4.3.1",
     "typescript": "^5"
   }
 }
