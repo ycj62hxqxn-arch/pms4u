@@ -25,6 +25,13 @@ const proofAssets = [
     cta: "Read report",
   },
   {
+    label: "Marketing Research",
+    title: "Buyer discovery and pilot evidence",
+    body: "Maps ICP, buying triggers, competitive alternatives, interview prompts, and proof needed for enterprise pilot demand.",
+    href: "/marketing-research",
+    cta: "Open research",
+  },
+  {
     label: "BPB Solutions LTD",
     title: "Corporate YAI Local surface",
     body: "Adds YAI Local to the BPB public website as the working assistant layer for execution governance and operator guidance.",
@@ -91,6 +98,9 @@ export default function Home() {
             </Link>
             <Link href="/investor-technical-report" className="transition hover:text-white">
               Investor Report
+            </Link>
+            <Link href="/marketing-research" className="transition hover:text-white">
+              Research
             </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local
