@@ -32,9 +32,9 @@ const siteLinks = [
     body: "Open the diligence report covering domains, runtime surfaces, and evidence.",
   },
   {
-    href: "/marketing-research",
-    label: "Marketing Research",
-    body: "Review buyer segments, buying triggers, discovery prompts, and pilot evidence.",
+    href: "/authority-audit-sprint",
+    label: "Authority Audit Sprint",
+    body: "Book a paid 7-10 day audit to find one high-risk execution path and define the pilot.",
   },
 ] as const;
 
@@ -56,8 +56,8 @@ export default function BpbSolutionsSite() {
             <Link href="/workspace-technical-report" className="transition hover:text-white">
               Report
             </Link>
-            <Link href="/marketing-research" className="transition hover:text-white">
-              Research
+            <Link href="/authority-audit-sprint" className="transition hover:text-white">
+              Audit Sprint
             </Link>
           </div>
         </div>

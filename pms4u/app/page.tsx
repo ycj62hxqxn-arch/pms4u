@@ -25,11 +25,11 @@ const proofAssets = [
     cta: "Read report",
   },
   {
-    label: "Marketing Research",
-    title: "Buyer discovery and pilot evidence",
-    body: "Maps ICP, buying triggers, competitive alternatives, interview prompts, and proof needed for enterprise pilot demand.",
-    href: "/marketing-research",
-    cta: "Open research",
+    label: "Paid Sprint",
+    title: "Authority Audit Sprint",
+    body: "A 7-10 day paid audit that finds one high-risk unauthorized execution path and turns it into a pilot scope.",
+    href: "/authority-audit-sprint",
+    cta: "Book sprint",
   },
   {
     label: "BPB Solutions LTD",
@@ -99,8 +99,8 @@ export default function Home() {
             <Link href="/investor-technical-report" className="transition hover:text-white">
               Investor Report
             </Link>
-            <Link href="/marketing-research" className="transition hover:text-white">
-              Research
+            <Link href="/authority-audit-sprint" className="transition hover:text-white">
+              Audit Sprint
             </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local
