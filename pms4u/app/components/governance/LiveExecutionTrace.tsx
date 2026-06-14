@@ -28,40 +28,125 @@ type ApiExecutionTraceData = Omit<ExecutionTraceData, "lineage"> & {
   lineage: ApiGovernanceEvent[];
 };
 
+type TraceSource = "live" | "demo";
+
+function getRuntimeApiBase() {
+  const configuredBase = process.env.NEXT_PUBLIC_CONSTITUTIONAL_RUNTIME_API_BASE?.trim();
+
+  if (configuredBase) {
+    return configuredBase.replace(/\/$/, "");
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ) {
+    return "http://localhost:8000";
+  }
+
+  return null;
+}
+
+function makeDemoTrace(entityId: string): ExecutionTraceData {
+  const now = Date.now();
+
+  return {
+    entityId,
+    entityType: "HUNT",
+    currentState: "READY_FOR_EXPORT",
+    lineage: [
+      {
+        eventId: "tx-1",
+        eventName: "INTAKE",
+        previousState: null,
+        nextState: "DRAFT",
+        actorId: "USER-92",
+        transitionId: "NONE_TO_DRAFT",
+        eventHash: "a1b2c3d4e5f6",
+        timestamp: new Date(now - 100000).toISOString(),
+        status: "VERIFIED",
+      },
+      {
+        eventId: "tx-2",
+        eventName: "VERIFIED",
+        previousState: "DRAFT",
+        nextState: "KYC_PASSED",
+        actorId: "SYSTEM-KYC",
+        transitionId: "DRAFT_TO_KYC_PASSED",
+        eventHash: "f6e5d4c3b2a1",
+        previousEventHash: "a1b2c3d4e5f6",
+        timestamp: new Date(now - 50000).toISOString(),
+        status: "VERIFIED",
+      },
+      {
+        eventId: "tx-3",
+        eventName: "AUTHORITY_GRANTED",
+        previousState: "KYC_PASSED",
+        nextState: "READY_FOR_EXPORT",
+        actorId: "AUTH-L3-GATEWAY",
+        authorityLevel: "L3-EXPORT",
+        evidenceId: "EVID-88219-A",
+        transitionId: "KYC_PASSED_TO_READY_FOR_EXPORT",
+        eventHash: "998877665544",
+        previousEventHash: "f6e5d4c3b2a1",
+        signature: "0x1234abcd56",
+        timestamp: new Date(now).toISOString(),
+        status: "AUTHORITY_GRANTED",
+      },
+    ],
+  };
+}
+
+function normalizeApiTrace(json: ApiExecutionTraceData): ExecutionTraceData {
+  return {
+    ...json,
+    lineage: json.lineage.map((ev) => ({
+      eventId: ev.event_id,
+      eventName: ev.event_name,
+      previousState: ev.previous_state,
+      nextState: ev.next_state,
+      actorId: ev.actor_id,
+      authorityLevel: ev.authority_level,
+      evidenceId: ev.evidence_id,
+      transitionId: ev.transition_id,
+      eventHash: ev.event_hash,
+      previousEventHash: ev.previous_event_hash,
+      signature: ev.signature,
+      timestamp: ev.timestamp,
+      status: ev.status,
+    })),
+  };
+}
+
 export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
   const [data, setData] = useState<ExecutionTraceData | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [traceSource, setTraceSource] = useState<TraceSource>("demo");
   const [playbackIdx, setPlaybackIdx] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [replaySessionId, setReplaySessionId] = useState<string | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    const runtimeApiBase = getRuntimeApiBase();
+
+    if (!runtimeApiBase) {
+      const demoTrace = makeDemoTrace(entityId);
+      setTraceSource("demo");
+      setData(demoTrace);
+      setPlaybackIdx(demoTrace.lineage.length);
+      setReplaySessionId(`TRACE-DEMO-${entityId.substring(0, 4)}`);
+
+      return () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+    }
+
     const fetchLineage = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/entities/${entityId}/lineage`);
+        const res = await fetch(`${runtimeApiBase}/entities/${entityId}/lineage`);
         if (!res.ok) throw new Error('Live introspection connection failed');
         const json = (await res.json()) as ApiExecutionTraceData;
-
-        // Data normalizer (mapping backend schema to frontend)
-        const normalizedData: ExecutionTraceData = {
-          ...json,
-          lineage: json.lineage.map((ev) => ({
-            eventId: ev.event_id,
-            eventName: ev.event_name,
-            previousState: ev.previous_state,
-            nextState: ev.next_state,
-            actorId: ev.actor_id,
-            authorityLevel: ev.authority_level,
-            evidenceId: ev.evidence_id,
-            transitionId: ev.transition_id,
-            eventHash: ev.event_hash,
-            previousEventHash: ev.previous_event_hash,
-            signature: ev.signature,
-            timestamp: ev.timestamp,
-            status: ev.status,
-          })),
-        };
+        const normalizedData = normalizeApiTrace(json);
 
         setData((prev) => {
           // Only update playbackIdx if we are not actively replaying and not at a specific cursor
@@ -70,12 +155,18 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
           }
           return normalizedData;
         });
+        setTraceSource("live");
         // Initialize Session ID if not present
         if (!replaySessionId) {
           setReplaySessionId(`TRACE-${Math.floor(1000 + Math.random() * 9000)}-${entityId.substring(0, 4)}`);
         }
       } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Live introspection connection failed');
+        const demoTrace = makeDemoTrace(entityId);
+        setTraceSource("demo");
+        setData(demoTrace);
+        setPlaybackIdx(demoTrace.lineage.length);
+        setReplaySessionId(`TRACE-DEMO-${entityId.substring(0, 4)}`);
+        console.info(err instanceof Error ? err.message : 'Live introspection connection failed');
       }
     };
 
@@ -84,7 +175,7 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
     let ws: WebSocket;
     if (replaySessionId) {
        // Upgrade to Constitutional Event Bus
-       ws = new WebSocket(`ws://localhost:8000/ws/trace/${replaySessionId}`);
+       ws = new WebSocket(`${runtimeApiBase.replace(/^http/, "ws")}/ws/trace/${replaySessionId}`);
        
        ws.onopen = () => console.log(`[${replaySessionId}] Substrate Connection Estabilished`);
 
@@ -138,14 +229,6 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
     }, 1500); // Replay speed
   };
 
-  if (error) {
-    return (
-      <div className="bg-red-900/20 border border-red-900 p-6 rounded text-red-500 font-mono text-sm max-w-4xl mx-auto">
-        ⚠ Introspection Failed: {error}. Is the Constitutional Runtime (FastAPI) running on port 8000?
-      </div>
-    );
-  }
-
   if (!data) return <div className="text-gray-500 font-mono animate-pulse max-w-4xl mx-auto">Connecting to Institutional Substrate...</div>;
 
   const visibleEvents = data.lineage.slice(0, playbackIdx);
@@ -160,7 +243,9 @@ export const LiveExecutionTrace: React.FC<Props> = ({ entityId }) => {
             <span className="w-2 h-2 rounded-full bg-blue-500 mr-3 animate-pulse"></span>
             LIVE EXECUTION REPLAY
           </h2>
-          <div className="text-xs text-gray-500 font-mono mt-1">Source: Event-Sourced PostgreSQL (via FastAPI 8000)</div>
+          <div className="text-xs text-gray-500 font-mono mt-1">
+            Source: {traceSource === "live" ? "Event-Sourced PostgreSQL via Constitutional Runtime" : "Sealed demo lineage; live runtime optional"}
+          </div>
         </div>
         <div className="flex space-x-4 items-center">
           <div className="text-[10px] font-mono tracking-widest bg-gray-900 border border-gray-800 text-gray-400 px-3 py-1 rounded">
