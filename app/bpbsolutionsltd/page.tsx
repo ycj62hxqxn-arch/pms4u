@@ -31,6 +31,11 @@ const siteLinks = [
     label: "Technical Report",
     body: "Open the diligence report covering domains, runtime surfaces, and evidence.",
   },
+  {
+    href: "/authority-audit-sprint",
+    label: "Authority Audit Sprint",
+    body: "Book a paid 7-10 day audit to find one high-risk execution path and define the pilot.",
+  },
 ] as const;
 
 export default function BpbSolutionsSite() {
@@ -50,6 +55,9 @@ export default function BpbSolutionsSite() {
             </Link>
             <Link href="/workspace-technical-report" className="transition hover:text-white">
               Report
+            </Link>
+            <Link href="/authority-audit-sprint" className="transition hover:text-white">
+              Audit Sprint
             </Link>
           </div>
         </div>
@@ -116,7 +124,7 @@ export default function BpbSolutionsSite() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {siteLinks.map((item) => (
               <Link
                 key={item.href}

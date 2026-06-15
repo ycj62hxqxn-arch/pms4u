@@ -25,6 +25,13 @@ const proofAssets = [
     cta: "Read report",
   },
   {
+    label: "Paid Sprint",
+    title: "Authority Audit Sprint",
+    body: "A 7-10 day paid audit that finds one high-risk unauthorized execution path and turns it into a pilot scope.",
+    href: "/authority-audit-sprint",
+    cta: "Book sprint",
+  },
+  {
     label: "BPB Solutions LTD",
     title: "Corporate YAI Local surface",
     body: "Adds YAI Local to the BPB public website as the working assistant layer for execution governance and operator guidance.",
@@ -91,6 +98,12 @@ export default function Home() {
             </Link>
             <Link href="/investor-technical-report" className="transition hover:text-white">
               Investor Report
+            </Link>
+            <Link href="/investor" className="transition hover:text-white">
+              Investor Page
+            </Link>
+            <Link href="/authority-audit-sprint" className="transition hover:text-white">
+              Audit Sprint
             </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local
