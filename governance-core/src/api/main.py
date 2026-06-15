@@ -4,6 +4,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from typing import List, Optional
 import uuid
+import os
+import json
+import hashlib
 
 from .db_session import get_db, engine, init_db
 from src.db.models import Base, ExecutionEvent, ProjectionEntity
@@ -193,9 +196,110 @@ class ExecutionRequestSchema(BaseModel):
     actor: str
     authority_token: str
     reason: str
+    business_event_id: Optional[str] = None
+    workflow_id: Optional[str] = None
+    domain_object_id: Optional[str] = None
+    amount: Optional[float] = None
+    currency: Optional[str] = None
+    counterparty_id: Optional[str] = None
+    consequence_domain: Optional[str] = None
+    decision_reason_code: Optional[str] = None
+
+
+def _authoritative_previous_hash(entity_id: str, ledger_path: str = "authoritative_ledger.jsonl") -> str:
+    if not os.path.exists(ledger_path):
+        return "GENESIS"
+
+    last_hash = "GENESIS"
+    with open(ledger_path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+
+            if row.get("entity_id") == entity_id and row.get("hash"):
+                last_hash = row.get("hash")
+    return last_hash
+
+
+def _append_authoritative_receipt(
+    *,
+    correlation_id: str,
+    entity_id: str,
+    from_state: str,
+    to_state: str,
+    actor_id: str,
+    authority_level: str,
+    authority_scope: str,
+    verdict: str,
+    mutation_state: str,
+    reason: str,
+    reason_code: str,
+    event_id: Optional[str] = None,
+    evidence_id: Optional[str] = None,
+    transition_id: Optional[str] = None,
+    business_event_id: Optional[str] = None,
+    workflow_id: Optional[str] = None,
+    domain_object_id: Optional[str] = None,
+    amount: Optional[float] = None,
+    currency: Optional[str] = None,
+    counterparty_id: Optional[str] = None,
+    consequence_domain: Optional[str] = None,
+) -> dict:
+    previous_hash = _authoritative_previous_hash(entity_id)
+    timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+    base_payload = {
+        "event_id": event_id or str(uuid.uuid4()),
+        "correlation_id": correlation_id,
+        "entity_id": entity_id,
+        "from": from_state,
+        "to": to_state,
+        "actor_id": actor_id,
+        "authority_level": authority_level,
+        "authority_scope": authority_scope,
+        "verdict": verdict,
+        "mutation_state": mutation_state,
+        "reason": reason,
+        "reason_code": reason_code,
+        "evidence_id": evidence_id or f"EVID-{uuid.uuid4().hex[:6].upper()}",
+        "transition_id": transition_id or f"TRX-{uuid.uuid4().hex[:6].upper()}",
+        "business_event_id": business_event_id,
+        "workflow_id": workflow_id,
+        "domain_object_id": domain_object_id,
+        "amount": amount,
+        "currency": currency,
+        "counterparty_id": counterparty_id,
+        "consequence_domain": consequence_domain,
+        "previous_hash": previous_hash,
+        "timestamp": timestamp,
+    }
+
+    canonical = json.dumps(base_payload, sort_keys=True, separators=(",", ":"))
+    event_hash = hashlib.sha256(canonical.encode()).hexdigest()
+    signature = verifier.sign_payload(event_hash)
+
+    entry = {
+        **base_payload,
+        "hash": event_hash,
+        "signature": signature,
+    }
+
+    with open("authoritative_ledger.jsonl", "a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+    return entry
 
 @app.post("/execution-request", response_model=ExecutionReceipt, status_code=201)
 def process_execution_request(req: ExecutionRequestSchema, request: Request, db: Session = Depends(get_db)):
+    correlation_id = getattr(request.state, "correlation_id", "TRACE-INTERNAL")
+
+    authority_level = "Level_2" if req.authority_token.startswith("super") else "Level_1"
+
     # 1. Fetch current state from Projection
     projection = db.execute(
         select(ProjectionEntity).where(ProjectionEntity.entity_id == req.entity_id)
@@ -212,15 +316,74 @@ def process_execution_request(req: ExecutionRequestSchema, request: Request, db:
     try:
         next_enum = HuntState(req.requested_transition)
     except ValueError:
+        _append_authoritative_receipt(
+            correlation_id=correlation_id,
+            entity_id=req.entity_id,
+            from_state=current_state,
+            to_state=str(req.requested_transition),
+            actor_id=req.actor,
+            authority_level=authority_level,
+            authority_scope="GENERAL_AUTHORIZATION",
+            verdict="DENY",
+            mutation_state="FROZEN",
+            reason="Invalid target state requested",
+            reason_code="INVALID_TARGET_STATE",
+            business_event_id=req.business_event_id,
+            workflow_id=req.workflow_id,
+            domain_object_id=req.domain_object_id,
+            amount=req.amount,
+            currency=req.currency,
+            counterparty_id=req.counterparty_id,
+            consequence_domain=req.consequence_domain,
+        )
         raise HTTPException(status_code=400, detail="Invalid target state requested")
         
     if current_enum and next_enum not in ALLOWED_TRANSITIONS.get(current_enum, []):
+        _append_authoritative_receipt(
+            correlation_id=correlation_id,
+            entity_id=req.entity_id,
+            from_state=current_state,
+            to_state=req.requested_transition,
+            actor_id=req.actor,
+            authority_level=authority_level,
+            authority_scope="GENERAL_AUTHORIZATION",
+            verdict="DENY",
+            mutation_state="FROZEN",
+            reason="Illegal state jump rejected by constitutional transition graph.",
+            reason_code="ILLEGAL_STATE_JUMP_REJECTED",
+            business_event_id=req.business_event_id,
+            workflow_id=req.workflow_id,
+            domain_object_id=req.domain_object_id,
+            amount=req.amount,
+            currency=req.currency,
+            counterparty_id=req.counterparty_id,
+            consequence_domain=req.consequence_domain,
+        )
         raise HTTPException(status_code=422, detail="ILLEGAL_STATE_JUMP_REJECTED")
 
     # 2b. Constitutional Authority Scope Enforcement
-    actor_level = "Level_2" if req.authority_token.startswith("super") else "Level_1"
     scope_policy = AUTHORITY_SCOPES.get(next_enum)
-    if scope_policy and actor_level != scope_policy["min_level"]:
+    if scope_policy and authority_level != scope_policy["min_level"]:
+        _append_authoritative_receipt(
+            correlation_id=correlation_id,
+            entity_id=req.entity_id,
+            from_state=current_state,
+            to_state=req.requested_transition,
+            actor_id=req.actor,
+            authority_level=authority_level,
+            authority_scope=scope_policy["min_level"],
+            verdict="DENY",
+            mutation_state="FROZEN",
+            reason=scope_policy["error"],
+            reason_code="AUTHORITY_SCOPE_REJECTED",
+            business_event_id=req.business_event_id,
+            workflow_id=req.workflow_id,
+            domain_object_id=req.domain_object_id,
+            amount=req.amount,
+            currency=req.currency,
+            counterparty_id=req.counterparty_id,
+            consequence_domain=req.consequence_domain,
+        )
         raise HTTPException(status_code=403, detail=scope_policy["error"])
 
     # 3. Create Crypto Identity & Signature (Stateless Execution Authority)
@@ -232,31 +395,37 @@ def process_execution_request(req: ExecutionRequestSchema, request: Request, db:
         "previous_state": current_state,
         "next_state": req.requested_transition,
         "actor_id": req.actor,
-        "authority_level": "Level_2" if req.authority_token.startswith("super") else "Level_1",
+        "authority_level": authority_level,
         "evidence_id": f"EVID-{uuid.uuid4().hex[:6].upper()}",
         "transition_id": f"TRX-{uuid.uuid4().hex[:6].upper()}"
     }
 
     event_record = ledger.append_event(**event_payload)
-    correlation_id = getattr(request.state, "correlation_id", "TRACE-INTERNAL")
 
-    # APPEND TO JSONL FOR IMMUTABLE EVENT LINEAGE (As requested)
-    receipt_dict = {
-        "event_id": str(event_record.event_id),
-        "correlation_id": correlation_id,
-        "entity_id": req.entity_id,
-        "from": current_state,
-        "to": req.requested_transition,
-        "authority_scope": "GENERAL_AUTHORIZATION",
-        "evidence_id": event_record.evidence_id,
-        "signature": event_record.event_signature,
-        "previous_hash": event_record.previous_event_hash,
-        "hash": event_record.event_hash,
-        "timestamp": event_record.created_at.isoformat() + "Z"
-    }
-    with open("authoritative_ledger.jsonl", "a") as f:
-        import json
-        f.write(json.dumps(receipt_dict) + "\n")
+    # APPEND TO JSONL FOR IMMUTABLE EVENT LINEAGE
+    _append_authoritative_receipt(
+        event_id=str(event_record.event_id),
+        evidence_id=event_record.evidence_id,
+        transition_id=event_record.transition_id,
+        correlation_id=correlation_id,
+        entity_id=req.entity_id,
+        from_state=current_state,
+        to_state=req.requested_transition,
+        actor_id=req.actor,
+        authority_level=authority_level,
+        authority_scope="GENERAL_AUTHORIZATION",
+        verdict="EXECUTE",
+        mutation_state="COMMITTED",
+        reason="Transition committed under constitutional execution boundary.",
+        reason_code=req.decision_reason_code or "ADMISSIBLE",
+        business_event_id=req.business_event_id,
+        workflow_id=req.workflow_id,
+        domain_object_id=req.domain_object_id,
+        amount=req.amount,
+        currency=req.currency,
+        counterparty_id=req.counterparty_id,
+        consequence_domain=req.consequence_domain,
+    )
 
     projection_rebuilder = ProjectionRebuilder(db, ReplayEngine())
     updated_proj = projection_rebuilder.apply_committed_event(event_record)
