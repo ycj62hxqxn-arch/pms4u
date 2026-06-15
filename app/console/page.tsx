@@ -280,6 +280,10 @@ export default function RuntimeConsole() {
           <div className="font-semibold mt-1">{riskReduction}</div>
           <div className="text-[#94a3b8] text-[0.75rem] uppercase mt-3">Commercial Impact</div>
           <div className="font-semibold mt-1">{commercialImpact}</div>
+          <div className="text-[#94a3b8] text-[0.75rem] uppercase mt-3">Enterprise Equivalent</div>
+          <div className="font-semibold mt-1 text-[#cbd5e1]">
+            Financial Controls • Trade Compliance • Aviation Release Authority
+          </div>
         </div>
       </div>
 
