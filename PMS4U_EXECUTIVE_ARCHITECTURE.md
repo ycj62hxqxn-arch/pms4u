@@ -145,6 +145,34 @@ The commercial value is straightforward: PMS4U provides a way for enterprises to
 
 ---
 
+## 5.1 Upstream Doctrine Layer: BCG
+
+Behavioural Continuity Governance (BCG) is positioned as an upstream doctrine layer, not as a PMS4U feature module.
+
+Recommended stack positioning:
+
+1. Layer 1 — BCG (Behavioural Continuity Governance)
+2. Layer 2 — EGA (Execution Governance Architecture)
+3. Layer 3 — SET (Execution Governance Standard)
+4. Layer 4 — PMS4U (Runtime Governance OS)
+5. Layer 5 — Replay & Evidence (Provable Governance)
+
+This preserves category clarity:
+
+- BCG asks: why did the request emerge and is behaviour coherent?
+- EGA asks: is the request admissible?
+- SET asks: can admissibility be enforced and verified?
+- PMS4U asks: can all of this run continuously at runtime?
+- Replay asks: can it be proven afterward?
+
+BCG does not replace execution governance. Behavioural Continuity Governance reduces the probability that governance intervention becomes necessary.
+
+Execution Governance remains the constitutional safeguard that determines whether intent may become consequence.
+
+Reference doctrine: [BCG_EGA_SET_DOCTRINE.md](BCG_EGA_SET_DOCTRINE.md).
+
+---
+
 ## 6. Runtime Admissibility
 
 Runtime admissibility is the last governable moment before consequence.

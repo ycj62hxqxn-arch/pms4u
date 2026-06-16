@@ -83,6 +83,27 @@ It determines whether validated actions are constitutionally admissible before c
 
 ---
 
+## Doctrine Layers (Upstream to Runtime)
+
+BCG is positioned as an upstream doctrine layer, not a PMS4U product module.
+
+1. **Layer 1 — BCG (Behavioural Continuity Governance):** why coherent requests emerge.
+2. **Layer 2 — EGA (Execution Governance Architecture):** whether requests are admissible.
+3. **Layer 3 — SET (Execution Governance Standard):** how admissibility is enforced and verified.
+4. **Layer 4 — PMS4U (Runtime Governance OS):** continuous runtime operation of the governance boundary.
+5. **Layer 5 — Replay & Evidence:** provable lineage after governed execution decisions.
+
+BCG does not replace execution governance. It reduces the probability that governance intervention becomes necessary.
+
+- Where `BCG` shapes conduct, `EGA` evaluates admissibility.
+- Where `EGA` evaluates admissibility, `SET` enforces it.
+- Where `SET` enforces it, `PMS4U` operationalizes it.
+- Where `PMS4U` operates, replay governance preserves evidence.
+
+Reference: [BCG_EGA_SET_DOCTRINE.md](BCG_EGA_SET_DOCTRINE.md).
+
+---
+
 ## Architecture Snapshot
 
 ```
