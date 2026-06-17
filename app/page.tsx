@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 import ExecutionBoundarySection from "./components/ExecutionBoundarySection";
+import Gtcs4uPage from "./gtcs4u/page";
 
 const proofAssets = [
   {
@@ -68,7 +70,14 @@ const frameworkImages = [
 
 const withGovernanceSteps = ["INTAKE", "VERIFIED", "AUTHORITY_GRANTED", "TRACE", "EVIDENCE"];
 
-export default function Home() {
+export default async function Home() {
+  const requestHeaders = await headers();
+  const host = (requestHeaders.get("host") ?? "").toLowerCase();
+
+  if (host === "gtcs4u.com" || host === "www.gtcs4u.com") {
+    return <Gtcs4uPage />;
+  }
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-black text-white">
       <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-md">
