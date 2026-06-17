@@ -72,7 +72,7 @@ const withGovernanceSteps = ["INTAKE", "VERIFIED", "AUTHORITY_GRANTED", "TRACE",
 
 export default async function Home() {
   const requestHeaders = await headers();
-  const host = (requestHeaders.get("host") ?? "").toLowerCase();
+  const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "").toLowerCase();
 
   if (host === "gtcs4u.com" || host === "www.gtcs4u.com") {
     return <Gtcs4uPage />;

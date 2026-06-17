@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const GTCS4U_HOSTS = new Set(["gtcs4u.com", "www.gtcs4u.com"]);
 
 export function middleware(request: NextRequest) {
-  const hostHeader = request.headers.get("host") ?? "";
+  const hostHeader = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "";
   const host = hostHeader.split(":")[0].toLowerCase();
   const { pathname } = request.nextUrl;
 
