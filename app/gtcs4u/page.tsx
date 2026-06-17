@@ -46,6 +46,7 @@ const plans = [
     price: "$4,200 /month",
     items: ["Compliance workflows", "2 regions + 5 lanes", "Monthly audit packet", "Email support"],
     cta: "Request Launch",
+    featured: false,
   },
   {
     name: "Command",
@@ -59,6 +60,7 @@ const plans = [
     price: "$13,800 /month",
     items: ["Unlimited lanes", "Custom integrations", "SLA + compliance desk", "Quarterly governance reviews"],
     cta: "Contact Sales",
+    featured: false,
   },
 ] as const;
 
