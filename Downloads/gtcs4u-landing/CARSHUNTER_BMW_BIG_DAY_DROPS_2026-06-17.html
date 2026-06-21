@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARSHUNTER | BMW Big Day Drops — 17.06.2026</title>
+    <meta
+      name="description"
+      content="CARSHUNTER BMW Big Day Drops (17.06.2026): X5, X6, X7 inventory overview with specs and VINs parsed from supplier stock sheet."
+    />
+    <style>
+      :root {
+        --bg: #0c111c;
+        --card: #131b2b;
+        --line: #2a3855;
+        --text: #f2f5fb;
+        --muted: #9aa8c4;
+        --gold: #d6a34f;
+        --blue: #4d86ff;
+        --green: #34d399;
+        --red: #f87171;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+        background: radial-gradient(circle at 20% -10%, #1a2a49 0%, #0c111c 46%);
+        color: var(--text);
+      }
+
+      .wrap { width: min(1240px, 94vw); margin: 0 auto; }
+
+      header {
+        padding: 28px 0 16px;
+      }
+
+      .hero {
+        position: relative;
+        border: 1px solid var(--line);
+        background: linear-gradient(160deg, #111a2d, #0f1627);
+        border-radius: 18px;
+        padding: 26px;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 86% 36%, rgba(214, 163, 79, 0.18), transparent 38%),
+          radial-gradient(circle at 78% 72%, rgba(77, 134, 255, 0.15), transparent 42%),
+          linear-gradient(110deg, rgba(12, 17, 28, 0.28) 20%, rgba(12, 17, 28, 0.84) 66%);
+        opacity: 0.28;
+        pointer-events: none;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        padding-right: 120px;
+      }
+
+      .hero-logo {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 2;
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        border: 2px solid rgba(214, 163, 79, 0.9);
+        background: #f2f2f2;
+        padding: 8px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+      }
+
+      .hero-logo svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .kicker {
+        color: var(--gold);
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: .76rem;
+        margin: 0 0 8px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+      }
+
+      .meta {
+        margin-top: 12px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        background: #13203a;
+        color: #dce7ff;
+        font-size: .8rem;
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 16px 0 20px;
+      }
+
+      .control {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .control label {
+        display: block;
+        font-size: .75rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .control input, .control select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: #0f1627;
+        color: var(--text);
+        padding: 9px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        background: var(--card);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .stat .v { font-size: 1.45rem; font-weight: 700; }
+      .stat .l { color: var(--muted); font-size: .82rem; }
+
+      .table-wrap {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #0f1627;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      thead {
+        background: #15203a;
+      }
+
+      th, td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #202d47;
+        vertical-align: top;
+        font-size: .9rem;
+      }
+
+      th { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: #b8c8e9; }
+
+      .badge {
+        display: inline-block;
+        font-size: .7rem;
+        border-radius: 999px;
+        padding: 4px 8px;
+        border: 1px solid;
+      }
+
+      .ok { color: var(--green); border-color: #1e8a68; background: rgba(52, 211, 153, .09); }
+      .check { color: #ffd089; border-color: #c68d2a; background: rgba(214, 163, 79, .1); }
+
+      .muted { color: var(--muted); }
+
+      .wa-btn {
+        display: inline-block;
+        font-size: .76rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: #062a1f;
+        background: #25d366;
+        border: 1px solid #1db954;
+        border-radius: 999px;
+        padding: 6px 10px;
+        white-space: nowrap;
+      }
+
+      .wa-btn:hover {
+        filter: brightness(1.05);
+      }
+
+      .ask-widget {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .ask-pill {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: #1a2440;
+        color: #f2f5fb;
+        font-size: .78rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .ask-pill.green {
+        background: #22c55e;
+        color: #042312;
+        border-color: #16a34a;
+      }
+
+      .ask-panel {
+        display: none;
+        position: fixed;
+        right: 14px;
+        bottom: 96px;
+        width: min(360px, 92vw);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #111a2d;
+        padding: 12px;
+        z-index: 1001;
+      }
+
+      .ask-panel h3 { font-size: 1rem; margin: 0 0 6px; }
+      .ask-panel p { color: var(--muted); font-size: .82rem; margin: 0 0 8px; }
+      .ask-panel input, .ask-panel select, .ask-panel textarea {
+        width: 100%;
+        margin: 6px 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0f1627;
+        color: var(--text);
+        padding: 9px;
+      }
+
+      .ask-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 6px;
+      }
+
+      .ask-actions button {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #1a2440;
+        color: #f2f5fb;
+        font-size: .78rem;
+        font-weight: 700;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+
+      .ask-status { font-size: .78rem; }
+
+      footer {
+        margin: 16px 0 28px;
+        color: var(--muted);
+        font-size: .84rem;
+      }
+
+      @media (max-width: 980px) {
+        .controls, .stats { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 680px) {
+        .controls, .stats { grid-template-columns: 1fr; }
+        th:nth-child(5), td:nth-child(5), th:nth-child(8), td:nth-child(8) { display: none; }
+        .hero-content { padding-right: 0; }
+        .hero-logo { width: 66px; height: 66px; }
+        .hero::before {
+          background:
+            radial-gradient(circle at 86% 36%, rgba(214, 163, 79, 0.16), transparent 36%),
+            radial-gradient(circle at 78% 72%, rgba(77, 134, 255, 0.13), transparent 40%),
+            linear-gradient(110deg, rgba(12, 17, 28, 0.28) 20%, rgba(12, 17, 28, 0.88) 66%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <section class="hero">
+          <div class="hero-logo" aria-hidden="true">
+            <svg viewBox="0 0 100 100" role="img" aria-label="CARSHUNTER emblem" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d6a34f" />
+                  <stop offset="100%" stop-color="#8b5d1c" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="47" fill="#0f1627" stroke="url(#g)" stroke-width="4" />
+              <circle cx="50" cy="50" r="31" fill="none" stroke="#d6a34f" stroke-opacity="0.55" stroke-width="2" />
+              <text x="50" y="56" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#f6d79c">CH</text>
+            </svg>
+          </div>
+          <div class="hero-content">
+            <p class="kicker">CARSHUNTER • BIG DAY DROPS</p>
+            <h1>BMW Stock Drop — 17.06.2026</h1>
+            <p class="meta">
+              Source reference: supplier stock sheet titled <strong>“BMW Stock 17.06.2026”</strong>
+              (internal source, verified for campaign release).<br />
+              Prepared as publish-ready listing for CARSHUNTER campaign + client pushes.
+            </p>
+            <div class="chips">
+              <span class="chip">X5 Series</span>
+              <span class="chip">X6 Series</span>
+              <span class="chip">X7 Series</span>
+              <span class="chip">40d / 30d / M60i</span>
+              <span class="chip">Model Year 2026</span>
+            </div>
+          </div>
+        </section>
+      </header>
+
+      <section class="controls">
+        <div class="control">
+          <label for="search">Search (VIN / color / package)</label>
+          <input id="search" type="text" placeholder="e.g. Tanzanite, WBA21..." />
+        </div>
+        <div class="control">
+          <label for="series">Series</label>
+          <select id="series">
+            <option value="all">All series</option>
+            <option value="X5">X5</option>
+            <option value="X6">X6</option>
+            <option value="X7">X7</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="engine">Engine</label>
+          <select id="engine">
+            <option value="all">All engines</option>
+            <option value="30d xDrive">30d xDrive</option>
+            <option value="40d xDrive">40d xDrive</option>
+            <option value="M60i xDrive">M60i xDrive</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="verification">Parsing quality</label>
+          <select id="verification">
+            <option value="all">All rows</option>
+            <option value="ok">High confidence only</option>
+            <option value="check">Needs quick verification</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="stats">
+        <article class="stat"><div class="v" id="total">0</div><div class="l">Visible units</div></article>
+        <article class="stat"><div class="v" id="x5">0</div><div class="l">X5</div></article>
+        <article class="stat"><div class="v" id="x6">0</div><div class="l">X6</div></article>
+        <article class="stat"><div class="v" id="x7">0</div><div class="l">X7</div></article>
+      </section>
+
+      <section class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Series</th>
+              <th>Engine</th>
+              <th>Exterior</th>
+              <th>Interior</th>
+              <th>Package</th>
+              <th>Year</th>
+              <th>VIN</th>
+              <th>Status</th>
+              <th>Offer</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+
+      <footer>
+        <div>Publishing note: rows marked “Needs check” come from low-clarity areas in the screenshot and should be validated against source PDF before client-facing VIN commitments.</div>
+      </footer>
+    </div>
+
+    <div class="ask-widget">
+      <button class="ask-pill" onclick="openAskPanel('bpb')">Ask BPB</button>
+      <button class="ask-pill green" onclick="openAskPanel('carshunter')">Ask Carshunter</button>
+    </div>
+
+    <div class="ask-panel" id="askPanel">
+      <h3 id="askTitle">Ask Carshunter</h3>
+      <p>Send your request. Lead goes to BPB governance bot + Telegram alert.</p>
+      <input id="askName" placeholder="Your name" />
+      <input id="askContact" placeholder="Phone / WhatsApp / Email" />
+      <select id="askService">
+        <option value="carshunter">Carshunter</option>
+        <option value="bpb">BPB Governance</option>
+      </select>
+      <textarea id="askMessage" placeholder="Which car / spec are you looking for?"></textarea>
+      <div id="askStatus" class="muted ask-status"></div>
+      <div class="ask-actions">
+        <button onclick="closeAskPanel()">Close</button>
+        <button onclick="submitAskPanel()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      const data = [
+        { series: "X5", engine: "30d xDrive", ext: "Manhattan Green", int: "CoffeeAir", pkg: "22\"", year: "2026", vin: "WBA11EV0509398676", quality: "ok" },
+        { series: "X5", engine: "30d xDrive", ext: "Skyscraper Grey", int: "Tartufo", pkg: "Air", year: "2026", vin: "WBA11EV0109345523", quality: "ok" },
+        { series: "X5", engine: "30d xDrive", ext: "Sapphire Black", int: "White", pkg: "Air", year: "2026", vin: "WBA11EV0009346078", quality: "ok" },
+        { series: "X5", engine: "30d xDrive", ext: "Dravit Grey", int: "Tartufo", pkg: "Air + 22\"", year: "2026", vin: "WBA11EV0X09348324", quality: "check" },
+        { series: "X5", engine: "30d xDrive", ext: "Sapphire Black", int: "Black", pkg: "Air + 22\"", year: "2026", vin: "WBA11EV0209347541", quality: "ok" },
+        { series: "X5", engine: "30d xDrive", ext: "Manhattan Green", int: "CoffeeAir", pkg: "Pano", year: "2026", vin: "WBA11EV0509369064", quality: "ok" },
+
+        { series: "X5", engine: "40d xDrive", ext: "Sapphire Black", int: "Black", pkg: "Air", year: "2026", vin: "WBA21EV0509337249", quality: "ok" },
+        { series: "X5", engine: "40d xDrive", ext: "Dravit Grey", int: "Black", pkg: "Individual + Air + 22\" + Carbon", year: "2026", vin: "WBA21EV0X09390268", quality: "check" },
+
+        { series: "X6", engine: "40d xDrive", ext: "Tanzanite Blue", int: "Tartufo", pkg: "Individual + Air + 22\" + Pano + Carbon + M Sport Pro", year: "2026", vin: "WBA21EY0209400352", quality: "check" },
+
+        { series: "X7", engine: "40d xDrive", ext: "Manhattan Green", int: "Black", pkg: "22\" + M Sport Pro", year: "2026", vin: "WBA21EN0809408931", quality: "ok" },
+        { series: "X7", engine: "40d xDrive", ext: "Dravit Grey", int: "Coffee", pkg: "Individual + M Sport Pro + 22\"", year: "2026", vin: "WBA21EN0009395110", quality: "check" },
+        { series: "X7", engine: "40d xDrive", ext: "Skyscraper Grey", int: "Black", pkg: "M Sport Pro + 22\"", year: "2026", vin: "WBA21EN0809389605", quality: "check" },
+
+        { series: "X7", engine: "40d xDrive", ext: "Manhattan Green", int: "Tartufo", pkg: "M Sport Pro", year: "2026", vin: "WBA21EN0209399000", quality: "ok" },
+        { series: "X7", engine: "40d xDrive", ext: "Dravit Grey", int: "Coffee", pkg: "Individual + 22\" + M Sport Pro", year: "2026", vin: "WBA21EN0X09379349", quality: "check" },
+        { series: "X7", engine: "40d xDrive", ext: "Tanzanite Blue", int: "Black", pkg: "Individual + 22\" + M Sport Pro + Carbon Black", year: "2026", vin: "WBA21EN0709384167", quality: "check" },
+        { series: "X7", engine: "40d xDrive", ext: "(unclear in sheet)", int: "Tartufo", pkg: "22\" + Pano + Carbon + M Sport Pro", year: "2026", vin: "WBA21EN0609378909", quality: "check" },
+        { series: "X7", engine: "40d xDrive", ext: "Skyscraper Grey", int: "Tartufo", pkg: "22\" + Pano + Carbon + M Sport Pro", year: "2026", vin: "WBA21EN0209377563", quality: "ok" },
+        { series: "X7", engine: "40d xDrive", ext: "Mineral White", int: "Black", pkg: "22\" + Carbon + M Sport Pro", year: "2026", vin: "WBA21EN0609371104", quality: "ok" },
+
+        { series: "X7", engine: "M60i xDrive", ext: "Dravit Grey", int: "Tartufo", pkg: "Individual + 22\" + Carbon", year: "2026", vin: "WBA31EM0209391677", quality: "ok" },
+        { series: "X7", engine: "M60i xDrive", ext: "Skyscraper Grey", int: "Tartufo", pkg: "22\" + Pano + Carbon + B&W", year: "2026", vin: "WBA31EM0709382618", quality: "ok" },
+        { series: "X7", engine: "M60i xDrive", ext: "Tanzanite Blue", int: "Tartufo", pkg: "Individual + 22\" + Pano + Carbon + B&W", year: "2026", vin: "WBA31EM0109356130", quality: "ok" },
+      ];
+
+      const rows = document.getElementById("rows");
+      const search = document.getElementById("search");
+      const series = document.getElementById("series");
+      const engine = document.getElementById("engine");
+      const verification = document.getElementById("verification");
+
+      const total = document.getElementById("total");
+      const x5 = document.getElementById("x5");
+      const x6 = document.getElementById("x6");
+      const x7 = document.getElementById("x7");
+
+      const WHATSAPP_NUMBER = "4917681330467";
+      const BOT_API_BASE = window.BPB_BOT_API_BASE || "http://127.0.0.1:8080";
+      let askChannel = "carshunter";
+
+      function maskVin(vin) {
+        if (!vin || vin.length <= 3) return "***";
+        return `${vin.slice(0, -3)}***`;
+      }
+
+      function buildWhatsappLink(row) {
+        const maskedVin = maskVin(row.vin);
+        const msg = [
+          "Hello CARSHUNTER,",
+          "Please send me an offer for this BMW unit:",
+          `${row.series} ${row.engine}`,
+          `Color: ${row.ext}`,
+          `Interior: ${row.int}`,
+          `Spec: ${row.pkg}`,
+          `Year: ${row.year}`,
+          `Ref VIN: ${maskedVin}`,
+        ].join("\n");
+
+        return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      }
+
+      function render() {
+        const q = search.value.toLowerCase().trim();
+        const s = series.value;
+        const e = engine.value;
+        const v = verification.value;
+
+        const filtered = data.filter((r) => {
+          const text = `${r.series} ${r.engine} ${r.ext} ${r.int} ${r.pkg} ${r.vin}`.toLowerCase();
+          const passQ = !q || text.includes(q);
+          const passS = s === "all" || r.series === s;
+          const passE = e === "all" || r.engine === e;
+          const passV = v === "all" || r.quality === v;
+          return passQ && passS && passE && passV;
+        });
+
+        rows.innerHTML = filtered.map((r) => `
+          <tr>
+            <td>${r.series}</td>
+            <td>${r.engine}</td>
+            <td>${r.ext}</td>
+            <td>${r.int}</td>
+            <td>${r.pkg}</td>
+            <td>${r.year}</td>
+            <td><strong>${maskVin(r.vin)}</strong></td>
+            <td><span class="badge ${r.quality === "ok" ? "ok" : "check"}">${r.quality === "ok" ? "High confidence" : "Needs check"}</span></td>
+            <td><a class="wa-btn" target="_blank" rel="noopener noreferrer" href="${buildWhatsappLink(r)}">WhatsApp offer</a></td>
+          </tr>
+        `).join("");
+
+        total.textContent = filtered.length;
+        x5.textContent = filtered.filter((r) => r.series === "X5").length;
+        x6.textContent = filtered.filter((r) => r.series === "X6").length;
+        x7.textContent = filtered.filter((r) => r.series === "X7").length;
+      }
+
+      [search, series, engine, verification].forEach((el) => el.addEventListener("input", render));
+      render();
+
+      function openAskPanel(channel) {
+        askChannel = channel || "carshunter";
+        const title = document.getElementById("askTitle");
+        const service = document.getElementById("askService");
+        const panel = document.getElementById("askPanel");
+        if (title) title.textContent = askChannel === "bpb" ? "Ask BPB" : "Ask Carshunter";
+        if (service) service.value = askChannel;
+        if (panel) panel.style.display = "block";
+      }
+
+      function closeAskPanel() {
+        const panel = document.getElementById("askPanel");
+        if (panel) panel.style.display = "none";
+      }
+
+      async function submitAskPanel() {
+        const name = (document.getElementById("askName")?.value || "").trim();
+        const contact = (document.getElementById("askContact")?.value || "").trim();
+        const service = (document.getElementById("askService")?.value || askChannel).trim();
+        const message = (document.getElementById("askMessage")?.value || "").trim();
+        const status = document.getElementById("askStatus");
+
+        if (!message) {
+          if (status) status.textContent = "Please add your request.";
+          return;
+        }
+
+        if (status) status.textContent = "Sending...";
+
+        try {
+          const res = await fetch(`${BOT_API_BASE}/leads/collect`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name,
+              contact,
+              service,
+              source: "carshunter-bmw-drops",
+              message,
+              meta: { page: window.location.pathname }
+            })
+          });
+
+          if (!res.ok) throw new Error("lead_api_failed");
+          if (status) status.textContent = "Sent successfully.";
+          setTimeout(closeAskPanel, 900);
+        } catch (e) {
+          const fallback = [
+            "Hello CARSHUNTER,",
+            `Service: ${service}`,
+            `Name: ${name || "N/A"}`,
+            `Contact: ${contact || "N/A"}`,
+            `Request: ${message}`,
+          ].join("\n");
+          if (status) status.textContent = "API unavailable. Opening WhatsApp...";
+          window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(fallback)}`, "_blank");
+        }
+      }
+    </script>
+  </body>
+</html>
