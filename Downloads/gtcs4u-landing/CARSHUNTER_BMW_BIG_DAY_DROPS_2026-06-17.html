@@ -108,6 +108,21 @@
         margin-top: 14px;
       }
 
+      .hero-cta-row {
+        margin-top: 14px;
+      }
+
+      .hero-cta {
+        border: 1px solid #1fa25d;
+        background: #25d366;
+        color: #062a1f;
+        border-radius: 999px;
+        padding: 9px 14px;
+        font-size: .82rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
       .chip {
         border: 1px solid var(--line);
         background: #13203a;
@@ -298,6 +313,10 @@
         font-size: .84rem;
       }
 
+      .campaign-disclaimer {
+        margin-top: 8px;
+      }
+
       @media (max-width: 980px) {
         .controls, .stats { grid-template-columns: 1fr 1fr; }
       }
@@ -338,7 +357,7 @@
             <h1>BMW Stock Drop — 17.06.2026</h1>
             <p class="meta">
               Source reference: supplier stock sheet titled <strong>“BMW Stock 17.06.2026”</strong>
-              (internal source, verified for campaign release).<br />
+              (internal source reference for campaign use).<br />
               Prepared as publish-ready listing for CARSHUNTER campaign + client pushes.
             </p>
             <div class="chips">
@@ -347,6 +366,9 @@
               <span class="chip">X7 Series</span>
               <span class="chip">40d / 30d / M60i</span>
               <span class="chip">Model Year 2026</span>
+            </div>
+            <div class="hero-cta-row">
+              <button class="hero-cta" onclick="openAskPanel('carshunter')">Request BMW Drop Access</button>
             </div>
           </div>
         </section>
@@ -413,12 +435,13 @@
 
       <footer>
         <div>Publishing note: rows marked “Needs check” come from low-clarity areas in the screenshot and should be validated against source PDF before client-facing VIN commitments.</div>
+        <div class="campaign-disclaimer">Campaign disclaimer: availability, pricing, export/import feasibility, and pre-delivery inspection are subject to final supplier and compliance confirmation.</div>
       </footer>
     </div>
 
     <div class="ask-widget">
       <button class="ask-pill" onclick="openAskPanel('bpb')">Ask BPB</button>
-      <button class="ask-pill green" onclick="openAskPanel('carshunter')">Ask Carshunter</button>
+      <button class="ask-pill green" onclick="openAskPanel('carshunter')">Request BMW Drop Access</button>
     </div>
 
     <div class="ask-panel" id="askPanel">
