@@ -64,11 +64,44 @@ const plans = [
   },
 ] as const;
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "GTCS4U",
+      url: "https://www.gtcs4u.com/gtcs4u",
+      description:
+        "Authority-first trade operations: compliant shipment orchestration, document validation, and audit-ready execution visibility.",
+    },
+    {
+      "@type": "WebSite",
+      name: "GTCS4U",
+      url: "https://www.gtcs4u.com/gtcs4u",
+      inLanguage: "en",
+    },
+    {
+      "@type": "Service",
+      serviceType: "Global Trade and Compliance Operations",
+      provider: {
+        "@type": "Organization",
+        name: "GTCS4U",
+      },
+      areaServed: "Worldwide",
+      url: "https://www.gtcs4u.com/gtcs4u",
+    },
+  ],
+};
+
 export default function Gtcs4uPage() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto max-w-7xl px-5 py-6 sm:px-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-5">
+    <main className="min-h-screen bg-slate-950 bg-[radial-gradient(circle_at_8%_12%,rgba(14,165,233,0.14),transparent_30%),radial-gradient(circle_at_88%_0%,rgba(16,185,129,0.12),transparent_32%),linear-gradient(180deg,#020617_0%,#020617_45%,#030712_100%)] text-slate-100">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="mx-auto max-w-7xl px-5 py-6 sm:px-8 sm:py-8">
+        <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
           <div className="text-xl font-bold tracking-[0.2em]">GTCS4U</div>
           <nav className="flex flex-wrap gap-4 text-sm text-slate-300">
             <a href="#platform" className="hover:text-white">
@@ -92,48 +125,48 @@ export default function Gtcs4uPage() {
           </a>
         </header>
 
-        <section className="grid gap-8 py-12 lg:grid-cols-[1.2fr_0.8fr]">
+        <section className="grid gap-8 py-12 lg:grid-cols-[1.2fr_0.8fr] lg:py-16">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
+            <div className="inline-flex rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
               Global Trade & Compliance Services
             </div>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">
-              Move goods faster with compliance-ready trade orchestration.
+            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl sm:leading-[1.05]">
+              Authority-First Trade Execution.
             </h1>
-            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-              GTCS4U automates vendor approvals, shipment workflows, trade documentation, and compliance validation across modern supply chains with audit-ready operational visibility.
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
+              GTCS4U orchestrates compliant shipment operations with approval gates, trade controls, and audit-grade evidence by default.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#contact" className="rounded-lg bg-emerald-300 px-5 py-3 font-semibold text-slate-950 hover:bg-emerald-200">
+              <a href="#contact" className="rounded-xl bg-emerald-300 px-5 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 hover:bg-emerald-200">
                 Start a Pilot
               </a>
-              <a href="#workflow" className="rounded-lg border border-white/20 px-5 py-3 font-semibold hover:border-white">
+              <a href="#workflow" className="rounded-xl border border-white/20 bg-white/[0.02] px-5 py-3 font-semibold hover:border-white">
                 Explore Workflow
               </a>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
                 <div className="text-3xl font-bold text-emerald-300">92%</div>
-                <div className="mt-1 text-sm text-slate-300">Faster document cycles</div>
+                <div className="mt-1 text-sm text-slate-300">Document Cycle Reduction</div>
               </div>
-              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
-                <div className="text-3xl font-bold text-emerald-300">4.8</div>
-                <div className="mt-1 text-sm text-slate-300">Days saved per shipment</div>
-              </div>
-              <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
                 <div className="text-3xl font-bold text-emerald-300">38</div>
-                <div className="mt-1 text-sm text-slate-300">Countries supported</div>
+                <div className="mt-1 text-sm text-slate-300">Countries Supported</div>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
+                <div className="text-3xl font-bold text-emerald-300">24/7</div>
+                <div className="mt-1 text-sm text-slate-300">Compliance Monitoring</div>
               </div>
             </div>
           </div>
 
-          <aside className="rounded-xl border border-white/10 bg-white/5 p-5">
+          <aside className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
             <h2 className="text-lg font-semibold">Live Compliance Pulse</h2>
             <p className="mt-1 text-sm text-slate-400">Operational lane monitoring</p>
             <div className="mt-4 text-xs font-bold uppercase tracking-[0.18em] text-emerald-300">Real-Time</div>
             <div className="mt-4 space-y-2">
               {lanes.map((row) => (
-                <div key={row.lane} className="flex items-center justify-between rounded border border-white/10 bg-black/20 px-3 py-2 text-sm">
+                <div key={row.lane} className="flex items-center justify-between rounded-lg border border-white/10 bg-black/25 px-3 py-2 text-sm">
                   <span>{row.lane}</span>
                   <span className="text-slate-400">{row.risk}</span>
                   <span className={row.tone}>{row.delta}</span>
@@ -142,7 +175,7 @@ export default function Gtcs4uPage() {
             </div>
             <div className="mt-4 text-xs text-slate-400">Updated just now</div>
 
-            <div className="mt-6 rounded border border-white/10 bg-black/20 p-3">
+            <div className="mt-6 rounded-xl border border-white/10 bg-black/25 p-3">
               <div className="text-sm font-semibold">Automation Coverage</div>
               <div className="mt-1 text-sm text-slate-300">78% automated</div>
               <div className="text-xs text-slate-500">Target 90%</div>
@@ -163,7 +196,7 @@ export default function Gtcs4uPage() {
           </p>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {features.map((item) => (
-              <article key={item.title} className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <article key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
                 <h3 className="text-lg font-semibold">{item.title}</h3>
                 <p className="mt-2 text-sm leading-7 text-slate-300">{item.body}</p>
               </article>
@@ -176,7 +209,7 @@ export default function Gtcs4uPage() {
           <h2 className="mt-3 text-3xl font-bold">How GTCS4U orchestrates compliant trade execution.</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {flow.map((step) => (
-              <div key={step} className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium">
+              <div key={step} className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium">
                 {step}
               </div>
             ))}
@@ -197,7 +230,7 @@ export default function Gtcs4uPage() {
             {plans.map((plan) => (
               <article
                 key={plan.name}
-                className={`rounded-xl border p-5 ${plan.featured ? "border-emerald-300/60 bg-emerald-400/10" : "border-white/10 bg-white/5"}`}
+                className={`rounded-2xl border p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] ${plan.featured ? "border-emerald-300/60 bg-emerald-400/10" : "border-white/10 bg-white/[0.04]"}`}
               >
                 <h3 className="text-xl font-semibold">{plan.name}</h3>
                 <div className="mt-2 text-2xl font-bold text-emerald-300">{plan.price}</div>
@@ -206,7 +239,7 @@ export default function Gtcs4uPage() {
                     <li key={item}>• {item}</li>
                   ))}
                 </ul>
-                <a href="#contact" className="mt-5 inline-flex rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-200">
+                <a href="#contact" className="mt-5 inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-200">
                   {plan.cta}
                 </a>
               </article>
@@ -222,12 +255,12 @@ export default function Gtcs4uPage() {
           </p>
 
           <form className="mt-6 grid gap-3 md:grid-cols-2">
-            <input className="rounded-lg border border-white/10 bg-white/5 px-3 py-2" placeholder="Name" />
-            <input className="rounded-lg border border-white/10 bg-white/5 px-3 py-2" placeholder="Work Email" />
-            <input className="rounded-lg border border-white/10 bg-white/5 px-3 py-2" placeholder="Company" />
-            <input className="rounded-lg border border-white/10 bg-white/5 px-3 py-2" placeholder="Monthly Shipment Volume" />
-            <textarea className="md:col-span-2 min-h-24 rounded-lg border border-white/10 bg-white/5 px-3 py-2" placeholder="Requirements" />
-            <button type="button" className="w-fit rounded-lg bg-emerald-300 px-5 py-2 font-semibold text-slate-950 hover:bg-emerald-200">
+            <input className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2" placeholder="Name" />
+            <input className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2" placeholder="Work Email" />
+            <input className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2" placeholder="Company" />
+            <input className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2" placeholder="Monthly Shipment Volume" />
+            <textarea className="md:col-span-2 min-h-24 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2" placeholder="Requirements" />
+            <button type="button" className="w-fit rounded-xl bg-emerald-300 px-5 py-2 font-semibold text-slate-950 hover:bg-emerald-200">
               Send Request
             </button>
           </form>

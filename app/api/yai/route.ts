@@ -1,140 +1,163 @@
-import {
-  extractOpenAiText,
-  getYaiModel,
-  localYaiFallback,
-  makeTraceId,
-  normalizeMessages,
-  normalizeMode,
-  YAI_SYSTEM_PROMPT,
-  validateOpenAiModel,
-  yaiModes,
-} from "@/lib/yai/model";
+import { randomUUID } from "node:crypto";
+import { NextResponse } from "next/server";
+
+type YaiRequest = {
+  prompt?: unknown;
+  mode?: unknown;
+};
+
+function asText(value: unknown): string {
+  if (typeof value === "string") return value.trim();
+  return "";
+}
+
+function buildLocalFallbackReply(prompt: string, mode: string): string {
+  const p = prompt.toLowerCase();
+
+  if (mode === "governance" || p.includes("export") || p.includes("evidence")) {
+    return [
+      "GOVERNANCE RESPONSE",
+      "1) Authority: requester urgency is not authority. Require accountable operator + signer scope.",
+      "2) Admissibility: block export until request, legal basis, and rollback evidence are attached.",
+      "3) Trace: create trace ID before any transfer and bind all artifacts to it.",
+      "4) Decision: NEED_REVIEW (no irreversible action allowed).",
+    ].join("\n");
+  }
+
+  if (mode === "operator" || p.includes("operator") || p.includes("booking")) {
+    return [
+      "OPERATOR RUNBOOK",
+      "1) Confirm accountable operator and role.",
+      "2) Record consequence domain and impacted customer objects.",
+      "3) Attach request + context evidence in one bundle.",
+      "4) Execute reversible step first (dry-run / draft only).",
+      "5) Hold irreversible notification until checks pass.",
+      "6) Record trace ID before handoff.",
+    ].join("\n");
+  }
+
+  if (mode === "technical" || p.includes("route") || p.includes("architecture")) {
+    return [
+      "YAI LOCAL ROUTE ARCHITECTURE",
+      "- UI: /yai (client console) with mode presets and controlled prompt entry.",
+      "- API: POST /api/yai for governed response generation.",
+      "- OpenAI path: used when OPENAI_API_KEY exists.",
+      "- Local fallback: deterministic governance/runbook response when key is absent or call fails.",
+      "- Trace ID: generated per request and returned to UI.",
+      "- Env: OPENAI_API_KEY and optional OPENAI_MODEL.",
+    ].join("\n");
+  }
+
+  return [
+    "YAI LOCAL",
+    "I can operate in Governance, Operator, or Technical mode.",
+    "Provide the target action and consequence domain, and I will return controlled next steps.",
+  ].join("\n");
+}
+
+async function callOpenAI(prompt: string, mode: string) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return null;
+  }
+
+  const model = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
+  const systemPrompt = [
+    "You are YAI Local, a private execution assistant.",
+    "Always prioritize authority, admissibility, trace, and evidence.",
+    "Never instruct irreversible execution before checks pass.",
+    "Return concise, operator-safe text.",
+    `Active mode: ${mode || "general"}`,
+  ].join(" ");
+
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      input: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: prompt },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`OpenAI request failed (${response.status})`);
+  }
+
+  const payload = (await response.json()) as {
+    output_text?: string;
+    output?: Array<{ content?: Array<{ type?: string; text?: string }> }>;
+  };
+
+  const outputText =
+    payload.output_text ??
+    payload.output
+      ?.flatMap((block) => block.content ?? [])
+      .filter((item) => item.type === "output_text" || item.type === "text")
+      .map((item) => item.text ?? "")
+      .join("\n")
+      .trim();
+
+  if (!outputText) {
+    throw new Error("OpenAI returned no text output");
+  }
+
+  return { outputText, model };
+}
 
 export const runtime = "nodejs";
 
-const allowedOrigins = new Set([
-  "https://pms.bpbsolutionsltd.com",
-  "https://pms4u.vercel.app",
-  "http://127.0.0.1:3000",
-  "http://localhost:3000",
-]);
-
-function corsHeaders(request: Request) {
-  const origin = request.headers.get("origin");
-  const allowOrigin = origin && allowedOrigins.has(origin) ? origin : "https://pms4u.vercel.app";
-
-  return {
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST,OPTIONS",
-    "Access-Control-Allow-Origin": allowOrigin,
-    Vary: "Origin",
-  };
-}
-
-function json(request: Request, payload: unknown, init?: ResponseInit) {
-  return Response.json(payload, {
-    ...init,
-    headers: {
-      ...corsHeaders(request),
-      ...init?.headers,
-    },
-  });
-}
-
-export function OPTIONS(request: Request) {
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders(request),
-  });
-}
-
 export async function POST(request: Request) {
-  const traceId = makeTraceId();
-
   try {
-    const body = (await request.json()) as { messages?: unknown; mode?: unknown };
-    const messages = normalizeMessages(body.messages);
-    const mode = normalizeMode(body.mode);
+    const body = ((await request.json().catch(() => ({}))) ?? {}) as YaiRequest;
+    const prompt = asText(body.prompt);
+    const mode = asText(body.mode).toLowerCase();
 
-    if (messages.length === 0) {
-      return json(
-        request,
-        { error: "YAI requires at least one user message.", traceId },
-        { status: 400 },
-      );
+    if (!prompt) {
+      return NextResponse.json({ message: "Prompt is required." }, { status: 400 });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    const model = getYaiModel();
+    const traceId = `yai-${randomUUID()}`;
 
-    if (!apiKey) {
-      return json(request, localYaiFallback(messages, mode, traceId));
+    try {
+      const openai = await callOpenAI(prompt, mode);
+      if (openai) {
+        return NextResponse.json(
+          {
+            traceId,
+            runtimeSource: "openai",
+            model: openai.model,
+            reply: openai.outputText,
+          },
+          { status: 200 }
+        );
+      }
+    } catch {
+      // fall through to local fallback
     }
 
-    const modelValidation = await validateOpenAiModel(apiKey, model);
-
-    if (!modelValidation.ok) {
-      return json(
-        request,
-        {
-          error: modelValidation.message,
-          mode,
-          model,
-          source: "openai",
-          suggestions: modelValidation.suggestions,
-          traceId,
-        },
-        { status: 500 },
-      );
-    }
-
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    return NextResponse.json(
+      {
+        traceId,
+        runtimeSource: "local-fallback",
+        model: "yai-local",
+        reply: buildLocalFallbackReply(prompt, mode),
       },
-      body: JSON.stringify({
-        model,
-        instructions: `${YAI_SYSTEM_PROMPT}\n\nActive mode: ${yaiModes[mode].instruction}`,
-        input: messages.map((message) => ({
-          role: message.role,
-          content: message.content,
-        })),
-      }),
-    });
-
-    const payload = await response.json();
-
-    if (!response.ok) {
-      const message =
-        typeof payload?.error?.message === "string"
-          ? payload.error.message
-          : "OpenAI request failed.";
-
-      return json(
-        request,
-        {
-          error: message,
-          mode,
-          model,
-          source: "openai",
-          traceId,
-        },
-        { status: response.status },
-      );
-    }
-
-    return json(request, {
-      content: extractOpenAiText(payload),
-      mode,
-      model,
-      source: "openai",
-      traceId,
-    });
+      { status: 200 }
+    );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unexpected YAI runtime error.";
-
-    return json(request, { error: message, traceId }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "YAI request failed.",
+        detail: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }

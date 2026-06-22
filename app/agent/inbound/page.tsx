@@ -128,11 +128,20 @@ export default function AgentInboundPage() {
         body: JSON.stringify(form),
       });
 
-      const data = (await res.json()) as ApiResponse;
+      const payload = await res.json().catch(() => null);
+      if (!res.ok) {
+        const message =
+          (payload as { detail?: string; message?: string } | null)?.detail ??
+          (payload as { detail?: string; message?: string } | null)?.message ??
+          `Request failed with status ${res.status}`;
+        throw new Error(message);
+      }
+
+      const data = payload as ApiResponse;
       setResult(data);
       setVerification(null);
-    } catch {
-      setError("Request failed. Please retry.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Request failed. Please retry.");
     } finally {
       setLoading(false);
     }
@@ -145,11 +154,19 @@ export default function AgentInboundPage() {
 
     setError(null);
     const res = await fetch(`/api/agent/inbound/verify?executionId=${encodeURIComponent(result.executionId)}`);
-    const data = (await res.json()) as {
+    const data = (await res.json().catch(() => null)) as {
       chainValid: boolean;
       entriesScanned: number;
       issues: string[];
-    };
+      detail?: string;
+      message?: string;
+    } | null;
+
+    if (!res.ok || !data) {
+      setError(data?.detail ?? data?.message ?? `Verification failed (${res.status})`);
+      return;
+    }
+
     setVerification(data);
   }
 
@@ -160,7 +177,10 @@ export default function AgentInboundPage() {
     async function loadEvents() {
       try {
         const res = await fetch("/api/agent/inbound/events?limit=25", { cache: "no-store" });
-        const data = (await res.json()) as { events: LiveEvent[] };
+        const data = (await res.json().catch(() => null)) as { events: LiveEvent[] } | null;
+        if (!res.ok || !data) {
+          throw new Error(`Live feed failed (${res.status})`);
+        }
         if (isMounted) {
           setEvents(data.events ?? []);
           setEventsError(null);
@@ -238,13 +258,13 @@ export default function AgentInboundPage() {
   }, [scopedEvents]);
 
   return (
-      <main className="min-h-screen bg-slate-950 bg-[radial-gradient(circle_at_top,rgba(14,116,144,0.12),transparent_45%)] px-6 py-10 text-slate-100 sm:px-10">
+      <main className="min-h-screen bg-slate-950 bg-[radial-gradient(circle_at_8%_12%,rgba(14,116,144,0.18),transparent_34%),radial-gradient(circle_at_86%_6%,rgba(16,185,129,0.14),transparent_34%),linear-gradient(180deg,#020617_0%,#020617_52%,#030712_100%)] px-6 py-10 text-slate-100 sm:px-10 sm:py-12">
       <div className="mx-auto max-w-7xl space-y-6">
-        <header className="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/85 to-slate-900/60 p-7 shadow-[0_0_0_1px_rgba(15,23,42,0.2),0_24px_60px_-32px_rgba(16,185,129,0.25)]">
+        <header className="rounded-2xl border border-slate-800/90 bg-gradient-to-r from-slate-900/95 via-slate-900/85 to-slate-900/70 p-7 shadow-[0_0_0_1px_rgba(15,23,42,0.2),0_24px_60px_-32px_rgba(16,185,129,0.25)] backdrop-blur-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-slate-400">PMS4U</p>
-              <h1 className="mt-1 text-2xl font-bold sm:text-3xl">Authority Before Execution</h1>
+              <h1 className="mt-1 text-2xl font-bold sm:text-4xl sm:leading-[1.08]">Authority Before Execution</h1>
               <p className="mt-2 text-sm text-slate-300">
                 A web-accessible OpenAI agent that cannot act unless PMS authorizes the execution.
               </p>
@@ -256,7 +276,7 @@ export default function AgentInboundPage() {
           </div>
         </header>
 
-        <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-3">
+        <section className="rounded-xl border border-slate-800 bg-slate-900/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm">
           <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.12em] text-slate-300">
             <span className="rounded border border-cyan-500/30 bg-cyan-500/10 px-2 py-1 text-cyan-300">Runtime</span>
             <span className="rounded border border-slate-700 bg-slate-950/60 px-2 py-1">Authority Gate</span>
@@ -273,7 +293,7 @@ export default function AgentInboundPage() {
             ["REVIEW", dashboardStats.review, "text-amber-300"],
             ["RECEIPTS", dashboardStats.receipts, "text-sky-300"],
           ].map(([label, value, tone]) => (
-            <article key={label} className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <article key={label} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
               <p className="text-xs uppercase tracking-[0.14em] text-slate-400">{label}</p>
               <p className={`mt-2 text-3xl font-bold ${tone}`}>{value}</p>
               <div className="mt-3 h-px bg-slate-800" />
@@ -282,10 +302,11 @@ export default function AgentInboundPage() {
           ))}
         </section>
 
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
           <div className="space-y-6">
-        <form onSubmit={onSubmit} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-          <h2 className="text-lg font-semibold">Inbound Agent Request</h2>
+        <form onSubmit={onSubmit} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
+          <h2 className="text-xl font-semibold">Inbound Agent Request</h2>
+          <p className="mt-1 text-xs uppercase tracking-[0.12em] text-slate-500">Controlled ingress • policy-aware prompting • gated execution</p>
           <div className="grid gap-4 sm:grid-cols-2">
             {[
               ["actorId", "Actor ID"],
@@ -297,7 +318,7 @@ export default function AgentInboundPage() {
               <label key={key} className="block text-sm">
                 <span className="mb-1 block text-[11px] uppercase tracking-[0.12em] text-slate-400">{label}</span>
                 <input
-                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-[13px] text-slate-100 outline-none ring-0 focus:border-cyan-400"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-2 font-mono text-[13px] text-slate-100 outline-none ring-0 focus:border-cyan-400"
                   value={form[key as keyof typeof form]}
                   onChange={(e) => setForm((prev) => ({ ...prev, [key]: e.target.value }))}
                 />
@@ -318,14 +339,14 @@ export default function AgentInboundPage() {
                     prompt: task.prompt,
                   }))
                 }
-                className="rounded-md border border-slate-700 px-3 py-1 text-xs text-slate-300 hover:border-cyan-400"
+                className="rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-1 text-xs text-slate-300 hover:border-cyan-400"
               >
                 {task.label}
               </button>
             ))}
           </div>
 
-          <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm">
+          <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-4 text-sm">
             <p className="text-xs uppercase tracking-[0.12em] text-slate-400">Inbound Agent Request Snapshot</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <p><span className="text-slate-400">Actor:</span> <span className="font-semibold">{form.actorId}</span></p>
@@ -338,7 +359,7 @@ export default function AgentInboundPage() {
           <label className="mt-4 block text-sm">
             <span className="mb-1 block text-[11px] uppercase tracking-[0.12em] text-slate-400">Prompt</span>
             <textarea
-              className="min-h-36 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 font-mono text-[13px] text-slate-100 outline-none ring-0 focus:border-cyan-400"
+              className="min-h-36 w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-2 font-mono text-[13px] text-slate-100 outline-none ring-0 focus:border-cyan-400"
               value={form.prompt}
               onChange={(e) => setForm((prev) => ({ ...prev, prompt: e.target.value }))}
             />
@@ -347,7 +368,7 @@ export default function AgentInboundPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-4 rounded-md bg-cyan-300 px-4 py-2 text-sm font-semibold text-slate-950 disabled:opacity-60"
+            className="mt-4 rounded-lg bg-cyan-300 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-400/20 disabled:opacity-60"
           >
             {loading ? "Evaluating..." : "Submit through PMS Gate"}
           </button>
@@ -358,29 +379,29 @@ export default function AgentInboundPage() {
         ) : null}
 
         {result ? (
-          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
             <h2 className="text-lg font-semibold">Decision Zone</h2>
             <p className="mt-1 text-[11px] uppercase tracking-[0.1em] text-slate-500">Authority • Admissibility • Evidence • Execution</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3">
+              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs text-slate-400">AUTHORITY</p>
                 <p className={`mt-1 text-sm font-bold ${authorityState === "VALID" ? "text-emerald-300" : "text-rose-300"}`}>{authorityState}</p>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3">
+              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs text-slate-400">ADMISSIBILITY</p>
                 <p className={`mt-1 text-sm font-bold ${admissibilityState === "PASS" ? "text-emerald-300" : admissibilityState === "DENY" ? "text-rose-300" : "text-amber-300"}`}>{admissibilityState}</p>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3">
+              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs text-slate-400">EVIDENCE</p>
                 <p className={`mt-1 text-sm font-bold ${evidenceState === "PRESENT" ? "text-emerald-300" : "text-amber-300"}`}>{evidenceState}</p>
               </div>
-              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3">
+              <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
                 <p className="text-xs text-slate-400">EXECUTION</p>
                 <p className={`mt-1 text-sm font-bold ${executionState === "RUN_COMPLETED" ? "text-emerald-300" : executionState === "BLOCKED" ? "text-rose-300" : "text-amber-300"}`}>{executionState}</p>
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+            <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
               <div className="flex items-center gap-3">
                 <span className={`rounded-full border px-4 py-2 text-sm font-bold ${decisionTone(result.decision)}`}>{result.decision}</span>
                 <p className="text-sm text-slate-300">{result.reason}</p>
@@ -401,7 +422,7 @@ export default function AgentInboundPage() {
             </div>
 
             {result.output ? (
-              <pre className="mt-4 overflow-x-auto rounded-md border border-slate-800 bg-slate-950 p-3 text-xs text-slate-200">
+              <pre className="mt-4 overflow-x-auto rounded-lg border border-slate-800 bg-slate-950 p-3 text-xs text-slate-200">
                 {JSON.stringify(result.output, null, 2)}
               </pre>
             ) : null}
@@ -409,13 +430,13 @@ export default function AgentInboundPage() {
             <button
               type="button"
               onClick={verifyExecutionTrace}
-              className="mt-4 rounded-md border border-slate-700 px-4 py-2 text-xs font-semibold text-slate-200 hover:border-cyan-400"
+              className="mt-4 rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-xs font-semibold text-slate-200 hover:border-cyan-400"
             >
               Verify hash chain and receipt signature
             </button>
 
             {verification ? (
-              <div className="mt-3 rounded-md border border-slate-800 bg-slate-950 p-3 text-xs text-slate-300">
+              <div className="mt-3 rounded-lg border border-slate-800 bg-slate-950 p-3 text-xs text-slate-300">
                 <div>Chain Valid: {verification.chainValid ? "true" : "false"}</div>
                 <div>Entries Scanned: {verification.entriesScanned}</div>
                 {verification.issues.length > 0 ? <div>Issues: {verification.issues.join(" | ")}</div> : null}
@@ -425,7 +446,7 @@ export default function AgentInboundPage() {
         ) : null}
           </div>
 
-          <aside className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+          <aside className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300">Live Event Feed</h2>
               <span className="text-xs text-slate-500">{(scopedEvents.length || events.length).toString()} visible</span>
@@ -440,7 +461,7 @@ export default function AgentInboundPage() {
 
             <div className="max-h-[70vh] space-y-2 overflow-y-auto pr-1">
               {(scopedEvents.length > 0 ? scopedEvents : events).map((event) => (
-                <div key={event.eventId} className="rounded-md border border-slate-800 bg-slate-950/70 p-3">
+                <div key={event.eventId} className="rounded-lg border border-slate-800 bg-slate-950/70 p-3">
                   <div className="grid grid-cols-[78px_1fr] gap-3">
                     <span className="text-[11px] text-slate-500">{new Date(event.timestamp).toLocaleTimeString()}</span>
                     <div className="flex items-start gap-3 border-l border-slate-800 pl-3">
@@ -457,7 +478,7 @@ export default function AgentInboundPage() {
               ))}
 
               {events.length === 0 ? (
-                <div className="rounded-md border border-slate-800 bg-slate-950/70 p-3 text-xs text-slate-500">
+                <div className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 text-xs text-slate-500">
                   No events yet. Submit a task to start the governed event stream.
                 </div>
               ) : null}

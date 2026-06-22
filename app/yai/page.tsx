@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import YaiConsole from "./YaiConsole";
+import { YaiConsole } from "./yai-console";
 
 export const metadata: Metadata = {
   title: "YAI Local Console | PMS4U",
