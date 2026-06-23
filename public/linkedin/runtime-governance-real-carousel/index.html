@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Runtime Governance Is Real | LinkedIn Carousel</title>
+    <style>
+      :root {
+        --bg: #050607;
+        --panel: #0c1110;
+        --ink: #f7f7f2;
+        --muted: #a9b2aa;
+        --line: rgba(255, 255, 255, 0.14);
+        --green: #67f0b5;
+        --amber: #ffc86b;
+        --red: #ff706b;
+        --blue: #74c7ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #111;
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+      }
+
+      .slide {
+        position: relative;
+        display: none;
+        width: 1080px;
+        height: 1350px;
+        overflow: hidden;
+        background:
+          linear-gradient(135deg, rgba(103, 240, 181, 0.13), transparent 35%),
+          radial-gradient(circle at 86% 18%, rgba(116, 199, 255, 0.18), transparent 28%),
+          linear-gradient(180deg, #08100e 0%, #050607 46%, #020303 100%);
+        padding: 72px;
+      }
+
+      .slide.active {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 34px;
+        border: 1px solid var(--line);
+        pointer-events: none;
+      }
+
+      .slide::after {
+        content: "";
+        position: absolute;
+        right: -160px;
+        bottom: -160px;
+        width: 520px;
+        height: 520px;
+        border: 1px solid rgba(103, 240, 181, 0.18);
+        transform: rotate(18deg);
+      }
+
+      .top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        color: var(--muted);
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .brand {
+        color: var(--green);
+      }
+
+      .number {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        gap: 34px;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        max-width: 900px;
+        color: var(--ink);
+        font-size: 82px;
+        font-weight: 820;
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-size: 98px;
+      }
+
+      p {
+        margin: 0;
+        max-width: 850px;
+        color: var(--muted);
+        font-size: 38px;
+        font-weight: 520;
+        line-height: 1.24;
+      }
+
+      .big {
+        color: var(--ink);
+        font-size: 54px;
+        font-weight: 760;
+        line-height: 1.1;
+      }
+
+      .tag {
+        display: inline-flex;
+        width: fit-content;
+        border: 1px solid rgba(103, 240, 181, 0.35);
+        background: rgba(103, 240, 181, 0.09);
+        padding: 18px 22px;
+        color: var(--green);
+        font-size: 24px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.035);
+        padding: 30px;
+      }
+
+      .card strong {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--ink);
+        font-size: 31px;
+        line-height: 1.1;
+      }
+
+      .card span {
+        display: block;
+        color: var(--muted);
+        font-size: 26px;
+        font-weight: 520;
+        line-height: 1.24;
+      }
+
+      .flow {
+        display: grid;
+        gap: 16px;
+      }
+
+      .step {
+        border: 1px solid rgba(103, 240, 181, 0.22);
+        background: rgba(0, 0, 0, 0.32);
+        padding: 24px 28px;
+        color: var(--ink);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 30px;
+        font-weight: 750;
+      }
+
+      .arrow {
+        color: var(--green);
+        font-size: 34px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .red {
+        color: var(--red);
+      }
+
+      .green {
+        color: var(--green);
+      }
+
+      .amber {
+        color: var(--amber);
+      }
+
+      .blue {
+        color: var(--blue);
+      }
+
+      .footer {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 26px;
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 24px;
+        font-weight: 650;
+      }
+
+      .footer span:last-child {
+        color: var(--green);
+      }
+
+      .quote {
+        border-left: 8px solid var(--green);
+        padding-left: 30px;
+        color: var(--ink);
+        font-size: 50px;
+        font-weight: 780;
+        line-height: 1.12;
+      }
+
+      .small-note {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 25px;
+        line-height: 1.35;
+      }
+
+      .proof-list {
+        display: grid;
+        gap: 20px;
+      }
+
+      .proof-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 22px 26px;
+        color: var(--ink);
+        font-size: 32px;
+        font-weight: 720;
+      }
+
+      .dot {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 18px;
+        background: var(--green);
+      }
+
+      @media screen and (max-width: 1100px) {
+        body {
+          align-items: start;
+          justify-items: start;
+          overflow: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="slide" data-slide="1">
+      <div class="top"><span class="brand">PMS4U</span><span class="number">01 / 10</span></div>
+      <div class="content">
+        <span class="tag">Runtime governance</span>
+        <h1>Runtime governance is real.</h1>
+        <p class="big">Here is what is real, and what is not yet proven.</p>
+      </div>
+      <div class="footer"><span>Authority before execution</span><span>Swipe</span></div>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <div class="top"><span class="brand">The problem</span><span class="number">02 / 10</span></div>
+      <div class="content">
+        <h2>Most governance happens too late.</h2>
+        <div class="grid">
+          <div class="card"><strong>Policies</strong><span>Written before execution, often ignored during execution.</span></div>
+          <div class="card"><strong>Dashboards</strong><span>Useful after the action has already become consequence.</span></div>
+          <div class="card"><strong>Audit logs</strong><span>They explain what happened. They rarely stop it.</span></div>
+        </div>
+      </div>
+      <div class="footer"><span>Governance after damage is evidence, not control.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <div class="top"><span class="brand">The shift</span><span class="number">03 / 10</span></div>
+      <div class="content">
+        <h2>Real governance sits before consequence.</h2>
+        <div class="flow">
+          <div class="step">REQUEST</div>
+          <div class="arrow">down</div>
+          <div class="step">AUTHORITY CHECK</div>
+          <div class="arrow">down</div>
+          <div class="step">ADMISSIBILITY CHECK</div>
+          <div class="arrow">down</div>
+          <div class="step">DENY / DEFER / ALLOW</div>
+          <div class="arrow">down</div>
+          <div class="step">SIGNED EVIDENCE</div>
+        </div>
+      </div>
+      <div class="footer"><span>Control must happen at runtime.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <div class="top"><span class="brand">What is proven</span><span class="number">04 / 10</span></div>
+      <div class="content">
+        <h2>We moved from doctrine to runtime proof.</h2>
+        <div class="proof-list">
+          <div class="proof-item"><span class="dot"></span><span>Runtime interception recorded</span></div>
+          <div class="proof-item"><span class="dot"></span><span>Execution denied and frozen</span></div>
+          <div class="proof-item"><span class="dot"></span><span>Evidence IDs generated</span></div>
+          <div class="proof-item"><span class="dot"></span><span>Hash-chain continuity verified</span></div>
+          <div class="proof-item"><span class="dot"></span><span>Replay reconstruction available</span></div>
+        </div>
+      </div>
+      <div class="footer"><span>Runtime proof beats narrative.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <div class="top"><span class="brand">Claim discipline</span><span class="number">05 / 10</span></div>
+      <div class="content">
+        <h2>What is not yet proven?</h2>
+        <div class="grid">
+          <div class="card"><strong class="red">Prevented loss amount</strong><span>No EUR value until a business owner validates exposure.</span></div>
+          <div class="card"><strong class="red">ROI improvement</strong><span>No ROI claim until pilot economics are measured.</span></div>
+          <div class="card"><strong class="red">Enterprise scale</strong><span>No scale claim until production adoption exists.</span></div>
+        </div>
+        <p class="small-note">This does not weaken the claim. It makes it investable.</p>
+      </div>
+      <div class="footer"><span>Trust comes from saying what is not proven.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <div class="top"><span class="brand">Example</span><span class="number">06 / 10</span></div>
+      <div class="content">
+        <h2>A shipment tries to export.</h2>
+        <div class="grid two">
+          <div class="card"><strong>Action</strong><span>Change shipment status to EXPORTED.</span></div>
+          <div class="card"><strong>Gap</strong><span>Authority missing or evidence incomplete.</span></div>
+          <div class="card"><strong class="green">Runtime decision</strong><span>DENY before the status is committed.</span></div>
+          <div class="card"><strong class="blue">Proof</strong><span>Ledger event, signature, evidence ID, replay lineage.</span></div>
+        </div>
+      </div>
+      <div class="footer"><span>Do not explain the damage later. Stop it earlier.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <div class="top"><span class="brand">Why now</span><span class="number">07 / 10</span></div>
+      <div class="content">
+        <h2>AI agents make this urgent.</h2>
+        <p class="quote">Automation can now execute faster than human approval chains can react.</p>
+        <p>So governance cannot be a PDF, a committee, or a dashboard after the fact.</p>
+        <p class="big green">It must be a runtime boundary.</p>
+      </div>
+      <div class="footer"><span>Agentic execution needs authority checks.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="8">
+      <div class="top"><span class="brand">Commercial path</span><span class="number">08 / 10</span></div>
+      <div class="content">
+        <h2>Do not sell doctrine first.</h2>
+        <div class="grid">
+          <div class="card"><strong>GTCS4U</strong><span>Trade, logistics, supplier, document, and compliance workflows.</span></div>
+          <div class="card"><strong>YAI Local</strong><span>Operator guidance with memory, trace, and consequence awareness.</span></div>
+          <div class="card"><strong>PMS4U</strong><span>The runtime control engine underneath the commercial products.</span></div>
+        </div>
+      </div>
+      <div class="footer"><span>Revenue front. Governance moat.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="9">
+      <div class="top"><span class="brand">Investor-safe claim</span><span class="number">09 / 10</span></div>
+      <div class="content">
+        <span class="tag">Say this</span>
+        <p class="quote">Runtime interception with signed, replayable evidence is proven.</p>
+        <span class="tag">Do not say this yet</span>
+        <p class="quote red">We prevented EUR 45,000 in losses.</p>
+        <p class="small-note">That claim needs business-side validation, signed outcome, and measured exposure.</p>
+      </div>
+      <div class="footer"><span>Claim discipline is a credibility asset.</span><span>PMS4U</span></div>
+    </section>
+
+    <section class="slide" data-slide="10">
+      <div class="top"><span class="brand">Question</span><span class="number">10 / 10</span></div>
+      <div class="content">
+        <h2>If your automation can execute...</h2>
+        <p class="big">Who proves it had authority?</p>
+        <p>That is the execution boundary PMS4U is building.</p>
+        <div class="card">
+          <strong class="green">Next proof step</strong>
+          <span>Run one business-owned pilot event, validate the outcome, then publish the external-safe case note.</span>
+        </div>
+      </div>
+      <div class="footer"><span>Authority before execution</span><span>pms4u.vercel.app</span></div>
+    </section>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const slide = params.get("slide") || "1";
+      const selected = document.querySelector(`[data-slide="${slide}"]`) || document.querySelector('[data-slide="1"]');
+      selected.classList.add("active");
+    </script>
+  </body>
+</html>
