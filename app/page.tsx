@@ -48,6 +48,13 @@ const proofAssets = [
     cta: "Open mobility MVP",
   },
   {
+    label: "UmEldonia",
+    title: "Aegypten Hautnah travel app",
+    body: "Pilot app surface for Egypt tours, long stays, property requests, WhatsApp intake, and governed operator handoff.",
+    href: "/umeldonia",
+    cta: "Open UmEldonia",
+  },
+  {
     label: "GTCS4U",
     title: "Business application surface",
     body: "Connects the governance runtime to a commercial operating domain, revenue path, and market-fit narrative.",
@@ -126,6 +133,9 @@ export default async function Home() {
             </Link>
             <Link href="/hurghada-mobility" className="transition hover:text-white">
               Hurghada Pilot
+            </Link>
+            <Link href="/umeldonia" className="transition hover:text-white">
+              UmEldonia
             </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local

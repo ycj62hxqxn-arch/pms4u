@@ -22,6 +22,7 @@ const sections = [
         use: "Travelers, long-stay guests, rental leads, and buyer-intent property clients.",
         actions: [
           ["Open site", "https://aegyptenhautnah.com/"],
+          ["UmEldonia app", "/umeldonia"],
           ["Vercel preview", "https://vercel-site-tau-six.vercel.app/"],
         ],
       },
@@ -63,6 +64,18 @@ const sections = [
         status: "Assistant layer",
         use: "Governed recommendations, execution evaluation, and operator support.",
         actions: [["Open YAI", "/yai"]],
+      },
+      {
+        tag: "Infrastructure",
+        name: "UmEldonia",
+        purpose:
+          "Aegypten Hautnah app surface for tours, long stays, property requests, WhatsApp intake, and governed operator workflow.",
+        status: "Pilot app surface",
+        use: "Travel customers, long-stay guests, property leads, and local operators.",
+        actions: [
+          ["Open app", "/umeldonia"],
+          ["Booking machine", "/aegyptenhautnah_booking_machine/booking-machine.de.html"],
+        ],
       },
       {
         tag: "Infrastructure",
