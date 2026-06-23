@@ -1,7 +1,15 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useMemo, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
 import { Bot, ChevronDown, MessageCircle, RotateCcw, Send, ShieldCheck, X } from "lucide-react";
+import {
+  clearYaiMemory,
+  loadYaiMemory,
+  memoryToRequest,
+  saveYaiMemory,
+  updateYaiMemory,
+  type YaiBrowserMemory,
+} from "../../lib/yai/browserMemory";
 
 type AgentMode = "governance" | "operator" | "technical";
 
@@ -44,11 +52,25 @@ const modeLabels: Record<AgentMode, string> = {
   technical: "Technical",
 };
 
-function buildBrowserFallback(prompt: string, mode: AgentMode) {
+const memoryStorageKey = "yai.website.agent.memory";
+
+function buildBrowserFallback(prompt: string, mode: AgentMode, memory?: YaiBrowserMemory) {
   const normalized = prompt.toLowerCase();
+  const continuity = memory?.lastTraceId ? [`Continuing trace: ${memory.lastTraceId}`, ""] : [];
+
+  if (/^(yes|yeah|yep|ok|okay|this|that|the app|continue|go on|do it|both|same)$/i.test(prompt.trim()) && memory?.lastTopic) {
+    return [
+      ...continuity,
+      "YAI CONTINUED CONTEXT",
+      `Topic: ${memory.lastTopic}`,
+      memory.pendingQuestion ? `Pending question: ${memory.pendingQuestion}` : "Pending question: continue the previous request.",
+      "I will continue from the stored topic instead of treating this as a new request.",
+    ].join("\n");
+  }
 
   if (mode === "technical" || normalized.includes("architecture") || normalized.includes("pms4u")) {
     return [
+      ...continuity,
       "YAI TECHNICAL RESPONSE",
       "PMS4U sits between decision and consequence.",
       "1. It checks authority before execution.",
@@ -60,6 +82,7 @@ function buildBrowserFallback(prompt: string, mode: AgentMode) {
 
   if (mode === "operator" || normalized.includes("runbook") || normalized.includes("booking")) {
     return [
+      ...continuity,
       "YAI OPERATOR RUNBOOK",
       "1. Name the accountable operator.",
       "2. State the consequence domain.",
@@ -71,6 +94,7 @@ function buildBrowserFallback(prompt: string, mode: AgentMode) {
   }
 
   return [
+    ...continuity,
     "YAI GOVERNANCE RESPONSE",
     "Requester urgency is not authority.",
     "Decision: NEED_REVIEW.",
@@ -84,6 +108,7 @@ export function YaiAgentBot() {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [runtimeSource, setRuntimeSource] = useState("standby");
+  const [continuingTraceId, setContinuingTraceId] = useState("");
   const [messages, setMessages] = useState<AgentMessage[]>([
     {
       role: "yai",
@@ -97,9 +122,30 @@ export function YaiAgentBot() {
     [mode]
   );
 
+  useEffect(() => {
+    const memory = loadYaiMemory(memoryStorageKey, "yai-agent");
+    if (memory.messages.length > 0) {
+      setMessages([
+        {
+          role: "yai",
+          text: "YAI website agent memory restored. Continue the previous topic or reset the session.",
+          traceId: memory.lastTraceId ?? "YAI-WEB-BOOT",
+        },
+        ...memory.messages.map((message): AgentMessage => ({
+          role: message.role === "user" ? "you" : "yai",
+          text: message.content,
+          traceId: message.traceId,
+        })),
+      ]);
+    }
+    setContinuingTraceId(memory.lastTraceId ?? "");
+  }, []);
+
   function resetSession() {
+    clearYaiMemory(memoryStorageKey, "yai-agent");
     setInput("");
     setRuntimeSource("standby");
+    setContinuingTraceId("");
     setMessages([
       {
         role: "yai",
@@ -115,7 +161,7 @@ export function YaiAgentBot() {
     setOpen(true);
   }
 
-  async function sendPrompt(prompt: string) {
+  async function sendPrompt(prompt: string, memory: YaiBrowserMemory) {
     const pageContext =
       typeof window === "undefined"
         ? ""
@@ -124,7 +170,12 @@ export function YaiAgentBot() {
     const response = await fetch("/api/yai", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: `${prompt}${pageContext}`, mode }),
+      body: JSON.stringify({
+        prompt: `${prompt}${pageContext}`,
+        mode,
+        messages: memory.messages,
+        session: memoryToRequest(memory),
+      }),
     });
 
     if (!response.ok) {
@@ -134,6 +185,8 @@ export function YaiAgentBot() {
     return (await response.json()) as {
       reply?: string;
       traceId?: string;
+      previousTraceId?: string | null;
+      continuingTraceId?: string | null;
       runtimeSource?: string;
       model?: string;
     };
@@ -149,24 +202,36 @@ export function YaiAgentBot() {
     setMessages((prev) => [...prev, { role: "you", text: prompt }]);
 
     try {
-      const data = await sendPrompt(prompt);
+      const memory = loadYaiMemory(memoryStorageKey, "yai-agent");
+      const data = await sendPrompt(prompt, memory);
+      const reply = (data.reply ?? "").trim() || "YAI returned no response.";
+      const updatedMemory = updateYaiMemory(memory, prompt, reply, data.traceId);
+      saveYaiMemory(memoryStorageKey, updatedMemory);
+
       setRuntimeSource(data.runtimeSource ?? "yai-api");
+      setContinuingTraceId(data.continuingTraceId ?? updatedMemory.lastTraceId ?? "");
       setMessages((prev) => [
         ...prev,
         {
           role: "yai",
-          text: (data.reply ?? "").trim() || "YAI returned no response.",
+          text: reply,
           traceId: data.traceId,
         },
       ]);
     } catch {
+      const memory = loadYaiMemory(memoryStorageKey, "yai-agent");
       const traceId = `YAI-BROWSER-${Date.now().toString(36).toUpperCase()}`;
+      const reply = buildBrowserFallback(prompt, mode, memory);
+      const updatedMemory = updateYaiMemory(memory, prompt, reply, traceId);
+      saveYaiMemory(memoryStorageKey, updatedMemory);
+
       setRuntimeSource("browser-fallback");
+      setContinuingTraceId(updatedMemory.lastTraceId ?? "");
       setMessages((prev) => [
         ...prev,
         {
           role: "yai",
-          text: buildBrowserFallback(prompt, mode),
+          text: reply,
           traceId,
         },
       ]);
@@ -278,7 +343,9 @@ export function YaiAgentBot() {
           <footer className="border-t border-white/10 bg-black p-3">
             <div className="mb-2 flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.16em] text-slate-500">
               <span>Mode: {modeLabels[mode]}</span>
-              <span className="truncate">Runtime: {runtimeSource}</span>
+              <span className="truncate">
+                {continuingTraceId ? `Continuing: ${continuingTraceId}` : `Runtime: ${runtimeSource}`}
+              </span>
             </div>
             <form onSubmit={onSubmit} className="grid grid-cols-[1fr_auto] gap-2">
               <textarea

@@ -16,28 +16,56 @@ body {
   background-color: #000;
   background-image:
     radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08), transparent 38%),
-    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.06), transparent 36%),
-    url("/assets/frameworks/background.png");
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.06), transparent 36%);
   background-repeat: no-repeat;
-  background-size: 60% auto, 55% auto, 35% auto;
-  background-position: 18% 18%, 82% 8%, 50% 50%;
+  background-size: 60% auto, 55% auto;
+  background-position: 18% 18%, 82% 8%;
+  animation: authorityGlow 12s ease-in-out infinite;
+}
+
+.authority-bg::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("/assets/frameworks/background.png");
+  background-repeat: no-repeat;
+  background-size: 35% auto;
+  background-position: center;
+  opacity: 0.8;
+  mix-blend-mode: screen;
+  transform: translate3d(0, 0, 0) scale(1);
   animation: authorityFloat 26s ease-in-out infinite;
+}
+
+@keyframes authorityGlow {
+  0% {
+    background-position: 18% 18%, 82% 8%;
+  }
+  50% {
+    background-position: 22% 24%, 76% 14%;
+  }
+  100% {
+    background-position: 18% 18%, 82% 8%;
+  }
 }
 
 @keyframes authorityFloat {
   0% {
-    background-position: 18% 18%, 82% 8%, 50% 50%;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    background-position: 22% 24%, 76% 14%, 44% 56%;
+    transform: translate3d(-30px, 20px, 0) scale(1.03);
   }
   100% {
-    background-position: 18% 18%, 82% 8%, 50% 50%;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .authority-bg {
+  .authority-bg,
+  .authority-bg::before {
     animation: none;
   }
 }

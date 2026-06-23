@@ -1,12 +1,19 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
   Cpu,
   RotateCcw,
   Server,
   ShieldCheck,
 } from "lucide-react";
+import {
+  clearYaiMemory,
+  loadYaiMemory,
+  memoryToRequest,
+  saveYaiMemory,
+  updateYaiMemory,
+} from "../../lib/yai/browserMemory";
 
 type Mode = "governance" | "operator" | "technical";
 
@@ -14,6 +21,7 @@ type ChatMessage = {
   role: "yai" | "you";
   tag: string;
   text: string;
+  traceId?: string;
 };
 
 type ModeCard = {
@@ -58,6 +66,8 @@ const bootMessage: ChatMessage = {
     "YAI local console is ready. Choose a mode or start with a demo prompt. On static production hosts, YAI uses a browser MCV fallback. On a server-backed local run with OPENAI_API_KEY, it calls OpenAI through /api/yai.",
 };
 
+const memoryStorageKey = "yai.local.console.memory";
+
 export function YaiConsole() {
   const [mode, setMode] = useState<Mode>("governance");
   const [messages, setMessages] = useState<ChatMessage[]>([bootMessage]);
@@ -65,14 +75,33 @@ export function YaiConsole() {
   const [sending, setSending] = useState(false);
   const [runtimeSource, setRuntimeSource] = useState("local-fallback");
   const [model, setModel] = useState("yai-local");
+  const [continuingTraceId, setContinuingTraceId] = useState("");
 
   const activeCard = useMemo(() => modeCards.find((card) => card.mode === mode) ?? modeCards[0], [mode]);
 
+  useEffect(() => {
+    const memory = loadYaiMemory(memoryStorageKey, "yai-console");
+    if (memory.messages.length > 0) {
+      setMessages([
+        bootMessage,
+        ...memory.messages.map((message): ChatMessage => ({
+          role: message.role === "user" ? "you" : "yai",
+          tag: message.role === "user" ? "YOU" : "YAI",
+          text: message.content,
+          traceId: message.traceId,
+        })),
+      ]);
+    }
+    setContinuingTraceId(memory.lastTraceId ?? "");
+  }, []);
+
   function onReset() {
+    clearYaiMemory(memoryStorageKey, "yai-console");
     setMessages([bootMessage]);
     setInput("");
     setRuntimeSource("local-fallback");
     setModel("yai-local");
+    setContinuingTraceId("");
   }
 
   function useModePrompt(card: ModeCard) {
@@ -90,10 +119,16 @@ export function YaiConsole() {
     setInput("");
 
     try {
+      const memory = loadYaiMemory(memoryStorageKey, "yai-console");
       const response = await fetch("/api/yai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, mode }),
+        body: JSON.stringify({
+          prompt,
+          mode,
+          messages: memory.messages,
+          session: memoryToRequest(memory),
+        }),
       });
 
       if (!response.ok) {
@@ -103,16 +138,20 @@ export function YaiConsole() {
       const data = (await response.json()) as {
         reply?: string;
         traceId?: string;
+        previousTraceId?: string | null;
+        continuingTraceId?: string | null;
         runtimeSource?: string;
         model?: string;
       };
 
       const reply = (data.reply ?? "").trim() || "YAI returned no response.";
-      const traceId = data.traceId ? `\n\nTrace ID: ${data.traceId}` : "";
+      const updatedMemory = updateYaiMemory(memory, prompt, reply, data.traceId);
+      saveYaiMemory(memoryStorageKey, updatedMemory);
 
       setRuntimeSource(data.runtimeSource ?? "local-fallback");
       setModel(data.model ?? "yai-local");
-      setMessages((prev) => [...prev, { role: "yai", tag: "YAI", text: `${reply}${traceId}` }]);
+      setContinuingTraceId(data.continuingTraceId ?? updatedMemory.lastTraceId ?? "");
+      setMessages((prev) => [...prev, { role: "yai", tag: "YAI", text: reply, traceId: data.traceId }]);
     } catch {
       const failedUrl = `${window.location.origin}${window.location.pathname}`;
       setModel("yai-error");
@@ -183,12 +222,14 @@ export function YaiConsole() {
               </div>
               <div className="flex items-start gap-3">
                 <Cpu className="mt-0.5 size-4 text-orange-300" />
-                <div>
+              <div>
                   <div className="font-medium">Model</div>
                   <div className="break-all text-gray-400">{model}</div>
                 </div>
               </div>
-              <div className="border border-white/10 bg-white/[0.02] p-3 font-mono text-xs text-gray-400">YAI-BOOT</div>
+              <div className="border border-white/10 bg-white/[0.02] p-3 font-mono text-xs text-gray-400">
+                {continuingTraceId ? `Continuing trace: ${continuingTraceId}` : "YAI-BOOT"}
+              </div>
             </div>
           </div>
 
@@ -233,7 +274,7 @@ export function YaiConsole() {
               >
                 <div className="mb-2 flex items-center justify-between gap-3 text-xs uppercase tracking-[0.18em] text-gray-500">
                   <span>{message.role === "yai" ? "YAI" : "YOU"}</span>
-                  <span className="font-mono">{message.tag}</span>
+                  <span className="font-mono">{message.traceId ?? message.tag}</span>
                 </div>
                 <p className="whitespace-pre-wrap text-sm leading-7 text-gray-200">{message.text}</p>
               </div>
