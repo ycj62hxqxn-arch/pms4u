@@ -73,6 +73,15 @@ const sections = [
         use: "Lead capture, replay, request trace, and operational status.",
         actions: [["Aegypten machine", "/aegyptenhautnah_booking_machine/booking-machine.de.html"]],
       },
+      {
+        tag: "Application MVP",
+        name: "Subscription Mobility",
+        purpose:
+          "Ride-hailing blueprint for cars and motorbikes where drivers pay a monthly access fee instead of per-ride commission.",
+        status: "MVP blueprint",
+        use: "Driver economics, rider flow, subscription controls, admin verification, and governed execution gates.",
+        actions: [["Open MVP", "/subscription-mobility"]],
+      },
     ],
   },
   {

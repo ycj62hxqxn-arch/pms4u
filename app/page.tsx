@@ -41,6 +41,13 @@ const proofAssets = [
     cta: "Open BPB site",
   },
   {
+    label: "Mobility MVP",
+    title: "Driver subscription ride-hailing",
+    body: "Blueprint for a car and motorbike ride-hailing platform where drivers pay a fixed monthly fee instead of per-ride commission.",
+    href: "/subscription-mobility",
+    cta: "Open mobility MVP",
+  },
+  {
     label: "GTCS4U",
     title: "Business application surface",
     body: "Connects the governance runtime to a commercial operating domain, revenue path, and market-fit narrative.",
@@ -113,6 +120,9 @@ export default async function Home() {
             </Link>
             <Link href="/authority-audit-sprint" className="transition hover:text-white">
               Audit Sprint
+            </Link>
+            <Link href="/subscription-mobility" className="transition hover:text-white">
+              Mobility MVP
             </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local
