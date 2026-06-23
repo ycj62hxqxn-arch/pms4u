@@ -8,3 +8,36 @@ body {
   padding: 0;
   min-height: 100%;
 }
+
+.authority-bg {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #000;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08), transparent 38%),
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.06), transparent 36%),
+    url("/assets/frameworks/background.png");
+  background-repeat: no-repeat;
+  background-size: 60% auto, 55% auto, 35% auto;
+  background-position: 18% 18%, 82% 8%, 50% 50%;
+  animation: authorityFloat 26s ease-in-out infinite;
+}
+
+@keyframes authorityFloat {
+  0% {
+    background-position: 18% 18%, 82% 8%, 50% 50%;
+  }
+  50% {
+    background-position: 22% 24%, 76% 14%, 44% 56%;
+  }
+  100% {
+    background-position: 18% 18%, 82% 8%, 50% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .authority-bg {
+    animation: none;
+  }
+}
