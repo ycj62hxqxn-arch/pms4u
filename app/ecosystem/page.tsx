@@ -116,13 +116,13 @@ const sections = [
         actions: [["Open GTCS4U", "/gtcs4u"]],
       },
       {
-        tag: "Holding",
-        name: "BPB Solutions LTD",
+        tag: "Ecosystem",
+        name: "BPB governance ecosystem",
         purpose:
-          "Corporate identity for execution infrastructure, governed systems, commercial ventures, and authority-controlled operations.",
-        status: "Holding identity",
-        use: "Ownership, legal identity, ecosystem routing, and partner confidence.",
-        actions: [["Open BPB", "/bpbsolutionsltd"]],
+          "Routing surface for execution infrastructure, governed systems, commercial ventures, and authority-controlled operations.",
+        status: "Product ecosystem routing",
+        use: "Product navigation, partner orientation, and proof-surface discovery.",
+        actions: [["Open hub", "/bpbsolutionsltd"]],
       },
     ],
   },
@@ -193,8 +193,9 @@ export default function EcosystemPage() {
             One ecosystem, four different jobs.
           </h1>
           <p className="mt-7 max-w-3xl text-lg leading-8 text-gray-300">
-            BPB Solutions LTD separates sales fronts, infrastructure systems, authority layers,
-            and proof surfaces. Each visitor should land on the layer that matches their intent.
+            The BPB governance ecosystem separates sales fronts, infrastructure systems,
+            authority layers, and proof surfaces. Each visitor should land on the layer that
+            matches their intent.
           </p>
           <div className="mt-10 grid border border-white/10 md:grid-cols-4">
             {[

@@ -34,11 +34,11 @@ const proofAssets = [
     cta: "Book sprint",
   },
   {
-    label: "BPB Solutions LTD",
-    title: "Corporate YAI Local surface",
-    body: "Adds YAI Local to the BPB public website as the working assistant layer for execution governance and operator guidance.",
+    label: "Operating Hub",
+    title: "YAI Local operator surface",
+    body: "Adds YAI Local to the public website as the working assistant layer for execution governance and operator guidance.",
     href: "/bpbsolutionsltd",
-    cta: "Open BPB site",
+    cta: "Open operator hub",
   },
   {
     label: "Mobility MVP",
@@ -84,6 +84,40 @@ const frameworkImages = [
 
 const withGovernanceSteps = ["INTAKE", "VERIFIED", "AUTHORITY_GRANTED", "TRACE", "EVIDENCE"];
 
+const commercialProducts = [
+  {
+    name: "GTCS4U",
+    buyer: "Trade, logistics, compliance, and procurement teams.",
+    problem: "Shipments, suppliers, approvals, and documents move faster than authority checks.",
+    outcome: "Block unauthorized export, vendor approval, document release, or shipment status changes before consequence.",
+    href: "/gtcs4u",
+    cta: "Open GTCS4U",
+  },
+  {
+    name: "YAI Local",
+    buyer: "Operators who need AI assistance without uncontrolled execution.",
+    problem: "Agents can advise, draft, or trigger workflows without remembering authority state or evidence gaps.",
+    outcome: "Guide the operator while preserving trace, authority state, and consequence awareness.",
+    href: "/yai",
+    cta: "Open YAI",
+  },
+  {
+    name: "Mobility MVP",
+    buyer: "City operators, driver groups, and local transport ventures.",
+    problem: "Commission-heavy ride platforms create weak driver economics and low local trust.",
+    outcome: "Run a monthly-fee driver model with verification, subscription gates, and controlled ride acceptance.",
+    href: "/hurghada-mobility",
+    cta: "Open pilot",
+  },
+] as const;
+
+const blockedExamples = [
+  ["Shipment export", "Authority missing", "DENY before export status is committed."],
+  ["Vendor approval", "Evidence incomplete", "DEFER until documents and accountable approver exist."],
+  ["Customer data export", "Purpose not admissible", "INTERRUPT and require traceable review."],
+  ["Driver ride acceptance", "Subscription expired", "DENY new trip while preserving history."],
+] as const;
+
 export default async function Home() {
   const requestHeaders = await headers();
   const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "").toLowerCase();
@@ -104,6 +138,12 @@ export default async function Home() {
             <a href="#runtime" className="transition hover:text-white">
               Runtime
             </a>
+            <a href="#commercial-products" className="transition hover:text-white">
+              Products
+            </a>
+            <a href="#case-study" className="transition hover:text-white">
+              Case
+            </a>
             <a href="#proof-assets" className="transition hover:text-white">
               Proof Assets
             </a>
@@ -111,7 +151,7 @@ export default async function Home() {
               Authority
             </Link>
             <Link href="/bpbsolutionsltd" className="transition hover:text-white">
-              BPB Site
+              Operator Hub
             </Link>
             <Link href="/shab-report" className="transition hover:text-white">
               Shab Report
@@ -163,19 +203,29 @@ export default async function Home() {
               PMS4U sits at the execution boundary. It checks state, authority, admissibility,
               and evidence before a workflow, API, or AI agent is allowed to mutate reality.
             </p>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-gray-400">
+              The first commercial path is GTCS4U: trade, logistics, supplier, document, and
+              compliance workflows powered by PMS4U underneath.
+            </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
-                href="/bpbsolutionsltd/yai"
+                href="/gtcs4u"
                 className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-100"
               >
-                Open BPB YAI Local
+                Open GTCS4U
+              </Link>
+              <Link
+                href="/authority-audit-sprint"
+                className="inline-flex items-center justify-center rounded-lg bg-emerald-300 px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-200"
+              >
+                Book audit sprint
               </Link>
               <a
-                href="#proof-assets"
+                href="#case-study"
                 className="inline-flex items-center justify-center rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-white"
               >
-                Open proof room
+                View execution case
               </a>
             </div>
 
@@ -223,6 +273,45 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="commercial-products" className="border-b border-white/10 bg-white/[0.02] px-5 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
+              Commercial front first
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold tracking-normal sm:text-5xl">
+              Sell the operating products. Let PMS4U be the moat behind them.
+            </h2>
+            <p className="mt-5 text-base leading-7 text-gray-400">
+              Buyers understand shipments, approvals, drivers, bookings, and operator support
+              before they understand runtime governance. The site now routes them to the business
+              surface first, then shows the control layer underneath.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {commercialProducts.map((product) => (
+              <article key={product.name} className="flex min-h-[360px] flex-col rounded-lg border border-white/10 bg-black/55 p-6">
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                  {product.name}
+                </div>
+                <h3 className="mt-4 text-xl font-semibold text-white">{product.buyer}</h3>
+                <p className="mt-4 text-sm leading-6 text-gray-400">{product.problem}</p>
+                <p className="mt-4 rounded-lg border border-emerald-300/20 bg-emerald-950/20 p-4 text-sm leading-6 text-emerald-50">
+                  {product.outcome}
+                </p>
+                <Link
+                  href={product.href}
+                  className="mt-auto inline-flex w-fit rounded-lg border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white"
+                >
+                  {product.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="runtime" className="px-5 py-20">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
@@ -249,6 +338,56 @@ export default async function Home() {
               className="h-auto w-full"
               priority
             />
+          </div>
+        </div>
+      </section>
+
+      <section id="case-study" className="border-y border-white/10 bg-white/[0.02] px-5 py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300">
+              Investor-safe case format
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold tracking-normal sm:text-5xl">
+              Show what gets blocked before claiming financial impact.
+            </h2>
+            <p className="mt-5 text-base leading-7 text-gray-400">
+              The current proof standard is technical: interception, frozen execution, signed
+              evidence, replay, and hash continuity. Prevented-loss values should only be published
+              after a business owner validates the exposure.
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            <article className="rounded-lg border border-white/10 bg-black p-5">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+                Example execution story
+              </div>
+              <div className="mt-5 grid gap-3 text-sm">
+                {[
+                  ["Actor", "Customer, agent, operator, or workflow attempts a governed action."],
+                  ["Runtime check", "PMS4U evaluates authority, admissibility, state, and evidence."],
+                  ["Decision", "Unauthorized or incomplete action is denied, deferred, or interrupted."],
+                  ["Proof", "Ledger event, signature, evidence ID, and replayable lineage are retained."],
+                  ["Impact", "Business-side exposure value remains pending until validated."],
+                ].map(([label, value]) => (
+                  <div key={label} className="grid gap-2 border-b border-white/10 pb-3 last:border-b-0 last:pb-0 sm:grid-cols-[160px_1fr]">
+                    <span className="font-semibold text-white">{label}</span>
+                    <span className="text-gray-400">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              {blockedExamples.map(([action, gap, result]) => (
+                <article key={action} className="rounded-lg border border-white/10 bg-black/60 p-5">
+                  <p className="text-sm font-semibold text-white">{action}</p>
+                  <p className="mt-2 text-sm text-red-200">Gap: {gap}</p>
+                  <p className="mt-3 text-sm leading-6 text-emerald-100">{result}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -378,7 +517,7 @@ export default async function Home() {
       </section>
 
       <footer className="border-t border-white/10 px-5 py-8 text-center text-sm text-gray-600">
-        © 2026 PMS4U — BPB Solutions LTD
+        © 2026 PMS4U. Product ecosystem and pilot surfaces. Contracting entity confirmed before engagement.
       </footer>
     </main>
   );
