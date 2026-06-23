@@ -31,7 +31,7 @@ Authority before execution.
 
 The next serious question for every AI agent, workflow, ERP action, shipment approval, vendor release, or customer data export is:
 
-Who proves this action had authority before it became consequence?
+If AI can execute, who signs the consequence?
 
 That is the runtime governance problem.
 That is where PMS4U is positioned.

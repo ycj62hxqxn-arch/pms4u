@@ -198,9 +198,35 @@
 
       .arrow {
         color: var(--green);
-        font-size: 34px;
+        font-size: 42px;
         font-weight: 800;
+        line-height: 0.9;
         text-align: center;
+      }
+
+      .outcome-state {
+        border: 2px solid rgba(255, 112, 107, 0.62);
+        background:
+          linear-gradient(135deg, rgba(255, 112, 107, 0.16), rgba(103, 240, 181, 0.06)),
+          rgba(0, 0, 0, 0.46);
+        padding: 30px;
+      }
+
+      .outcome-state strong {
+        display: block;
+        color: var(--red);
+        font-size: 58px;
+        font-weight: 880;
+        line-height: 0.96;
+      }
+
+      .outcome-state span {
+        display: block;
+        margin-top: 14px;
+        color: var(--ink);
+        font-size: 28px;
+        font-weight: 650;
+        line-height: 1.2;
       }
 
       .red {
@@ -314,13 +340,13 @@
         <h2>Real governance sits before consequence.</h2>
         <div class="flow">
           <div class="step">REQUEST</div>
-          <div class="arrow">down</div>
+          <div class="arrow">↓</div>
           <div class="step">AUTHORITY CHECK</div>
-          <div class="arrow">down</div>
+          <div class="arrow">↓</div>
           <div class="step">ADMISSIBILITY CHECK</div>
-          <div class="arrow">down</div>
+          <div class="arrow">↓</div>
           <div class="step">DENY / DEFER / ALLOW</div>
-          <div class="arrow">down</div>
+          <div class="arrow">↓</div>
           <div class="step">SIGNED EVIDENCE</div>
         </div>
       </div>
@@ -360,6 +386,10 @@
       <div class="top"><span class="brand">Example</span><span class="number">06 / 10</span></div>
       <div class="content">
         <h2>A shipment tries to export.</h2>
+        <div class="outcome-state">
+          <strong>EXPORT BLOCKED</strong>
+          <span>No authority. No irreversible status change.</span>
+        </div>
         <div class="grid two">
           <div class="card"><strong>Action</strong><span>Change shipment status to EXPORTED.</span></div>
           <div class="card"><strong>Gap</strong><span>Authority missing or evidence incomplete.</span></div>
@@ -409,8 +439,8 @@
     <section class="slide" data-slide="10">
       <div class="top"><span class="brand">Question</span><span class="number">10 / 10</span></div>
       <div class="content">
-        <h2>If your automation can execute...</h2>
-        <p class="big">Who proves it had authority?</p>
+        <h2>If AI can execute...</h2>
+        <p class="big">Who signs the consequence?</p>
         <p>That is the execution boundary PMS4U is building.</p>
         <div class="card">
           <strong class="green">Next proof step</strong>
