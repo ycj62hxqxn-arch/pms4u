@@ -93,6 +93,9 @@ export default function SubscriptionMobilityPage() {
             PMS4U Mobility MVP
           </Link>
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-gray-400">
+            <Link href="/hurghada-mobility" className="font-medium text-emerald-300 transition hover:text-emerald-100">
+              Hurghada Pilot
+            </Link>
             <a href="#economics" className="transition hover:text-white">
               Economics
             </a>
@@ -143,6 +146,13 @@ export default function SubscriptionMobilityPage() {
                 <Smartphone className="size-4" />
                 View app scope
               </a>
+              <Link
+                href="/hurghada-mobility"
+                className="inline-flex items-center gap-2 rounded-lg bg-emerald-300 px-5 py-3 text-sm font-semibold text-black transition hover:bg-emerald-200"
+              >
+                <MapPinned className="size-4" />
+                Open Hurghada pilot
+              </Link>
               <a
                 href="#governance"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-white"

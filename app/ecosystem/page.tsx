@@ -80,7 +80,10 @@ const sections = [
           "Ride-hailing blueprint for cars and motorbikes where drivers pay a monthly access fee instead of per-ride commission.",
         status: "MVP blueprint",
         use: "Driver economics, rider flow, subscription controls, admin verification, and governed execution gates.",
-        actions: [["Open MVP", "/subscription-mobility"]],
+        actions: [
+          ["Open MVP", "/subscription-mobility"],
+          ["Hurghada pilot", "/hurghada-mobility"],
+        ],
       },
     ],
   },

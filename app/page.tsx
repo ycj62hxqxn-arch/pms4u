@@ -124,6 +124,9 @@ export default async function Home() {
             <Link href="/subscription-mobility" className="transition hover:text-white">
               Mobility MVP
             </Link>
+            <Link href="/hurghada-mobility" className="transition hover:text-white">
+              Hurghada Pilot
+            </Link>
             <Link href="/yai" className="transition hover:text-white">
               YAI Local
             </Link>
