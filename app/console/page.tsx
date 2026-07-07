@@ -234,6 +234,14 @@ export default function RuntimeConsole() {
             <span className={currentState.colorZone}>{currentState.textZone}</span>
           </div>
           <div className="px-4 py-1.5 rounded-full font-bold text-sm bg-white/10">SIMULATION: LIVE DEMO</div>
+          <a
+            href="/yai"
+            className="px-4 py-1.5 rounded-full font-bold text-sm border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 hover:bg-cyan-400/20 transition-colors"
+            aria-label="Ask YAI"
+            title="Ask YAI"
+          >
+            ASK YAI
+          </a>
         </div>
       </header>
 

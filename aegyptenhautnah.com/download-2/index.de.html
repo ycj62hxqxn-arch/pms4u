@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ägypten Hautnah | Direkt Buchen & Kontakt</title>
+    <meta name="description" content="Premium-Reisen, Immobilien und Investitionen in Ägypten. Unvergessliche Erlebnisse, direkt und sicher verwaltet.">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8fafc; color: #222; margin: 0; }
+        .container { max-width: 480px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px #0001; padding: 32px 24px; }
+        h1 { color: #0ea5e9; font-size: 2em; margin-bottom: 10px; }
+        label { display: block; margin-top: 18px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 6px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 1em; }
+        button { margin-top: 24px; background: #0ea5e9; color: #fff; border: none; padding: 14px 0; width: 100%; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; }
+        .success { color: #22c55e; margin-top: 18px; font-weight: bold; }
+        .error { color: #ef4444; margin-top: 18px; font-weight: bold; }
+        .footer { margin-top: 40px; text-align: center; color: #64748b; font-size: 0.95em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ägypten Hautnah</h1>
+        <p>Direkte Anfrage für Reisen, Immobilien & Investitionen</p>
+        <form id="leadForm">
+            <label for="customer_name">Name</label>
+            <input type="text" id="customer_name" name="customer_name" required>
+
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Telefon</label>
+            <input type="text" id="phone" name="phone">
+
+            <label for="country">Land</label>
+            <input type="text" id="country" name="country" value="Deutschland">
+
+            <label for="language">Sprache</label>
+            <select id="language" name="language">
+                <option value="de">Deutsch</option>
+                <option value="en">Englisch</option>
+            </select>
+
+            <label for="interests">Interessen</label>
+            <input type="text" id="interests" name="interests" placeholder="z.B. Tauchen, Immobilien, Safari">
+
+            <label for="notes">Nachricht</label>
+            <textarea id="notes" name="notes" rows="3"></textarea>
+
+            <button type="submit">Absenden</button>
+        </form>
+        <div id="formMsg"></div>
+        <div class="footer">&copy; 2026 Ägypten Hautnah | Powered by PMS4U Lead Registry</div>
+    </div>
+    <script>
+    document.getElementById('leadForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('formMsg');
+        msg.textContent = '';
+        msg.className = '';
+        const data = {
+            customer_name: this.customer_name.value,
+            email: this.email.value,
+            phone: this.phone.value,
+            country: this.country.value,
+            language: this.language.value,
+            interests: this.interests.value.split(',').map(s=>s.trim()).filter(Boolean),
+            notes: this.notes.value,
+            source: 'website',
+        };
+        try {
+            const res = await fetch('https://api.aegyptenhautnah.com/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                msg.textContent = 'Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt.';
+                msg.className = 'success';
+                this.reset();
+            } else {
+                msg.textContent = 'Fehler beim Senden. Bitte versuchen Sie es später erneut.';
+                msg.className = 'error';
+            }
+        } catch (err) {
+            msg.textContent = 'Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung.';
+            msg.className = 'error';
+        }
+    };
+    </script>
+</body>
+</html>

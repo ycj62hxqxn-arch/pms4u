@@ -248,7 +248,7 @@ export function YaiAgentBot() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-[70] flex max-w-[calc(100vw-2rem)] flex-col items-end font-sans text-white sm:bottom-5 sm:right-5">
+    <div className="fixed bottom-2 right-2 z-[70] flex max-w-[calc(100vw-1rem)] flex-col items-end font-sans text-white sm:bottom-5 sm:right-5 sm:max-w-[calc(100vw-2rem)]">
       {open && (
         <section
           aria-label="YAI website agent"
@@ -373,10 +373,10 @@ export function YaiAgentBot() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="group flex min-h-14 items-center gap-3 border border-emerald-300/40 bg-[#0f172a] px-4 py-3 text-left shadow-2xl shadow-black/40 transition hover:border-emerald-200"
+        className="group flex min-h-11 items-center gap-3 border border-emerald-300/40 bg-[#0f172a] px-2 py-2 text-left shadow-2xl shadow-black/40 transition hover:border-emerald-200 sm:min-h-14 sm:px-4 sm:py-3"
         aria-label={open ? "Collapse YAI agent" : "Open YAI agent"}
       >
-        <span className="grid size-9 place-items-center bg-emerald-300 text-black">
+        <span className="grid size-8 place-items-center bg-emerald-300 text-black sm:size-9">
           {open ? <Bot className="size-5" aria-hidden="true" /> : <MessageCircle className="size-5" aria-hidden="true" />}
         </span>
         <span className="hidden sm:block">

@@ -1,0 +1,66 @@
+padding:40px;
+padding:15px;
+border-radius:10px;
+document.getElementById("leads").innerHTML = html;
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CRM Dashboard</title>
+	<style>
+		body { background: #f8fafc; color: #222; font-family: Arial, sans-serif; margin: 0; }
+		.container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px #0001; padding: 32px 24px; }
+		h1 { color: #0ea5e9; font-size: 2em; margin-bottom: 10px; }
+		table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+		th, td { padding: 10px 8px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+		th { background: #f1f5f9; }
+		tr:last-child td { border-bottom: none; }
+		.status { font-weight: bold; color: #22c55e; }
+		.error { color: #ef4444; margin-top: 18px; font-weight: bold; }
+		.footer { margin-top: 40px; text-align: center; color: #64748b; font-size: 0.95em; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>CRM Dashboard</h1>
+		<div id="leads"></div>
+		<div id="error" class="error"></div>
+		<div class="footer">&copy; 2026 Ägypten Hautnah | Powered by PMS4U Lead Registry</div>
+	</div>
+	<script>
+		async function loadLeads() {
+			const leadsDiv = document.getElementById('leads');
+			const errorDiv = document.getElementById('error');
+			leadsDiv.innerHTML = '';
+			errorDiv.textContent = '';
+			try {
+				const res = await fetch('https://api.aegyptenhautnah.com/leads');
+				if (!res.ok) throw new Error('API-Fehler: ' + res.status);
+				const leads = await res.json();
+				if (!Array.isArray(leads) || leads.length === 0) {
+					leadsDiv.innerHTML = '<p>Keine Leads gefunden.</p>';
+					return;
+				}
+				let html = '<table><tr><th>Name</th><th>Typ</th><th>Status</th><th>Budget</th><th>Interessen</th><th>Erstellt am</th></tr>';
+				for (const lead of leads) {
+					html += `<tr>
+						<td>${lead.customer_name||''}</td>
+						<td>${lead.interests ? (Array.isArray(lead.interests) ? lead.interests[0] : lead.interests) : ''}</td>
+						<td class="status">${lead.status||''}</td>
+						<td>${lead.budget||''}</td>
+						<td>${Array.isArray(lead.interests)?lead.interests.join(', '):lead.interests||''}</td>
+						<td>${lead.created_at?new Date(lead.created_at).toLocaleString('de-DE'):'-'}</td>
+					</tr>`;
+				}
+				html += '</table>';
+				leadsDiv.innerHTML = html;
+			} catch (err) {
+				errorDiv.textContent = 'Fehler beim Laden der Leads: ' + err.message;
+			}
+		}
+		loadLeads();
+		setInterval(loadLeads, 15000); // Reload every 15s
+	</script>
+</body>
+</html>

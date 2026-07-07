@@ -84,6 +84,7 @@ const EVENT_LABELS: Record<string, string> = {
   EVIDENCE_RECORD: "Evidence Record",
   AGENT_PROMPT: "Agent Prompt Prepared",
   AGENT_TOOL_CALL: "OpenAI Tool Call",
+  AGENT_TOOL_TIMEOUT: "OpenAI Tool Timeout",
   AGENT_TOOL_RESULT: "OpenAI Tool Result",
   AGENT_PLAN: "Suggested Response Generated",
   AGENT_SKIPPED: "Agent Execution Blocked",

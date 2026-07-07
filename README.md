@@ -8,6 +8,75 @@
 
 ---
 
+## PMS4U Platform Shape
+
+PMS4U should be read as an operational governance platform, not a loose collection of application files.
+
+```
+PMS4U
+│
+├── Runtime Authority
+├── Admissibility Engine
+├── Execution Gate
+├── Evidence Spine
+├── Constitutional Layer
+└── Reference Implementations
+```
+
+### Core runtime stack
+
+1. **Runtime Authority** — resolves who may request consequence-bearing execution.
+2. **Admissibility Engine** — determines whether the requested action is constitutionally allowed.
+3. **Execution Gate** — blocks or releases mutation only after runtime checks pass.
+4. **Evidence Spine** — seals request, hashes, media, receipts, and runtime proof objects.
+5. **Constitutional Layer** — preserves the doctrine, release discipline, and replayability rules.
+6. **Reference Implementations** — GTCS4U, CARSHUNTER, YAI, investor surfaces, and governed messaging flows.
+
+### Evaluation lens
+
+For enterprise or technical review, the repository should be understood in this order:
+
+- **Governance model first**
+- **Runtime enforcement second**
+- **Evidence and replay third**
+- **Reference products fourth**
+
+That means the operative story is not “AI connected to messaging.” The operative story is:
+
+**Governed Execution over Messaging**
+
+```
+Messaging Surface
+	│
+	▼
+Identity & Authority
+	│
+	▼
+Admissibility Engine
+	│
+	▼
+Execution Gate
+	│
+	▼
+Evidence Receipt
+	│
+	▼
+Business Workflow / Agent Runtime
+```
+
+### Repository map by role
+
+- `governance-core/` — constitutional runtime, receipts, authority resolution, replay, verification
+- `governance-sdk/` — contracts and shared governance state
+- `execution-proof-stack/` — minimal proof gateway and evidence lineage surfaces
+- `app/` — public and operator-facing Next.js surfaces
+- `carshunter_app/` — governed automotive workflow reference implementation
+- `operations-core/` — additional operational systems kept separate from PMS4U public routing
+
+See also [ARCHITECTURE_MAP_MASTER.md](ARCHITECTURE_MAP_MASTER.md) and [RELEASE_CONTROL.md](RELEASE_CONTROL.md).
+
+---
+
 ## Authority Before Execution
 
 **No irreversible mutation may occur outside the constitutional execution boundary.**

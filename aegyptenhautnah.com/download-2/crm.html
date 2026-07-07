@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CRM Dashboard</title>
+
+<style>
+body{
+background:#020617;
+color:#fff;
+font-family:Arial;
+padding:40px;
+}
+
+.card{
+background:#111827;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+}
+
+.vip{border-left:4px solid gold;}
+.medium{border-left:4px solid orange;}
+.low{border-left:4px solid gray;}
+
+</style>
+</head>
+
+<body>
+
+<h1>🔥 Leads Dashboard</h1>
+
+<div id="leads"></div>
+
+<script>
+
+let leads = JSON.parse(localStorage.getItem("leads") || "[]");
+
+let html="";
+
+leads.reverse().forEach(l=>{
+
+let cls="low";
+
+if(l.price > 500 || l.budget > 80000) cls="vip";
+else if(l.price > 100 || l.budget > 30000) cls="medium";
+
+html += `
+<div class="card ${cls}">
+<b>${l.type.toUpperCase()}</b><br>
+
+${l.name ? "Experience: "+l.name+"<br>" : ""}
+${l.goal ? "Goal: "+l.goal+"<br>" : ""}
+${l.location ? "Location: "+l.location+"<br>" : ""}
+
+${l.price ? "Price: €"+l.price+"<br>" : ""}
+${l.budget ? "Budget: €"+l.budget+"<br>" : ""}
+
+<small>${l.date}</small>
+</div>
+`;
+
+});
+
+document.getElementById("leads").innerHTML = html;
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<h2>📊 Live Dashboard</h2>
+
+<div id="data"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("leads") || "[]");
+
+let html="";
+
+data.forEach(l=>{
+html += `<p>${l.type} - ${l.status}</p>`;
+});
+
+document.getElementById("data").innerHTML = html;
+</script>

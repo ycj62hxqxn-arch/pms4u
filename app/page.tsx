@@ -129,65 +129,35 @@ export default async function Home() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-black text-white">
       <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <Link href="/" className="text-sm font-semibold tracking-[0.32em] text-white">
             PMS4U
           </Link>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-gray-400 sm:text-sm">
+          <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-gray-400 sm:justify-end sm:text-sm">
             <a href="#runtime" className="transition hover:text-white">
               Runtime
             </a>
+            <Link href="/research" className="font-medium text-emerald-300 transition hover:text-emerald-100">
+              Research
+            </Link>
+            <Link href="/reference-architecture" className="transition hover:text-white">
+              Architecture
+            </Link>
             <a href="#commercial-products" className="transition hover:text-white">
               Products
             </a>
-            <a href="#case-study" className="transition hover:text-white">
-              Case
+            <Link href="/executive-brief" className="transition hover:text-white">
+              Executive Brief
+            </Link>
+            <a href="https://wa.me/491723256044" className="font-medium text-emerald-300 transition hover:text-emerald-100">
+              Briefing
             </a>
-            <a href="#proof-assets" className="transition hover:text-white">
-              Proof Assets
-            </a>
-            <Link href="/authority" className="transition hover:text-white">
-              Authority
-            </Link>
-            <Link href="/bpbsolutionsltd" className="transition hover:text-white">
-              Operator Hub
-            </Link>
-            <Link href="/shab-report" className="transition hover:text-white">
-              Shab Report
-            </Link>
-            <Link href="/workspace-technical-report" className="transition hover:text-white">
-              Workspace Report
-            </Link>
-            <Link href="/investor-technical-report" className="transition hover:text-white">
-              Investor Report
-            </Link>
-            <Link href="/investor" className="transition hover:text-white">
-              Investor Page
-            </Link>
-            <Link href="/authority-audit-sprint" className="transition hover:text-white">
-              Audit Sprint
-            </Link>
-            <Link href="/subscription-mobility" className="transition hover:text-white">
-              Mobility MVP
-            </Link>
-            <Link href="/hurghada-mobility" className="transition hover:text-white">
-              Hurghada Pilot
-            </Link>
-            <Link href="/umeldonia" className="transition hover:text-white">
-              UmEldonia
-            </Link>
-            <Link href="/yai" className="transition hover:text-white">
-              YAI Local
-            </Link>
-            <Link href="/console" className="font-medium text-emerald-300 transition hover:text-emerald-100">
-              Governance Console
-            </Link>
           </div>
         </div>
       </nav>
 
-      <section className="relative border-b border-white/10 px-5 pt-40 sm:pt-36">
+      <section className="relative border-b border-white/10 px-5 pt-32 sm:pt-28">
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(0,0,0,0)_42%)]" />
         <div className="mx-auto grid max-w-7xl gap-10 pb-16 md:grid-cols-[1.05fr_0.95fr] md:items-center lg:pb-20">
           <div>

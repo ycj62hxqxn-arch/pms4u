@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "mkdir -p .next/server && cp .next/server/chunks/*.js .next/server/ 2>/dev/null || true",
     "start": "next start"
   },
   "dependencies": {

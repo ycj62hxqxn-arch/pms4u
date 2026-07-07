@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ägypten Hautnah | Access Egypt</title>
+
+<style>
+:root{
+--accent:#0ea5e9;
+--bg:#020617;
+--green:#22c55e;
+}
+<!-- BOOKING MODAL -->
+<div id="bookingModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000c;justify-content:center;align-items:center;z-index:999;">
+
+<div style="background:#111;padding:25px;border-radius:12px;width:320px">
+
+<h3 id="tripName"></h3>
+
+<input id="userName" placeholder="Name"><br><br>
+<input id="pax" placeholder="Guests"><br><br>
+
+<select id="payment">
+<option value="whatsapp">WhatsApp</option>
+<option value="stripe">Card</option>
+<option value="wise">Bank</option>
+</select>
+
+<br><br>
+
+<button class="btn" onclick="confirmBooking()">Confirm</button>
+
+</div>
+</div>
+<!-- PROPERTY MODAL -->
+<div id="propertyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000c;justify-content:center;align-items:center;z-index:999;">
+
+<div style="background:#111;padding:25px;border-radius:12px;width:350px">
+
+<h3 id="propertyName"></h3>
+<p id="propertyPrice"></p>
+<p id="propertyROI"></p>
+
+<button class="btn" onclick="requestProperty()">Request Full Details</button>
+
+</div>
+</div>
+
+body{
+margin:0;
+font-family:Arial;
+color:#fff;
+background:var(--bg);
+}
+
+/* BG */
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background-size:cover;
+background-position:center;
+z-index:-2;
+opacity:0;
+transition:1.5s;
+}
+.bg.active{opacity:1;}
+
+.overlay-bg{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+z-index:-1;
+}
+
+/* HERO */
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+/* BTN */
+.btn{
+padding:12px 25px;
+background:var(--accent);
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+<button class="btn" onclick="openProperty('Oyster Bay Unit',75000,'12% ROI')">View</button>
+/* SECTION */
+.section{
+padding:60px 20px;
+max-width:1100px;
+margin:auto;
+text-align:center;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+/* CARD */
+.card{
+position:relative;
+height:300px;
+border-radius:12px;
+overflow:hidden;
+}
+
+.card img, .card video{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.overlay{
+position:absolute;
+bottom:0;
+padding:15px;
+background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+width:100%;
+}
+
+.price{color:var(--green);}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg active" id="bg1" style="background-image:url('Images/hrg/Sea_Background.jpeg')"></div>
+<div class="overlay-bg"></div>
+
+<!-- HERO -->
+<section class="hero">
+<h1>Access Egypt — Not Tourism</h1>
+<p>Controlled Experiences • Private Access • Real Opportunities</p>
+<button class="btn" onclick="scrollToSection('daily')">Enter</button>
+</section>
+
+<!-- DAILY -->
+<section id="daily" class="section">
+<h2>🌊 Daily Sea Experiences</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="Images/experiences/orange.jpeg">
+<div class="overlay">
+<h3>Orange Bay</h3>
+<button class="btn" onclick="book('Orange Bay',35)">Book</button>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/experiences/island.jpeg">
+<div class="overlay">
+<h3>Island Trips</h3>
+<button class="btn" onclick="book('Island',40)">Book</button>
+</div>
+</div>
+
+<div class="card">
+<video autoplay muted loop>
+<source src="Images/experiences/dolphin.mp4" type="video/mp4">
+</video>
+<div class="overlay">
+<h3>Dolphin House</h3>
+<button class="btn" onclick="book('Dolphin',45)">Book</button>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/hrg/BEACH_HRG_SHOT_WATERSPORT.jpeg">
+<div class="overlay">
+<h3>Glass Boat</h3>
+<button class="btn" onclick="book('Glass Boat',25)">Book</button>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- DIVING -->
+<section class="section">
+<h2>🤿 Diving</h2>
+
+<div class="grid">
+
+<div class="card">
+<video autoplay muted loop>
+<source src="Images/experiences/Redsea_HRG_DIVING_Intro.mp4" type="video/mp4">
+</video>
+<div class="overlay">
+<h3>Intro Diving</h3>
+</div>
+</div>
+
+<div class="card">
+<video autoplay muted loop>
+<source src="Images/experiences/diving_intro_Lion.mp4" type="video/mp4">
+</video>
+<div class="overlay">
+<h3>Diving Courses</h3>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- DESERT -->
+<section class="section">
+<h2>🏜️ Desert</h2>
+
+<div class="grid">
+
+<div class="card">
+<video autoplay muted loop>
+<source src="Images/videos/experiences_Quad_Beach_Safari_Day.mov" type="video/mp4">
+</video>
+<div class="overlay">
+<h3>Quad Safari</h3>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/hrg/HRG_Touristic_Village_Mammsha_Breakfast.jpeg">
+<div class="overlay">
+<h3>Jeep Safari</h3>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- CULTURE -->
+<section class="section">
+<h2>🏛️ Culture</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="Images/luxor/Avenue_of_Sphinxes_LUXOR.jpeg">
+<div class="overlay">
+<h3>Luxor</h3>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/cairo/Menahaus_best_pyramid_pool_View.jpeg">
+<div class="overlay">
+<h3>Cairo</h3>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ELITE -->
+<section class="section">
+<h2>🚢 Elite Access</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="Images/luxor/LUXOR_NILE_WIDE_VIEW.jpeg">
+<div class="overlay">
+<h3>Nile Cruise</h3>
+</div>
+</div>
+
+</div>
+</section>
+<section class="section" id="realestate">
+<h2>🏡 Real Estate Access</h2>
+
+<div class="grid">
+
+<div class="card">
+<img src="Images/realestate/oysterbay_unit.jpeg">
+<div class="overlay">
+<h3>Oyster Bay — Sea View Unit</h3>
+<p class="price">From €75,000</p>
+<button class="btn" onclick="openProperty('Oyster Bay Unit',75000,'12% ROI')">View</button>
+<p>✔ Sea View • ✔ Managed • ✔ Foreign Ownership</p>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/realestate/redsea_villa.jpeg">
+<div class="overlay">
+<h3>Red Sea Villa</h3>
+<p class="price">From €180,000</p>
+<button class="btn" onclick="realEstate('Red Sea Villa',180000)">Request</button>
+<p>✔ Sea View • ✔ Managed • ✔ Foreign Ownership</p>
+</div>
+</div>
+
+<div class="card">
+<img src="Images/realestate/rental_project.jpeg">
+<div class="overlay">
+<h3>Rental Investment Units</h3>
+<p class="price">ROI 12%+</p>
+<button class="btn" onclick="realEstate('Rental Units',50000)">Request</button>
+	<p>✔ Sea View • ✔ Managed • ✔ Foreign Ownership</p>
+</div>
+</div>
+
+</div>
+</section>
+<!-- INVEST -->
+<section class="section">
+<h2>💼 Investment</h2>
+
+<p>Real Estate • Business Entry • Intelligence Systems</p>
+
+<button class="btn" onclick="invest()">Request Access</button>
+</section>
+<section class="section">
+<h2>📊 ROI Calculator</h2>
+
+<input id="investment" placeholder="Investment (€)">
+<input id="returnRate" placeholder="ROI % (e.g. 12)">
+
+<br><br>
+
+<button class="btn" onclick="calculateROI()">Calculate</button>
+
+<p id="roiResult"></p>
+<section class="section">
+<h2>🧠 Investor Access</h2>
+
+<input id="capital" placeholder="Available Capital (€)">
+<select id="goal">
+<option value="rental">Rental Income</option>
+<option value="resale">Flip / Resale</option>
+<option value="lifestyle">Lifestyle</option>
+</select>
+
+<br><br>
+
+<button class="btn" onclick="qualifyInvestor()">Get Access</button>
+
+<p id="investResult"></p>
+</section>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+</section>
+<script>
+function realEstate(name, price){
+
+let text = Real Estate Request:
+Property: ${name}
+Budget: €${price}
+Interested in details + ROI;
+
+window.open(https://wa.me/201080800213?text=${encodeURIComponent(text)});
+
+}function realEstate(name, price){
+
+let leads = JSON.parse(localStorage.getItem("leads") || "[]");
+
+leads.push({
+id: Date.now(),
+type: "real_estate",
+property: name,
+budget: price,
+status: "new"
+});
+
+const firebaseConfig = {
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "aegypten-crm",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let text = Real Estate Request:
+Property: ${name}
+Budget: €${price}
+Interested in details + ROI;
+
+window.open(https://wa.me/201080800213?text=${encodeURIComponent(text)});
+
+}
+let selectedTrip = null;
+
+/* BOOK */
+function book(name, price){
+    selectedTrip = {name, price};
+
+    document.getElementById("tripName").innerText = name + " €" + price;
+    document.getElementById("bookingModal").style.display = "flex";
+}
+
+/* CONFIRM BOOKING */
+function confirmBooking(){
+
+    let name = document.getElementById("userName").value;
+    let pax = document.getElementById("pax").value;
+    let payment = document.getElementById("payment").value;
+
+    /* SAVE LEAD */
+    let leads = JSON.parse(localStorage.getItem("leads") || "[]");
+
+    leads.push({
+        id: Date.now(),
+        trip: selectedTrip.name,
+        name,
+        pax,
+        status: "new"
+    });
+
+    localStorage.setItem("leads", JSON.stringify(leads));
+
+    let text = Booking:
+Trip: ${selectedTrip.name}
+Guests: ${pax}
+Name: ${name}
+€${selectedTrip.price};
+
+    /* PAYMENT */
+    if(payment === "whatsapp"){
+        window.open(https://wa.me/201080800213?text=${encodeURIComponent(text)});
+    }
+
+    if(payment === "stripe"){
+        window.open("https://buy.stripe.com/test");
+    }
+
+    if(payment === "wise"){
+        window.open("https://wise.com/pay");
+    }
+
+    document.getElementById("bookingModal").style.display = "none";
+}
+
+/* INVEST CTA */
+function invest(){
+    window.open(https://wa.me/201080800213?text=Investment Access Request);
+function saveLead(data){
+
+db.collection("leads").add({
+type: data.type || "unknown",
+
+/* PERSON */
+clientName: data.clientName || "",
+phone: data.phone || "",
+
+/* BOOKING / PROPERTY */
+asset: data.asset || "",
+price: data.price || 0,
+
+/* INVESTOR */
+capital: data.capital || 0,
+goal: data.goal || "",
+
+/* SYSTEM */
+status: "new",
+score: scoreLead(data),
+
+createdAt: new Date()
+});
+
+}}
+
+/* SCROLL */
+function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+
+/* LEADS */
+function getLeads(){
+    return JSON.parse(localStorage.getItem("leads") || "[]");
+}
+
+/* AI INVESTMENT LOGIC */
+function investmentAI(){
+
+    let capital = document.getElementById("capital").value;
+    let result = "";
+
+    if(capital < 50000){
+        result = "Entry Level → Rental Units";
+    } 
+    else if(capital < 150000){
+        result = "Mid Tier → Red Sea Projects";
+    } 
+    else {
+        result = "High Tier → Villas + Direct Deals";
+    }
+
+    return result;
+}
+let selectedProperty = null;
+
+function openProperty(name, price, roi){
+
+selectedProperty = {name, price, roi};
+
+document.getElementById("propertyName").innerText = name;
+document.getElementById("propertyPrice").innerText = "From €" + price;
+document.getElementById("propertyROI").innerText = roi;
+
+document.getElementById("propertyModal").style.display = "flex";
+}
+
+function requestProperty(){
+
+let leads = JSON.parse(localStorage.getItem("leads") || "[]");
+
+leads.push({
+id: Date.now(),
+type: "real_estate",
+property: selectedProperty.name,
+price: selectedProperty.price,
+roi: selectedProperty.roi,
+status: "qualified"
+});
+
+localStorage.setItem("leads", JSON.stringify(leads));
+
+let text = Property Request:
+${selectedProperty.name}
+Budget: €${selectedProperty.price}
+ROI: ${selectedProperty.roi};
+
+window.open(https://wa.me/201080800213?text=${encodeURIComponent(text)});
+
+document.getElementById("propertyModal").style.display = "none";
+}
+function calculateROI(){
+
+let investment = document.getElementById("investment").value;
+let rate = document.getElementById("returnRate").value;
+
+let yearly = investment * (rate/100);
+let monthly = yearly / 12;
+
+document.getElementById("roiResult").innerText =
+Yearly: €${yearly} | Monthly: €${monthly};
+}
+function qualifyInvestor(){
+
+let capital = document.getElementById("capital").value;
+let goal = document.getElementById("goal").value;
+
+let result = "";
+
+if(capital < 50000){
+result = "Entry Access → Rental Units";
+}
+else if(capital < 150000){
+result = "Mid Access → Managed Projects";
+}
+else{
+result = "Elite Access → Direct Deals";
+}
+
+/* SAVE */
+let leads = JSON.parse(localStorage.getItem("leads") || "[]");
+
+leads.push({
+id: Date.now(),
+type: "investor",
+capital,
+goal,
+segment: result
+});
+
+localStorage.setItem("leads", JSON.stringify(leads));
+
+document.getElementById("investResult").innerText = result;
+
+/* WhatsApp */
+window.open(https://wa.me/201080800213?text=Investor Access:
+Capital: ${capital}
+Goal: ${goal}
+Segment: ${result});
+}
+function updateStatus(id, status){
+
+db.collection("leads").doc(id).update({
+status: status
+});
+
+}function updateStatus(id, status){
+
+db.collection("leads").doc(id).update({
+status: status
+});
+
+}html += 
+<button onclick="updateStatus('${doc.id}','contacted')">Contacted</button>
+<button onclick="updateStatus('${doc.id}','closed')">Closed</button>
+;html += 
+<div class="card">
+
+<b>${lead.type.toUpperCase()}</b><br><br>
+
+👤 ${lead.clientName || "Unknown"}<br>
+📦 ${lead.asset || "-"}<br>
+💰 ${lead.price || lead.capital || "-"}<br>
+
+🔥 Score: ${lead.score}<br>
+📊 Status: ${lead.status}
+
+</div>
+;
+db.collection("leads")
+.orderBy("createdAt","desc")
+const firebaseConfig = {
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "aegypten-crm",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+</body>
+<!-- BOOKING MODAL -->
+<div id="bookingModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000c;justify-content:center;align-items:center;z-index:999;">
+
+<div style="background:#111;padding:25px;border-radius:12px;width:320px">
+
+<h3 id="tripName"></h3>
+
+<input id="userName" placeholder="Name"><br><br>
+<input id="pax" placeholder="Guests"><br><br>
+
+<select id="payment">
+<option value="whatsapp">WhatsApp</option>
+<option value="stripe">Card</option>
+<option value="wise">Bank</option>
+</select>
+<!-- PROPERTY MODAL -->
+<div id="propertyModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000c;justify-content:center;align-items:center;z-index:999;">
+
+<div style="background:#111;padding:25px;border-radius:12px;width:350px">
+
+<h3 id="propertyName"></h3>
+<p id="propertyPrice"></p>
+<p id="propertyROI"></p>
+
+<button class="btn" onclick="requestProperty()">Request Full Details</button>
+
+</div>
+</div>
+<br><br>
+
+<button class="btn" onclick="openProperty('Oyster Bay Unit',75000,'12% ROI')">View</button>
+
+</div>
+</div>
+
+</html>

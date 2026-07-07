@@ -1,0 +1,39 @@
+<h2>Leads Dashboard</h2>
+<div id="leads"></div>
+
+<script>
+
+db.collection("leads").orderBy("created","desc")
+.onSnapshot(snapshot=>{
+
+let html="";
+
+snapshot.forEach(doc=>{
+let l = doc.data();
+
+html += `
+<div style="border:1px solid #333;padding:10px;margin:10px">
+<b>${l.name}</b><br>
+${l.trip} | ${l.budget}$<br>
+${l.wishes}
+</div>
+`;
+});
+
+document.getElementById("leads").innerHTML = html;
+
+});
+
+</script>
+setTimeout(()=>{
+window.open(`https://wa.me/201080800213?text=${encodeURIComponent(
+"We are preparing your Egypt access now."
+)}`);
+},8000);<select id="tier">
+<option value="standard">Standard</option>
+<option value="vip">VIP</option>
+<option value="elite">Elite</option>
+</select>let price = 1000;
+
+if(data.tier==="vip") price=3000;
+if(data.tier==="elite") price=7000;

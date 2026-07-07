@@ -9,9 +9,22 @@ export function middleware(request: NextRequest) {
     ""
   ).toLowerCase();
 
-  if (pathname === "/" && (host === "gtcs4u.com" || host === "www.gtcs4u.com")) {
+  const rootDomainRoutes: Record<string, string> = {
+    "pms.bpbsolutionsltd.com": "/research",
+    "pms4u.vercel.app": "/research",
+    "gtcs4u.com": "/gtcs4u",
+    "www.gtcs4u.com": "/gtcs4u",
+    "bpbsolutionsltd.com": "/bpbsolutionsltd",
+    "www.bpbsolutionsltd.com": "/bpbsolutionsltd",
+    "aegyptenhautnah.com": "/aegyptenhautnah.html",
+    "www.aegyptenhautnah.com": "/aegyptenhautnah.html",
+  };
+
+  const targetPathname = rootDomainRoutes[host];
+
+  if (pathname === "/" && targetPathname) {
     const url = request.nextUrl.clone();
-    url.pathname = "/gtcs4u";
+    url.pathname = targetPathname;
     return NextResponse.rewrite(url);
   }
 

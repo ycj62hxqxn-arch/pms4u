@@ -107,6 +107,9 @@ export default function Gtcs4uPage() {
             <a href="#platform" className="hover:text-white">
               Platform
             </a>
+            <Link href="/carshunter-cloud" className="font-medium text-emerald-300 hover:text-emerald-100">
+              CARSHUNTER
+            </Link>
             <a href="#workflow" className="hover:text-white">
               Workflow
             </a>

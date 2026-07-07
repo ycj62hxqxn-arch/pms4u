@@ -1,7 +1,23 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import { ExecutionCompareViewer } from '../components/governance/ExecutionCompareViewer';
 import { LiveExecutionTrace } from '../components/governance/LiveExecutionTrace';
 import { AuthorityContextViewer } from '../components/governance/AuthorityContextViewer';
+
+export const metadata: Metadata = {
+  title: 'Constitutional Execution Trace',
+  description:
+    'PMS4U trace viewer for evidence-bound validation, authority context, live execution replay, and cryptographic execution lineage.',
+  alternates: {
+    canonical: '/trace',
+  },
+  openGraph: {
+    title: 'Constitutional Execution Trace | PMS4U',
+    description:
+      'PMS4U trace viewer for evidence-bound validation, authority context, live execution replay, and cryptographic execution lineage.',
+    url: '/trace',
+  },
+};
 
 export default function ExecutionTracePage() {
   return (

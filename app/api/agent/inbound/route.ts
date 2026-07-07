@@ -1,6 +1,6 @@
 import { createHmac, randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
-import { appendLedgerEntry, getLedgerReference } from "../../../../lib/agentLedger";
+import { createLedgerAppender, getLedgerReference } from "../../../../lib/agentLedger";
 
 type GateDecision = "ALLOW" | "DENY" | "NEED_REVIEW";
 
@@ -56,6 +56,7 @@ const POLICY_PACKS: Record<PolicyPack["id"], PolicyPack> = {
 };
 
 const RECEIPT_SIGNING_SECRET = process.env.PMS_RECEIPT_SIGNING_SECRET ?? "dev-only-unsafe";
+const OPENAI_TIMEOUT_MS = Number(process.env.OPENAI_TIMEOUT_MS ?? "12000");
 
 function selectPolicyPack(input: InboundRequest): PolicyPack {
   const fingerprint = `${input.useCase}\n${input.targetSystem}`.toLowerCase();
@@ -159,35 +160,77 @@ async function runOpenAIPlan(prompt: string): Promise<Record<string, unknown>> {
     };
   }
 
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      input: [
-        {
-          role: "system",
-          content:
-            "You are a governed planning agent. Never execute external actions. Return only proposed steps.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.2,
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), OPENAI_TIMEOUT_MS);
 
-  const raw = (await response.json()) as Record<string, unknown>;
-  return {
-    mode: "OPENAI",
-    model,
-    raw,
-  };
+  try {
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        input: [
+          {
+            role: "system",
+            content:
+              "You are a governed planning agent. Never execute external actions. Return only proposed steps.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        max_output_tokens: 450,
+        temperature: 0.2,
+        store: false,
+      }),
+    });
+
+    const raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+    if (!response.ok) {
+      return {
+        mode: "OPENAI_ERROR",
+        model,
+        status: response.status,
+        raw,
+        plan: [
+          "Record that the external planning agent returned an error.",
+          "Keep execution in proposed-actions-only mode.",
+          "Ask an operator to retry or review manually.",
+        ],
+      };
+    }
+
+    return {
+      mode: "OPENAI",
+      model,
+      raw,
+    };
+  } catch (error) {
+    const timedOut = error instanceof Error && error.name === "AbortError";
+    return {
+      mode: timedOut ? "OPENAI_TIMEOUT" : "OPENAI_ERROR",
+      model,
+      timeoutMs: OPENAI_TIMEOUT_MS,
+      note: timedOut
+        ? "OpenAI planning timed out. Returning local governed fallback."
+        : error instanceof Error
+          ? error.message
+          : "OpenAI planning failed. Returning local governed fallback.",
+      plan: [
+        "Preserve the PMS gate decision and evidence chain.",
+        "Return a local non-executing fallback plan.",
+        "Require operator confirmation before any external action.",
+      ],
+      raw: null,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function parseInboundRequest(body: unknown): InboundRequest {
@@ -208,9 +251,10 @@ export const runtime = "nodejs";
 export async function POST(request: Request) {
   try {
     const executionId = randomUUID();
+    const appendLedgerEntry = await createLedgerAppender(executionId);
     const body = parseInboundRequest(await request.json().catch(() => ({})));
 
-  const inboundEntry = await appendLedgerEntry(executionId, "INBOUND_REQUEST", {
+  const inboundEntry = await appendLedgerEntry("INBOUND_REQUEST", {
     actorId: body.actorId,
     actorRole: body.actorRole,
     useCase: body.useCase,
@@ -221,7 +265,7 @@ export async function POST(request: Request) {
 
   const gate = evaluateGate(body);
 
-  const authorityEntry = await appendLedgerEntry(executionId, "AUTHORITY_CHECK", {
+  const authorityEntry = await appendLedgerEntry("AUTHORITY_CHECK", {
     actorId: body.actorId,
     actorRole: body.actorRole,
     authorityAllowed: gate.authorityAllowed,
@@ -229,7 +273,7 @@ export async function POST(request: Request) {
     policyPackId: gate.policyPackId,
   });
 
-  const admissibilityEntry = await appendLedgerEntry(executionId, "ADMISSIBILITY_CHECK", {
+  const admissibilityEntry = await appendLedgerEntry("ADMISSIBILITY_CHECK", {
     admissibilityState: gate.admissibilityState,
     admissibilityReason: gate.admissibilityReason,
     requestedAction: body.requestedAction,
@@ -237,9 +281,9 @@ export async function POST(request: Request) {
     policyPackId: gate.policyPackId,
   });
 
-  const gateEntry = await appendLedgerEntry(executionId, "PMS_GATE_DECISION", gate);
+  const gateEntry = await appendLedgerEntry("PMS_GATE_DECISION", gate);
 
-  const evidenceEntry = await appendLedgerEntry(executionId, "EVIDENCE_RECORD", {
+  const evidenceEntry = await appendLedgerEntry("EVIDENCE_RECORD", {
     evidenceType: "PMS_EXECUTION_GATE",
     authorityHash: authorityEntry.hash,
     admissibilityHash: admissibilityEntry.hash,
@@ -250,7 +294,7 @@ export async function POST(request: Request) {
   });
 
   if (gate.decision !== "ALLOW") {
-    const skipped = await appendLedgerEntry(executionId, "AGENT_SKIPPED", {
+    const skipped = await appendLedgerEntry("AGENT_SKIPPED", {
       reason: "Agent execution is blocked until PMS decision is ALLOW.",
       decision: gate.decision,
     });
@@ -265,7 +309,7 @@ export async function POST(request: Request) {
       issuedAt: new Date().toISOString(),
     };
     const receiptSignature = signReceiptPayload(receiptPayload);
-    const receiptEntry = await appendLedgerEntry(executionId, "SIGNED_RECEIPT", {
+    const receiptEntry = await appendLedgerEntry("SIGNED_RECEIPT", {
       ...receiptPayload,
       signature: receiptSignature,
     });
@@ -298,27 +342,35 @@ export async function POST(request: Request) {
     );
   }
 
-  await appendLedgerEntry(executionId, "AGENT_PROMPT", {
+  await appendLedgerEntry("AGENT_PROMPT", {
     prompt: body.prompt,
     requestedAction: body.requestedAction,
     executionMode: "proposed_actions_only",
   });
 
-  await appendLedgerEntry(executionId, "AGENT_TOOL_CALL", {
+  await appendLedgerEntry("AGENT_TOOL_CALL", {
     tool: "openai.responses.create",
     model: process.env.OPENAI_MODEL ?? "gpt-4.1-mini",
     callType: "planning",
   });
 
   const agentResult = await runOpenAIPlan(body.prompt);
+  if (agentResult.mode === "OPENAI_TIMEOUT") {
+    await appendLedgerEntry("AGENT_TOOL_TIMEOUT", {
+      tool: "openai.responses.create",
+      model: process.env.OPENAI_MODEL ?? "gpt-4.1-mini",
+      timeoutMs: OPENAI_TIMEOUT_MS,
+      executionMode: "proposed_actions_only",
+    });
+  }
 
-  const toolResultEntry = await appendLedgerEntry(executionId, "AGENT_TOOL_RESULT", {
+  const toolResultEntry = await appendLedgerEntry("AGENT_TOOL_RESULT", {
     resultMode: agentResult.mode,
     hasRaw: Boolean(agentResult.raw),
     executionMode: "proposed_actions_only",
   });
 
-  const planEntry = await appendLedgerEntry(executionId, "AGENT_PLAN", {
+  const planEntry = await appendLedgerEntry("AGENT_PLAN", {
     executionMode: "proposed_actions_only",
     resultMode: agentResult.mode,
     toolResultHash: toolResultEntry.hash,
@@ -334,7 +386,7 @@ export async function POST(request: Request) {
     issuedAt: new Date().toISOString(),
   };
   const receiptSignature = signReceiptPayload(receiptPayload);
-  const receiptEntry = await appendLedgerEntry(executionId, "SIGNED_RECEIPT", {
+  const receiptEntry = await appendLedgerEntry("SIGNED_RECEIPT", {
     ...receiptPayload,
     signature: receiptSignature,
   });

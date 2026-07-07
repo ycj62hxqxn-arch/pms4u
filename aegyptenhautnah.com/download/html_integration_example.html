@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lead Intake Example</title>
+</head>
+<body>
+  <h2>Lead Intake Form</h2>
+  <form id="leadForm">
+    <label>Name: <input type="text" id="customer_name" required></label><br>
+    <label>Email/Phone: <input type="text" id="contact_info"></label><br>
+    <label>Source: <input type="text" id="source" value="Website" required></label><br>
+    <label>Notes: <textarea id="notes"></textarea></label><br>
+    <button type="submit">Submit Lead</button>
+  </form>
+  <div id="result"></div>
+  <script>
+    document.getElementById('leadForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const payload = {
+        customer_name: document.getElementById('customer_name').value,
+        contact_info: document.getElementById('contact_info').value,
+        source: document.getElementById('source').value,
+        notes: document.getElementById('notes').value
+      };
+      const res = await fetch('http://localhost:8000/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById('result').innerHTML = `<b>Lead Created!</b><br>ID: ${data.lead_id}<br>Created: ${data.created_at}`;
+      } else {
+        document.getElementById('result').innerHTML = `<b>Error:</b> ${data.detail || 'Unknown error'}`;
+      }
+    };
+  </script>
+</body>
+</html>

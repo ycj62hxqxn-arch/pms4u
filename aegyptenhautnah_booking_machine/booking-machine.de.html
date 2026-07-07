@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ägypten Hautnah | Touren direkt buchen</title>
+  <meta name="description" content="Deutschsprachige Ägypten-Erlebnisse mit lokalem Zugang. Orange Bay, Dolphin House, Luxor, Kairo, Safari und private Touren direkt anfragen." />
+  <style>
+    :root {
+      --ink: #162033;
+      --muted: #607089;
+      --line: rgba(22, 32, 51, 0.14);
+      --bg: #f4f0e8;
+      --sand: #fff8ec;
+      --blue: #0f5f87;
+      --teal: #087f7b;
+      --gold: #c8832a;
+      --green: #137a4f;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fbf7ef, #edf7f7 45%, #f6efe4);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 24px 18px 54px; }
+    header {
+      min-height: 78vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: center;
+      padding: 24px 0;
+    }
+    .hero-copy { padding: 34px 0; }
+    .eyebrow {
+      color: var(--teal);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 14px 0 16px;
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: .92;
+      letter-spacing: -.055em;
+    }
+    .lead {
+      max-width: 680px;
+      color: #334155;
+      font-size: 19px;
+      line-height: 1.65;
+    }
+    .hero-photo {
+      min-height: 530px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(9, 34, 54, .1), rgba(9, 34, 54, .18)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80") center/cover;
+      box-shadow: 0 28px 80px rgba(22, 32, 51, .22);
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border: 0;
+      border-radius: 6px;
+      padding: 12px 18px;
+      background: var(--blue);
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn.secondary { background: transparent; color: var(--blue); border: 1px solid rgba(15, 95, 135, .35); }
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: -40px 0 28px;
+      position: relative;
+      z-index: 2;
+    }
+    .trust-card, .panel {
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 14px 38px rgba(22, 32, 51, .08);
+    }
+    .trust-card { padding: 16px; }
+    .trust-card strong { display: block; font-size: 15px; }
+    .trust-card span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    section { margin-top: 26px; }
+    .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 14px; }
+    h2 { margin: 0; font-size: clamp(28px, 4vw, 46px); letter-spacing: -.04em; }
+    .section-head p { max-width: 620px; margin: 0; color: var(--muted); line-height: 1.55; }
+    .tour-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .tour-card { padding: 18px; }
+    .tour-card h3 { margin: 9px 0 8px; font-size: 21px; }
+    .tour-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .tag { border: 1px solid rgba(8, 127, 123, .18); background: rgba(8, 127, 123, .08); color: #075e5c; border-radius: 999px; padding: 5px 9px; font-size: 12px; font-weight: 700; }
+    .booking-layout { display: grid; grid-template-columns: .95fr 1.05fr; gap: 18px; }
+    .panel { padding: 22px; }
+    .quote {
+      background: var(--sand);
+      border-left: 5px solid var(--gold);
+      padding: 18px;
+      border-radius: 8px;
+      color: #513211;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    form { display: grid; gap: 13px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+    label { display: grid; gap: 6px; font-size: 13px; font-weight: 800; color: #334155; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 12px;
+      font: inherit;
+      background: white;
+      color: var(--ink);
+    }
+    textarea { min-height: 92px; resize: vertical; }
+    .status { min-height: 24px; font-weight: 800; color: var(--green); }
+    .error { color: #b42318; }
+    .footer { margin-top: 36px; color: var(--muted); font-size: 13px; text-align: center; }
+    @media (max-width: 860px) {
+      header, .booking-layout, .grid { grid-template-columns: 1fr; }
+      .trust, .tour-grid { grid-template-columns: 1fr; }
+      .hero-photo { min-height: 320px; }
+      .trust { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="hero-copy">
+        <div class="eyebrow">Ägypten Hautnah Booking Machine</div>
+        <h1>Wir verkaufen keine Ausflüge. Wir öffnen Ägypten.</h1>
+        <p class="lead">
+          Deutschsprachige Ägypten-Erlebnisse mit lokalem Zugang. Vor Ort organisiert,
+          persönlich bestätigt und über eine nachvollziehbare Buchungsmaschine gesteuert.
+        </p>
+        <div class="cta-row">
+          <a class="btn" href="#booking">Tour anfragen</a>
+          <a class="btn secondary" href="booking-dashboard.html">Admin Dashboard</a>
+        </div>
+      </div>
+      <div class="hero-photo" aria-label="Rotes Meer in Ägypten"></div>
+    </header>
+
+    <div class="trust">
+      <div class="trust-card"><strong>Deutschsprachig</strong><span>Klare Kommunikation vor und während der Reise.</span></div>
+      <div class="trust-card"><strong>Vor Ort</strong><span>Lokale Organisation statt anonymer Marketplace.</span></div>
+      <div class="trust-card"><strong>Persönlich</strong><span>WhatsApp-Bestätigung mit konkretem Ansprechpartner.</span></div>
+      <div class="trust-card"><strong>Governed</strong><span>Status, Ausführung und Nachweis bleiben nachvollziehbar.</span></div>
+    </div>
+
+    <section>
+      <div class="section-head">
+        <h2>Top Erlebnisse</h2>
+        <p>Der Katalog wird aus der Booking API geladen. Falls die API offline ist, zeigt die Seite Demo-Touren.</p>
+      </div>
+      <div id="tourGrid" class="tour-grid"></div>
+    </section>
+
+    <section id="booking">
+      <div class="section-head">
+        <h2>Direkte Buchungsanfrage</h2>
+        <p>Diese Anfrage erzeugt einen Booking-Datensatz mit Status <strong>NEW_REQUEST</strong> und Event-Lineage.</p>
+      </div>
+      <div class="booking-layout">
+        <aside class="panel">
+          <div class="quote">
+            Nach der Anfrage bestätigen wir Verfügbarkeit, Abholzeit und Details persönlich per WhatsApp.
+          </div>
+          <div class="tag-row">
+            <span class="tag">NEW_REQUEST</span>
+            <span class="tag">OPERATOR_CONFIRMED</span>
+            <span class="tag">CUSTOMER_CONFIRMED</span>
+            <span class="tag">TOUR_SCHEDULED</span>
+            <span class="tag">TOUR_COMPLETED</span>
+          </div>
+        </aside>
+        <section class="panel" style="margin:0">
+          <form id="bookingForm">
+            <div class="grid">
+              <label>Tour
+                <select name="tour_id" id="tourSelect" required></select>
+              </label>
+              <label>Datum
+                <input name="tour_date" type="date" required />
+              </label>
+            </div>
+            <div class="grid">
+              <label>Name
+                <input name="customer_name" placeholder="Ihr Name" required />
+              </label>
+              <label>WhatsApp
+                <input name="whatsapp" placeholder="+49 ..." required />
+              </label>
+            </div>
+            <div class="grid">
+              <label>E-Mail
+                <input name="email" type="email" placeholder="optional" />
+              </label>
+              <label>Hotel / Abholort
+                <input name="hotel_or_pickup" placeholder="Hotel in Hurghada, El Gouna ..." required />
+              </label>
+            </div>
+            <div class="grid">
+              <label>Erwachsene
+                <input name="adults" type="number" min="1" max="40" value="2" required />
+              </label>
+              <label>Kinder
+                <input name="children" type="number" min="0" max="40" value="0" />
+              </label>
+            </div>
+            <label>Besondere Wünsche
+              <textarea name="special_requests" placeholder="Deutschsprachiger Guide, private Tour, Kinder, Allergien ..."></textarea>
+            </label>
+            <button class="btn" type="submit">Buchungsanfrage senden</button>
+            <div id="formStatus" class="status"></div>
+          </form>
+        </section>
+      </div>
+    </section>
+
+    <div class="footer">
+      API default: <code>https://api.aegyptenhautnah.com/index.php</code>. Change with <code>localStorage.setItem('AH_API_BASE','https://api.aegyptenhautnah.com/index.php')</code>.
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = localStorage.getItem('AH_API_BASE') || 'https://api.aegyptenhautnah.com/index.php';
+    const fallbackTours = [
+      { tour_id: 'orange-bay', category: 'Sea', title: 'Orange Bay Tagesausflug', short_description: 'Bootstour, Strandzeit, Schnorcheln und Hoteltransfer.', duration: 'Ganzer Tag', location: 'Hurghada', base_price_eur: 45 },
+      { tour_id: 'dolphin-house', category: 'Sea', title: 'Dolphin House Schnorcheltour', short_description: 'Delfin-Spotting, Schnorchelstopps und Betreuung.', duration: 'Ganzer Tag', location: 'Hurghada', base_price_eur: 42 },
+      { tour_id: 'luxor-private', category: 'Culture', title: 'Luxor Privat Tour', short_description: 'Tal der Könige, Karnak, Nilblick und privater Guide.', duration: 'Ganzer Tag', location: 'Luxor', base_price_eur: 145 },
+      { tour_id: 'cairo-pyramids', category: 'Culture', title: 'Kairo & Pyramiden', short_description: 'Gizeh, Museum und private Organisation.', duration: 'Ganzer Tag', location: 'Kairo', base_price_eur: 175 },
+      { tour_id: 'desert-safari', category: 'Desert', title: 'Wüstensafari & Beduinenabend', short_description: 'Quad, Wüste, Sonnenuntergang und Beduinenprogramm.', duration: 'Halber Tag', location: 'Hurghada Desert', base_price_eur: 38 },
+      { tour_id: 'private-custom', category: 'Private', title: 'Private Ägypten Experience', short_description: 'Individuelle Route für Familien, Paare oder VIP-Gäste.', duration: 'Nach Anfrage', location: 'Ägypten', base_price_eur: 0 },
+    ];
+
+    function renderTours(tours) {
+      document.getElementById('tourGrid').innerHTML = tours.map(tour => `
+        <article class="panel tour-card">
+          <span class="tag">${tour.category}</span>
+          <h3>${tour.title}</h3>
+          <p>${tour.short_description}</p>
+          <div class="tag-row">
+            <span class="tag">${tour.location}</span>
+            <span class="tag">${tour.duration}</span>
+            <span class="tag">${tour.base_price_eur ? 'ab ' + tour.base_price_eur + ' EUR' : 'auf Anfrage'}</span>
+          </div>
+        </article>
+      `).join('');
+
+      document.getElementById('tourSelect').innerHTML = tours.map(tour => `
+        <option value="${tour.tour_id}">${tour.title}</option>
+      `).join('');
+    }
+
+    async function loadTours() {
+      try {
+        const res = await fetch(`${API_BASE}/tours`);
+        if (!res.ok) throw new Error('API offline');
+        renderTours(await res.json());
+      } catch {
+        renderTours(fallbackTours);
+      }
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const status = document.getElementById('formStatus');
+      status.className = 'status';
+      status.textContent = 'Sende Anfrage...';
+      const payload = {
+        tour_id: form.tour_id.value,
+        tour_date: form.tour_date.value,
+        customer_name: form.customer_name.value,
+        email: form.email.value || null,
+        whatsapp: form.whatsapp.value,
+        hotel_or_pickup: form.hotel_or_pickup.value,
+        adults: Number(form.adults.value || 1),
+        children: Number(form.children.value || 0),
+        language: 'de',
+        special_requests: form.special_requests.value || null,
+        source: 'aegypten-hautnah-public-page',
+      };
+      try {
+        const res = await fetch(`${API_BASE}/bookings`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const booking = await res.json();
+        status.textContent = `Anfrage gespeichert. Booking ID: ${booking.booking_id}`;
+        form.reset();
+      } catch (err) {
+        status.className = 'status error';
+        status.textContent = `Fehler: ${err.message}`;
+      }
+    });
+
+    loadTours();
+  </script>
+</body>
+</html>

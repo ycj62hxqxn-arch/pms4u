@@ -9,6 +9,7 @@ export type LedgerKind =
   | "PMS_GATE_DECISION"
   | "AGENT_PROMPT"
   | "AGENT_TOOL_CALL"
+  | "AGENT_TOOL_TIMEOUT"
   | "AGENT_TOOL_RESULT"
   | "AGENT_PLAN"
   | "AGENT_SKIPPED"
@@ -163,4 +164,37 @@ export async function appendLedgerEntry(
   }
 
   return entry;
+}
+
+export async function createLedgerAppender(executionId: string) {
+  const entries = await readAllLedgerEntries();
+  let previousHash = entries.length > 0 ? entries[entries.length - 1].hash : "GENESIS";
+
+  return async function appendExecutionEntry(
+    kind: LedgerKind,
+    payload: Record<string, unknown>
+  ): Promise<LedgerEntry> {
+    const eventId = randomUUID();
+    const timestamp = new Date().toISOString();
+    const hash = sha256(JSON.stringify({ eventId, timestamp, kind, executionId, payload, previousHash }));
+
+    const entry: LedgerEntry = {
+      eventId,
+      timestamp,
+      kind,
+      executionId,
+      payload,
+      previousHash,
+      hash,
+    };
+
+    if (resolveBackend() === "kv") {
+      await appendToKv(entry);
+    } else {
+      await appendToFile(entry);
+    }
+
+    previousHash = entry.hash;
+    return entry;
+  };
 }
