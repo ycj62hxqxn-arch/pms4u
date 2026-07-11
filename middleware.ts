@@ -9,6 +9,13 @@ export function middleware(request: NextRequest) {
     ""
   ).toLowerCase();
 
+  // Canonical redirect: www.bpbsolutionsltd.com → bpbsolutionsltd.com
+  if (host === "www.bpbsolutionsltd.com") {
+    const url = request.nextUrl.clone();
+    url.hostname = "bpbsolutionsltd.com";
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
   const rootDomainRoutes: Record<string, string> = {
     "pms.bpbsolutionsltd.com": "/research",
     "pms4u.vercel.app": "/research",
