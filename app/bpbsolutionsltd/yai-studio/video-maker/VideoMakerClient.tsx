@@ -36,6 +36,49 @@ type SceneAsset = {
   imageDataUrl: string;
 };
 
+type SmartExample = {
+  label: string;
+  brief: string;
+  durationSec: number;
+  format: string;
+  style: string;
+  audience: string;
+  language: string;
+};
+
+const smartExamples: SmartExample[] = [
+  {
+    label: "Governance explainer",
+    brief:
+      "Create a 30-second governed explainer for BPB Solutions showing how runtime authority, admissibility, and evidence control AI execution before consequence.",
+    durationSec: 30,
+    format: "9:16",
+    style: "Premium Corporate",
+    audience: "enterprise buyers",
+    language: "English",
+  },
+  {
+    label: "YAI Studio launch",
+    brief:
+      "Create a launch video for YAI Studio that shows governed generation for video, image, voice, and marketing workflows with operator review before publish.",
+    durationSec: 30,
+    format: "9:16",
+    style: "Cinematic Corporate",
+    audience: "CTOs and innovation leads",
+    language: "English",
+  },
+  {
+    label: "Runtime demo",
+    brief:
+      "Create a proof-oriented demo video showing the execution gate, an ALLOW or DENY decision, and the resulting evidence trace for a regulated enterprise workflow.",
+    durationSec: 45,
+    format: "16:9",
+    style: "Architecture Showcase",
+    audience: "enterprise architects",
+    language: "English",
+  },
+];
+
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -282,12 +325,12 @@ async function renderVideoBlob(plan: VideoPlan, sceneSources?: string[]): Promis
 }
 
 export function VideoMakerClient() {
-  const [brief, setBrief] = useState("");
-  const [durationSec, setDurationSec] = useState(30);
-  const [format, setFormat] = useState("9:16");
-  const [style, setStyle] = useState("Premium Corporate");
-  const [audience, setAudience] = useState("enterprise buyers");
-  const [language, setLanguage] = useState("English");
+  const [brief, setBrief] = useState(smartExamples[0].brief);
+  const [durationSec, setDurationSec] = useState(smartExamples[0].durationSec);
+  const [format, setFormat] = useState(smartExamples[0].format);
+  const [style, setStyle] = useState(smartExamples[0].style);
+  const [audience, setAudience] = useState(smartExamples[0].audience);
+  const [language, setLanguage] = useState(smartExamples[0].language);
 
   const [sending, setSending] = useState(false);
   const [runtimeSource, setRuntimeSource] = useState<string>("");
@@ -306,6 +349,20 @@ export function VideoMakerClient() {
   const [assetError, setAssetError] = useState("");
   const generatedSceneCount = Object.keys(sceneAssets).length;
   const totalSceneCount = plan?.scenes.length ?? 0;
+
+  function loadSmartExample(example: SmartExample) {
+    setBrief(example.brief);
+    setDurationSec(example.durationSec);
+    setFormat(example.format);
+    setStyle(example.style);
+    setAudience(example.audience);
+    setLanguage(example.language);
+    setError("");
+    setPlan(null);
+    setVideoError("");
+    setMp4Error("");
+    setAssetError("");
+  }
 
   async function requestSceneAssets(nextPlan: VideoPlan) {
     setGeneratingAssets(true);
@@ -484,10 +541,13 @@ export function VideoMakerClient() {
       <section className="border-b border-white/10 px-5 py-10">
         <div className="mx-auto max-w-7xl">
           <div className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">YAI Studio · Video Maker</div>
-          <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">Generate governed video plans</h1>
+          <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">Generate smart governed video plans</h1>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
             This app creates storyboard and script plans only. Publishing is blocked by default.
             Every output is marked <strong>PLAN_ONLY</strong> and requires human approval.
+          </p>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400">
+            Start with an enterprise example or write your own brief. The planner is optimized for runtime governance, evidence, and deployment-safe visuals.
           </p>
           <div className="mt-5 flex flex-wrap gap-3 text-xs">
             <span className="rounded-full border border-emerald-300/40 bg-emerald-300/10 px-3 py-1 text-emerald-200">Decision: PLAN_ONLY</span>
@@ -504,11 +564,27 @@ export function VideoMakerClient() {
           <form onSubmit={onSubmit} className="border border-white/10 bg-white/[0.03] p-5">
             <div className="space-y-4">
               <div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Smart examples</div>
+                <div className="flex flex-wrap gap-2">
+                  {smartExamples.map((example) => (
+                    <button
+                      key={example.label}
+                      type="button"
+                      onClick={() => loadSmartExample(example)}
+                      className="rounded border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-semibold text-slate-200 hover:border-emerald-300/60 hover:text-white"
+                    >
+                      {example.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
                 <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Brief</label>
                 <textarea
                   value={brief}
                   onChange={(e) => setBrief(e.target.value)}
-                  placeholder="Example: Create a 30-second launch video for YAI Studio positioned for enterprise buyers and public-sector innovation teams."
+                  placeholder="Example: Create a 30-second governed explainer for BPB Solutions showing runtime authority, admissibility, and evidence."
                   className="min-h-36 w-full border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-emerald-300/50"
                 />
               </div>
@@ -573,7 +649,7 @@ export function VideoMakerClient() {
                 disabled={sending || !brief.trim()}
                 className="w-full border border-emerald-300/40 bg-emerald-300/20 px-4 py-3 text-sm font-semibold text-emerald-100 hover:border-emerald-200 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {sending ? "Generating plan..." : "Generate Video Plan"}
+                {sending ? "Generating plan..." : "Generate Smart Video Plan"}
               </button>
             </div>
           </form>

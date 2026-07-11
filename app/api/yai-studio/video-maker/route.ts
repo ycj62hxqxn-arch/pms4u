@@ -60,24 +60,31 @@ function buildFallbackPlan(input: {
   language: string;
 }): VideoPlan {
   const slots = input.durationSec <= 15 ? [0, 5, 10] : input.durationSec <= 30 ? [0, 8, 16, 24] : [0, 12, 24, 36, 48];
+  const briefLead = input.brief.slice(0, 90).replace(/\s+/g, " ").trim();
 
   const scenes: StoryScene[] = slots.map((slot, idx) => ({
     atSec: slot,
     visual: idx === 0
-      ? `Open with the core pain point from the brief: ${input.brief.slice(0, 80)}`
-      : `Show proof-oriented visual ${idx} tied to the promise and audience (${input.audience})`,
-    overlay: idx === 0 ? "Problem" : idx === slots.length - 1 ? "Outcome" : `Proof ${idx}`,
+      ? `Open with the governed business problem: ${briefLead}`
+      : idx === 1
+        ? "Show authority, policy, and admissibility as the runtime decision layer."
+        : idx === slots.length - 1
+        ? "End with a clear execution outcome, evidence trace, and operator approval cue."
+        : `Show one proof step for ${input.audience}.`,
+    overlay: idx === 0 ? "Business Context" : idx === 1 ? "Governance" : idx === slots.length - 1 ? "Outcome" : `Proof ${idx}`,
     voiceover:
       idx === 0
-        ? `If you're ${input.audience}, this is the fastest path to solve ${input.brief.slice(0, 50)}.`
+        ? `If you're ${input.audience}, this brief frames the execution problem in enterprise terms.`
+        : idx === 1
+        ? "We verify authority and admissibility before any consequential action."
         : idx === slots.length - 1
-        ? "Book a briefing. We verify authority before execution."
-        : `Step ${idx}: show one concrete, verifiable improvement before promising outcomes.`,
+        ? "The result is a governed plan with evidence, traceability, and human approval before release."
+        : `Step ${idx}: show one concrete, verifiable control before promising outcomes.`,
   }));
 
-  const title = `YAI Video Draft — ${input.style} ${input.format}`;
-  const cta = "Book a private briefing";
-  const caption = `Draft campaign script for ${input.audience}. Generated as plan-only output and requires human review before publish.`;
+  const title = `Runtime Governance Video Plan — ${input.style}`;
+  const cta = "Open the governed briefing";
+  const caption = `Enterprise video plan for ${input.audience}. Generated as plan-only output and requires human review before publish.`;
 
   return {
     traceId: input.traceId,
@@ -91,7 +98,7 @@ function buildFallbackPlan(input: {
     scenes,
     cta,
     caption,
-    hashtags: ["#YAIStudio", "#VideoMaker", "#GovernedAI", "#BPBSolutions"],
+    hashtags: ["#YAIStudio", "#VideoMaker", "#GovernedAI", "#RuntimeGovernance", "#BPBSolutions"],
     governance: {
       decision: "PLAN_ONLY",
       requiresHumanApproval: true,
@@ -116,6 +123,9 @@ async function callOpenAI(input: {
     "Create a concise short-video production plan in strict JSON only.",
     "Return keys: title, hook, scenes[{atSec,visual,overlay,voiceover}], cta, caption, hashtags[]",
     "No markdown. No prose outside JSON.",
+    "Use an enterprise, governance-first narrative. Avoid playful, animal, meme, cartoon, or consumer-gadget motifs unless explicitly requested.",
+    "Treat the brief as a founder-level research note and convert it into a clear business/architecture/implementation story.",
+    "Prefer runtime governance, authority, admissibility, execution gates, evidence, deployment, and working software language.",
     `Brief: ${input.brief}`,
     `Duration: ${input.durationSec}`,
     `Format: ${input.format}`,
