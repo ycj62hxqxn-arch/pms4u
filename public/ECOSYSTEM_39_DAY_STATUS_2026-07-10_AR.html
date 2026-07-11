@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منظومة PMS4U — تقرير حالة 39 يومًا</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #111827;
+      --panel-2: #0b1220;
+      --line: #23314d;
+      --text: #dbe7ff;
+      --muted: #94a3b8;
+      --title: #f8fafc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 95% 0%, #18253f 0%, var(--bg) 50%);
+      color: var(--text);
+      font: 14px/1.8 "Segoe UI", Tahoma, Arial, sans-serif;
+      padding: 28px;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .hero { border: 1px solid var(--line); background: linear-gradient(135deg, #111a2c 0%, #0b1220 100%); padding: 28px; border-radius: 16px; }
+    h1 { margin: 0 0 10px; color: var(--title); font-size: 30px; }
+    h2 { margin: 0 0 14px; color: var(--title); font-size: 20px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .chips { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip { border: 1px solid var(--line); background: #0c1529; border-radius: 999px; padding: 6px 10px; color: #c7d7ff; font-size: 12px; }
+
+    .grid { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); }
+    .card { grid-column: span 12; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 18px; }
+    @media (min-width: 960px) {
+      .col-6 { grid-column: span 6; }
+      .col-4 { grid-column: span 4; }
+      .col-8 { grid-column: span 8; }
+    }
+
+    .kpi { display: flex; gap: 14px; flex-wrap: wrap; }
+    .kpi .box { min-width: 140px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 12px; padding: 12px; }
+    .num { font-size: 24px; font-weight: 700; color: var(--title); }
+    .label { color: var(--muted); font-size: 12px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: right; padding: 10px 8px; border-bottom: 1px solid #1f2c44; vertical-align: top; }
+    th { color: #b7caee; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    td { color: #d8e5ff; }
+
+    .status { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 999px; font-weight: 700; letter-spacing: .03em; }
+    .done { background: rgba(34,197,94,.15); color: #86efac; border: 1px solid rgba(34,197,94,.35); }
+    .closed { background: rgba(34,197,94,.15); color: #bbf7d0; border: 1px solid rgba(34,197,94,.35); }
+    .setup { background: rgba(56,189,248,.15); color: #93c5fd; border: 1px solid rgba(56,189,248,.35); }
+    .queued { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.35); }
+
+    ul { margin: 8px 0 0; padding-right: 18px; }
+    code {
+      background: #0b152c;
+      border: 1px solid #203153;
+      color: #bfd2ff;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      direction: ltr;
+      display: inline-block;
+    }
+    .foot { margin-top: 16px; color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>منظومة PMS4U — تقرير إنجازات 39 يومًا</h1>
+      <div class="meta">الفترة: <strong>2026-06-01 ← 2026-07-10</strong> · النطاق: PMS4U / GTCS4U / BPB، طبقة الحوكمة Runtime، YAI Studio، وطبقة الأبحاث.</div>
+      <div class="chips">
+        <span class="chip">السلطة قبل التنفيذ</span>
+        <span class="chip">Admissibility مع Evidence كمدخل قرار</span>
+        <span class="chip">Execution Gate + Evidence Continuity</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card col-6">
+        <h2>ملخص تنفيذي</h2>
+        <div class="kpi">
+          <div class="box"><div class="num">12</div><div class="label">نقاط بنية تحتية موثقة</div></div>
+          <div class="box"><div class="num">5</div><div class="label">واجهات YAI Studio نشطة</div></div>
+          <div class="box"><div class="num">2</div><div class="label">مراجع بحث منشورة</div></div>
+          <div class="box"><div class="num">5</div><div class="label">ملاحظات تقنية في قائمة الإعداد</div></div>
+        </div>
+      </article>
+
+      <article class="card col-6">
+        <h2>ما تم تثبيته</h2>
+        <ul>
+          <li>نشر المرجع الأساسي <code>SPEC-001</code> بصياغة واضحة أن Evidence جزء من admissibility.</li>
+          <li>تشغيل مسار YAI Studio كاملًا: تخطيط، توليد بصري، وإخراج نهائي (WebM/MP4/PNG).</li>
+          <li>توحيد خريطة الأبحاث والعمليات تحت مرجع واحد.</li>
+          <li>فصل واضح بين أسطح PMS4U وGTCS4U وBPB وAegyptenHautnah.</li>
+        </ul>
+      </article>
+
+      <article class="card col-8">
+        <h2>أهم الإنجازات خلال 39 يومًا</h2>
+        <table>
+          <thead><tr><th>الإنجاز</th><th>الحالة</th><th>الدليل داخل المستودع</th><th>النتيجة</th></tr></thead>
+          <tbody>
+            <tr><td>تثبيت مسار توليد YAI Studio</td><td><span class="status done">منجز</span></td><td><code>app/api/yai-studio/video-maker/route.ts</code> + <code>.../image-generator/route.ts</code></td><td>استقرار طبقة التخطيط لمسارات التوليد المحكومة.</td></tr>
+            <tr><td>إضافة توليد الأصول البصرية</td><td><span class="status done">منجز</span></td><td><code>.../video-maker/assets/route.ts</code> + <code>.../image-generator/assets/route.ts</code></td><td>صور مولدة بالنموذج متاحة للمعاينة والإخراج.</td></tr>
+            <tr><td>تشغيل خط MP4 على الخادم</td><td><span class="status done">منجز</span></td><td><code>.../video-maker/render/route.ts</code> + <code>next.config.ts</code> + <code>package.json</code></td><td>مسار MP4 فعّال مع تكامل ffmpeg-static.</td></tr>
+            <tr><td>حل إحساس التجمّد في الواجهة</td><td><span class="status done">منجز</span></td><td><code>VideoMakerClient.tsx</code> + <code>ImageGeneratorClient.tsx</code></td><td>إظهار التقدم وحالة الاكتمال أثناء توليد الصور.</td></tr>
+            <tr><td>نشر المواصفة الأساسية</td><td><span class="status done">منجز</span></td><td><code>app/research/specification-1-0/page.tsx</code></td><td>مرجع معياري موحّد: model + authority + admissibility + evidence + execution + consequence + conformance.</td></tr>
+            <tr><td>مواءمة مخزون الأصول البحثية</td><td><span class="status done">منجز</span></td><td><code>app/research/page.tsx</code> + <code>app/ops/ops-data.ts</code> + <code>app/ops/research-assets/page.tsx</code></td><td>اعتماد SPEC-001 كقاعدة ثم توسيعها عبر TNs.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-4">
+        <h2>مشاريع مغلقة</h2>
+        <table>
+          <thead><tr><th>المشروع</th><th>الحالة</th><th>إشارة الإغلاق</th></tr></thead>
+          <tbody>
+            <tr><td>معالجة مخرجات YAI Studio</td><td><span class="status closed">مغلق</span></td><td>مسار كامل: API + Render + UX feedback.</td></tr>
+            <tr><td>إعادة تنظيم طبقة الأبحاث (Spec-First) — المرحلة 1</td><td><span class="status closed">مغلق</span></td><td>نشر SPEC-001 وربطه بالبحث والعمليات.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-6">
+        <h2>مشاريع قيد الإعداد</h2>
+        <table>
+          <thead><tr><th>العنصر</th><th>الحالة</th><th>الوضع الحالي</th></tr></thead>
+          <tbody>
+            <tr><td>TN-002 — Authority vs Permission</td><td><span class="status queued">Queued</span></td><td>معرّف في المخزون، مسار النشر قيد التنفيذ.</td></tr>
+            <tr><td>TN-003 — Admissibility</td><td><span class="status queued">Queued</span></td><td>مواءمة مفاهيمية جاهزة، صفحة النشر قيد الإعداد.</td></tr>
+            <tr><td>TN-004 — Evidence Continuity</td><td><span class="status queued">Queued</span></td><td>هيكل المحتوى محدد، النشر لاحقًا.</td></tr>
+            <tr><td>TN-005 — Execution Gate</td><td><span class="status queued">Queued</span></td><td>مضاف للتسلسل المرجعي، النشر قيد الإعداد.</td></tr>
+            <tr><td>DG-001 / WP-001 / RA-001 / STD-001</td><td><span class="status setup">Setup</span></td><td>موجودة في inventory كمسارات Draft/Queued.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-6">
+        <h2>خطوط التنفيذ (Pipelines)</h2>
+        <table>
+          <thead><tr><th>الخط</th><th>المكونات</th><th>الحالة</th></tr></thead>
+          <tbody>
+            <tr><td>خط البناء الأمامي</td><td><code>npm run build</code> → Next.js build + static generation + postbuild</td><td><span class="status done">نشط</span></td></tr>
+            <tr><td>خط التشغيل المحلي</td><td><code>start_dev.sh</code> → FastAPI (<code>governance-core</code>) + Next.js dev</td><td><span class="status done">نشط</span></td></tr>
+            <tr><td>خط فيديو YAI</td><td>Plan API → Scene Assets API → Render API (MP4/WebM)</td><td><span class="status done">نشط</span></td></tr>
+            <tr><td>خط صور YAI</td><td>Plan API → Concept Assets API → PNG export</td><td><span class="status done">نشط</span></td></tr>
+            <tr><td>خط نشر الأبحاث</td><td>Specification + TN pages + Ops inventory linking</td><td><span class="status setup">قيد الإعداد</span></td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>خريطة البنية التحتية للمنظومة</h2>
+        <table>
+          <thead><tr><th>النطاق / المضيف</th><th>المجموعة</th><th>المالك</th><th>الدور</th><th>الهدف</th></tr></thead>
+          <tbody>
+            <tr><td>pms.bpbsolutionsltd.com (+ pms4u.vercel.app)</td><td>Production</td><td>PMS4U Research</td><td>أبحاث، ملاحظات تقنية، معايير، عمارة مرجعية</td><td>/research</td></tr>
+            <tr><td>gtcs4u.com (+ www.gtcs4u.com)</td><td>Production</td><td>GTCS4U Platform</td><td>منصة حوكمة مؤسسية (demo / console / pilot)</td><td>/gtcs4u</td></tr>
+            <tr><td>bpbsolutionsltd.com (+ www)</td><td>Production</td><td>BPB Corporate</td><td>هوية الشركة ومساراتها</td><td>/bpbsolutionsltd</td></tr>
+            <tr><td>aegyptenhautnah.com</td><td>Production</td><td>Aegypten Hautnah</td><td>مشروع سفر مستقل</td><td>سطح عام مستقل</td></tr>
+            <tr><td>api.aegyptenhautnah.com</td><td>Production</td><td>Aegypten Hautnah</td><td>واجهة API للحجوزات والجولات</td><td>/health</td></tr>
+            <tr><td>governance.gtcs4u.com</td><td>Production</td><td>GTCS4U Platform</td><td>أصل Runtime للحوكمة</td><td>governance-core</td></tr>
+            <tr><td>trace.gtcs4u.local</td><td>Local Runtime</td><td>PMS4U Engineering</td><td>واجهة تتبع محلية</td><td>127.0.0.1:3000</td></tr>
+            <tr><td>governance.gtcs4u.local</td><td>Local Runtime</td><td>PMS4U Engineering</td><td>Runtime دستوري محلي</td><td>127.0.0.1:8000</td></tr>
+            <tr><td>carshunter.gtcs4u.local</td><td>Local Runtime</td><td>CARSHUNTER</td><td>مسار تشغيل محلي Legacy</td><td>127.0.0.1:5001</td></tr>
+            <tr><td>operations-core.local</td><td>Local Runtime</td><td>Operations Core</td><td>مرجع خدمة عمليات محلية</td><td>127.0.0.1:8000</td></tr>
+            <tr><td>vercel-site-tau-six.vercel.app</td><td>Review</td><td>PMS4U Engineering</td><td>نشر مراجعة بانتظار التنظيف</td><td>Review host</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>الوضع المفاهيمي الحالي</h2>
+        <ul>
+          <li>النموذج الدستوري مستقل عن runtime verifier.</li>
+          <li>admissibility تقييم لحظي قبل التنفيذ، وليس permission ثابتة فقط.</li>
+          <li>evidence تُستخدم كمدخل قرار وتستمر بعد القرار للتتبّع والتحقق.</li>
+          <li>المرور عبر execution gate لا يتم إلا بعد نجاح admissibility.</li>
+        </ul>
+      </article>
+
+      <article class="card col-6">
+        <h2>قراءة هندسية مختصرة (كما ورد في التقييم)</h2>
+        <ul>
+          <li><strong>تحوّل من فكرة إلى منصة ناشئة:</strong> المنتج لم يعد تجميع عروض، بل أصبح مسارات عمل متكاملة (Video / Image / Render / Progress).</li>
+          <li><strong>فصل معماري واضح:</strong> BPB (Corporate) وPMS4U (Research) وGTCS4U (Platform) وYAI Studio (AI Products) وAegyptenHautnah (Independent).</li>
+          <li><strong>نضج بحثي:</strong> اعتماد SPEC-001 كمرجع رئيسي قبل توسيعات TNs.</li>
+          <li><strong>تميّز Runtime Governance:</strong> authority + admissibility + evidence + gate قبل consequence.</li>
+          <li><strong>تقدم متعدد الطبقات:</strong> API + UX + rendering + research + inventory + domain organization.</li>
+        </ul>
+      </article>
+
+      <article class="card col-6">
+        <h2>أولويات 30–60 يومًا القادمة</h2>
+        <table>
+          <thead><tr><th>الأولوية</th><th>القيمة</th><th>المخرج المتوقع</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Reference Architecture رسمي</td>
+              <td>تثبيت الفهم للمسار الدستوري من model حتى consequence</td>
+              <td>وثيقة مرجعية قابلة للاقتباس والعرض المؤسسي</td>
+            </tr>
+            <tr>
+              <td>Runtime SDK</td>
+              <td>تسهيل التبني من المطورين بدل الاكتفاء بالقراءة</td>
+              <td>حزمة SDK أولية (JS/Python) مع أمثلة</td>
+            </tr>
+            <tr>
+              <td>Public Playground</td>
+              <td>إظهار allow/deny/defer/review بشكل مباشر</td>
+              <td>سطح تجريبي يوضح reasoning وdecision trace</td>
+            </tr>
+            <tr>
+              <td>Case Studies مؤسسية</td>
+              <td>تحويل الأمثلة الحالية إلى قصص تطبيق منضبطة</td>
+              <td>حالات استخدام منشورة لكل نطاق</td>
+            </tr>
+            <tr>
+              <td>Design System موحد</td>
+              <td>رفع النضج البصري للمنتجات</td>
+              <td>هوية واجهات موحدة (typography / spacing / cards / icons)</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>تقييم النضج الحالي (مؤشّر تقريبي)</h2>
+        <table>
+          <thead><tr><th>المجال</th><th>التقدير</th><th>ملاحظة</th></tr></thead>
+          <tbody>
+            <tr><td>Governance model</td><td>9.5 / 10</td><td>تميّز واضح في طبقة الحوكمة قبل التنفيذ.</td></tr>
+            <tr><td>Technical architecture</td><td>9 / 10</td><td>فصل مسؤوليات واضح ومسارات متماسكة.</td></tr>
+            <tr><td>Research organization</td><td>9 / 10</td><td>الانتقال إلى spec-first خطوة صحيحة.</td></tr>
+            <tr><td>Product separation</td><td>9 / 10</td><td>وضوح حدود الأسطح والمنتجات.</td></tr>
+            <tr><td>Engineering implementation</td><td>8.5 / 10</td><td>تقدم فعلي عبر API وrendering وUX.</td></tr>
+            <tr><td>Enterprise UI polish</td><td>7 / 10</td><td>تحتاج لمستوى تصميم موحد أعلى.</td></tr>
+            <tr><td>Developer ecosystem</td><td>6 / 10</td><td>يتطلب SDK وplayground ووثائق تبني.</td></tr>
+            <tr><td>Commercial readiness</td><td>7.5 / 10</td><td>جاهزية جيدة وتحتاج تبسيط مسار التبني.</td></tr>
+          </tbody>
+        </table>
+        <p class="foot">ملاحظة: هذه الدرجات تمثل قراءة هندسية استرشادية، وليست تدقيقًا ماليًا أو اعتمادًا تجاريًا رسميًا.</p>
+        <p class="foot">ملاحظة امتثال: هذا التقرير تقني-تنفيذي. لا يتضمن ادعاءات ROI أو خفض خسائر بدون توثيق أعمال موقع ومعتمد.</p>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

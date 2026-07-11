@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMS4U — Session Report · 8 July 2026</title>
+  <style>
+    :root {
+      --bg: #050916;
+      --panel: rgba(255,255,255,.045);
+      --line: rgba(255,255,255,.09);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --soft: #64748b;
+      --cyan: #67e8f9;
+      --gold: #fcd34d;
+      --green: #6ee7b7;
+      --violet: #a78bfa;
+      --rose: #fb7185;
+      --orange: #fb923c;
+      --max: 1320px;
+      --r: 20px;
+      --shadow: 0 24px 80px rgba(0,0,0,.45);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 8% 10%, rgba(103,232,249,.1), transparent 22%),
+        radial-gradient(circle at 90% 6%, rgba(167,139,250,.08), transparent 20%),
+        radial-gradient(circle at 50% 98%, rgba(110,231,183,.06), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .shell { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; padding: 36px 0 80px; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5,9,22,.88);
+      backdrop-filter: blur(16px);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .nav-brand { font-size: 13px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--text); }
+    .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .nav-links a {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      padding: 6px 10px; border-radius: 8px; border: 1px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .nav-links a:hover { color: var(--text); border-color: var(--line); text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero {
+      margin-top: 32px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      padding: 36px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(103,232,249,.12), transparent 30%),
+        radial-gradient(circle at 82% 16%, rgba(252,211,77,.1), transparent 26%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 28px; align-items: start; }
+    .kicker {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px; border-radius: 999px;
+      border: 1px solid rgba(252,211,77,.25); background: rgba(252,211,77,.08);
+      color: #fef3c7; font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase;
+    }
+    .kicker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    h1 { margin-top: 14px; font-size: clamp(2rem, 3.8vw, 4rem); letter-spacing: -.04em; line-height: 1.1; }
+    .hero-lead { margin-top: 14px; color: var(--muted); font-size: 1.04rem; max-width: 62ch; }
+    .meta-chips { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .chip-cyan { color: var(--cyan); border-color: rgba(103,232,249,.25); background: rgba(103,232,249,.07); }
+    .chip-gold { color: var(--gold); border-color: rgba(252,211,77,.25); background: rgba(252,211,77,.07); }
+    .chip-green { color: var(--green); border-color: rgba(110,231,183,.25); background: rgba(110,231,183,.07); }
+    .chip-violet { color: var(--violet); border-color: rgba(167,139,250,.25); background: rgba(167,139,250,.07); }
+    .chip-rose { color: var(--rose); border-color: rgba(251,113,133,.25); background: rgba(251,113,133,.07); }
+    .chip-orange { color: var(--orange); border-color: rgba(251,146,60,.25); background: rgba(251,146,60,.07); }
+
+    /* ── Stat cards ── */
+    .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+    .stat {
+      border: 1px solid var(--line); border-radius: 16px; padding: 18px 14px;
+      background: rgba(0,0,0,.3);
+    }
+    .stat-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .18em; color: var(--soft); }
+    .stat-value { margin-top: 8px; font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .stat-sub { margin-top: 5px; font-size: 12px; color: var(--muted); }
+
+    /* ── Sections ── */
+    .section { margin-top: 28px; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+    .sh { padding: 22px 24px 14px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,.03), transparent); }
+    .sh-kicker { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .22em; color: var(--soft); }
+    .sh h2 { margin-top: 6px; font-size: clamp(1.2rem, 2vw, 1.8rem); letter-spacing: -.02em; }
+    .sh-sub { margin-top: 6px; color: var(--muted); font-size: .9rem; max-width: 88ch; }
+    .sb { padding: 22px 24px; }
+
+    /* ── Grids ── */
+    .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+    /* ── Cards ── */
+    .card {
+      border: 1px solid var(--line); border-radius: 16px; padding: 18px;
+      background: rgba(0,0,0,.28);
+    }
+    .card h3 { font-size: .95rem; font-weight: 700; }
+    .card p { margin-top: 8px; color: var(--muted); font-size: .875rem; line-height: 1.65; }
+    .card ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: .875rem; }
+    .card li { margin: 5px 0; }
+
+    .callout {
+      border: 1px solid rgba(252,211,77,.2); border-radius: 16px; padding: 18px;
+      background: rgba(252,211,77,.06); color: #fff7d6;
+    }
+    .callout h3 { font-size: .95rem; font-weight: 700; color: var(--gold); }
+    .callout p { margin-top: 8px; font-size: .875rem; line-height: 1.65; }
+
+    .note {
+      border: 1px solid var(--line); border-radius: 16px; padding: 16px;
+      background: rgba(255,255,255,.025);
+    }
+    .note p { color: var(--muted); font-size: .875rem; line-height: 1.65; }
+    .note strong { color: var(--text); }
+
+    /* ── Architecture diagram ── */
+    .arch-flow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .arch-col {
+      padding: 16px 12px; border-right: 1px solid var(--line);
+      background: rgba(0,0,0,.25); text-align: center;
+    }
+    .arch-col:last-child { border-right: none; }
+    .arch-icon { font-size: 22px; margin-bottom: 8px; }
+    .arch-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .16em; }
+    .arch-desc { margin-top: 6px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .arch-arrow { display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--soft); padding: 0 4px; }
+
+    .state-chain {
+      display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    }
+    .state-step {
+      flex: 1; min-width: 90px; padding: 12px 10px; text-align: center;
+      border-right: 1px solid var(--line);
+      background: rgba(0,0,0,.2); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em;
+    }
+    .state-step:last-child { border-right: none; }
+    .state-step.done { background: rgba(110,231,183,.07); color: var(--green); border-color: rgba(110,231,183,.18); }
+    .state-step.deny { background: rgba(251,113,133,.07); color: var(--rose); border-color: rgba(251,113,133,.18); }
+    .state-step.active { background: rgba(103,232,249,.07); color: var(--cyan); border-color: rgba(103,232,249,.2); }
+
+    /* ── Table ── */
+    .table-wrap { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: rgba(255,255,255,.04); color: #e2e8f0;
+      font-size: 11px; text-transform: uppercase; letter-spacing: .16em; font-weight: 700;
+      padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line);
+    }
+    td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.05); font-size: 13px; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,.025); }
+
+    /* ── Timeline ── */
+    .timeline { display: grid; gap: 12px; border-left: 2px solid rgba(103,232,249,.2); margin-left: 8px; padding-left: 20px; }
+    .tnode { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 16px; background: rgba(0,0,0,.22); }
+    .tnode::before {
+      content: ""; position: absolute; left: -30px; top: 18px;
+      width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--bg);
+    }
+    .tnode-date { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .18em; color: var(--soft); }
+    .tnode h3 { margin-top: 4px; font-size: .95rem; }
+    .tnode p { margin-top: 6px; color: var(--muted); font-size: .875rem; }
+    .tnode-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* ── Ledger entries ── */
+    .ledger-row {
+      border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 10px;
+      background: rgba(0,0,0,.22); font-size: 12px;
+    }
+    .ledger-row:last-child { margin-bottom: 0; }
+    .ledger-id { font-family: "SF Mono", "Fira Code", monospace; color: var(--cyan); font-size: 11px; }
+    .ledger-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; color: var(--muted); }
+    .ledger-meta span { display: flex; align-items: center; gap: 4px; }
+    .verdict-allow { color: var(--green); font-weight: 700; }
+    .verdict-deny { color: var(--rose); font-weight: 700; }
+    .verdict-freeze { color: var(--gold); font-weight: 700; }
+    .hash { font-family: "SF Mono", "Fira Code", monospace; font-size: 10px; color: var(--soft); word-break: break-all; }
+
+    /* ── Route inventory ── */
+    .route-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .route-item {
+      border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+      background: rgba(0,0,0,.22); font-size: 12px;
+    }
+    .route-path { font-family: "SF Mono", monospace; color: var(--cyan); font-weight: 700; }
+    .route-desc { color: var(--muted); margin-top: 4px; }
+
+    /* ── Domain map ── */
+    .domain-map { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .domain-card {
+      border: 1px solid var(--line); border-radius: 16px; padding: 18px;
+      background: rgba(0,0,0,.28);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .domain-name { font-size: .95rem; font-weight: 700; }
+    .domain-meta { font-size: 12px; color: var(--muted); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+    .domain-meta span:nth-child(odd) { color: var(--soft); text-transform: uppercase; font-size: 10px; letter-spacing: .14em; font-weight: 700; }
+
+    /* ── SDK / Module grid ── */
+    .module-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .module-item {
+      border: 1px solid var(--line); border-radius: 12px; padding: 14px;
+      background: rgba(0,0,0,.22);
+    }
+    .module-name { font-size: 12px; font-weight: 700; color: var(--text); }
+    .module-file { font-family: monospace; font-size: 11px; color: var(--cyan); margin-top: 4px; }
+    .module-desc { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+
+    /* ── Progress ring (SVG) ── */
+    .ring-wrap { display: flex; align-items: center; gap: 24px; }
+    .ring-labels { display: flex; flex-direction: column; gap: 10px; }
+    .ring-label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .ring-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Pill ── */
+    .pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid;
+    }
+
+    /* ── Footer ── */
+    footer { margin-top: 32px; text-align: center; color: var(--soft); font-size: 12px; padding: 20px 0; border-top: 1px solid var(--line); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .hero-inner, .g3, .g4, .stats, .route-grid, .module-grid { grid-template-columns: repeat(2, 1fr); }
+      .arch-flow { grid-template-columns: repeat(3, 1fr); }
+      .arch-col { border-right: none; border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 680px) {
+      .hero-inner, .g2, .g3, .g4, .stats, .route-grid, .module-grid, .domain-map, .state-chain, .arch-flow { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .hero, .section, .stat, .card, .note, .callout, .table-wrap { box-shadow: none; border-color: #ddd; background: #f9f9f9; }
+      .hero::before { display: none; }
+      th { background: #f3f4f6; color: #111; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">PMS4U · Session Report</div>
+  <div class="nav-links">
+    <a href="#dashboard">Dashboard</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#ledger">Ledger</a>
+    <a href="#services">Services</a>
+    <a href="#routes">Routes</a>
+    <a href="#domains">Domains</a>
+    <a href="#sdk">SDK</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#positioning">Positioning</a>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- ════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="kicker"><span class="kicker-dot"></span>Session Report</div>
+        <h1>PMS4U — Full Repository Report</h1>
+        <p class="hero-lead">
+          Complete engineering, governance, and operational audit of the PMS4U repository.
+          Covers the constitutional execution runtime, ledger, SDK contracts, app surfaces,
+          domain deployments, and institutional positioning as of 8 July 2026.
+        </p>
+        <div class="meta-chips">
+          <span class="chip chip-cyan">🗓 8 July 2026</span>
+          <span class="chip chip-gold">⚖ Governance Runtime Platform</span>
+          <span class="chip chip-green">✓ 13 Ledger Events</span>
+          <span class="chip chip-violet">🏗 6 Backend Services</span>
+          <span class="chip chip-rose">🛣 28 App Routes</span>
+          <span class="chip chip-orange">🌐 6 Domains</span>
+        </div>
+      </div>
+      <div>
+        <div class="stat" style="border-radius:20px;background:rgba(0,0,0,.35);padding:22px;">
+          <div class="stat-label">Repository</div>
+          <div class="stat-value" style="font-size:1.1rem;color:var(--cyan);">pms4u</div>
+          <div class="stat-sub">Next.js 15 · FastAPI · Flask · SQLite</div>
+          <div style="margin-top:16px;display:grid;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--soft);">Stack</span><span>TypeScript + Python</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--soft);">Runtime</span><span>FastAPI (uvicorn)</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--soft);">Frontend</span><span>Next.js 15 · Tailwind v4</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--soft);">Branch</span><span>pms4u-stabilize-june-10</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;"><span style="color:var(--soft);">Recovery tag</span><span style="color:var(--green);">investor-live-2026-06-15</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       DASHBOARD KPIs
+  ════════════════════════════════════════ -->
+  <div class="stats" id="dashboard" style="margin-top:20px;">
+    <div class="stat">
+      <div class="stat-label">Ledger Events</div>
+      <div class="stat-value" style="color:var(--green);">13</div>
+      <div class="stat-sub">SHA-256 hash-chained JSONL</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">App Routes</div>
+      <div class="stat-value" style="color:var(--cyan);">28</div>
+      <div class="stat-sub">Next.js App Router</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Backend Services</div>
+      <div class="stat-value" style="color:var(--violet);">6</div>
+      <div class="stat-sub">FastAPI · Flask · Node.js</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Governance Modules</div>
+      <div class="stat-value" style="color:var(--gold);">14</div>
+      <div class="stat-sub">Across 3 service packages</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Live Domains</div>
+      <div class="stat-value" style="color:var(--orange);">6</div>
+      <div class="stat-sub">Vercel + ALL-INKL + IONOS</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ARCHITECTURE FLOW DIAGRAM
+  ════════════════════════════════════════ -->
+  <section class="section" id="architecture">
+    <div class="sh">
+      <div class="sh-kicker">System Design</div>
+      <h2>Constitutional Authority Flow</h2>
+      <p class="sh-sub">Every execution request traverses this chain. No step is skipped. Each gate produces a signed record.</p>
+    </div>
+    <div class="sb">
+
+      <!-- Main flow diagram -->
+      <div class="arch-flow" style="margin-bottom:20px;">
+        <div class="arch-col" style="border-color:rgba(103,232,249,.25);background:rgba(103,232,249,.06);">
+          <div class="arch-icon">👤</div>
+          <div class="arch-label" style="color:var(--cyan);">User / Agent</div>
+          <div class="arch-desc">Request originates from user, API caller, or AI agent. No authority assumed.</div>
+        </div>
+        <div class="arch-col" style="border-color:rgba(252,211,77,.2);background:rgba(252,211,77,.05);">
+          <div class="arch-icon">🚦</div>
+          <div class="arch-label" style="color:var(--gold);">QGED Gate</div>
+          <div class="arch-desc">Authority validated. Returns ALLOW or BLOCK. Runtime raises RuntimeError on BLOCK.</div>
+        </div>
+        <div class="arch-col" style="border-color:rgba(110,231,183,.2);background:rgba(110,231,183,.05);">
+          <div class="arch-icon">⚖️</div>
+          <div class="arch-label" style="color:var(--green);">Admissibility</div>
+          <div class="arch-desc">State, risk class, consequence domain, and signer threshold evaluated.</div>
+        </div>
+        <div class="arch-col" style="border-color:rgba(167,139,250,.2);background:rgba(167,139,250,.05);">
+          <div class="arch-icon">📋</div>
+          <div class="arch-label" style="color:var(--violet);">Evidence</div>
+          <div class="arch-desc">Signed receipt created. SHA-256 hash chained to previous event. Evidence ID issued.</div>
+        </div>
+        <div class="arch-col" style="border-color:rgba(251,146,60,.2);background:rgba(251,146,60,.05);">
+          <div class="arch-icon">🔗</div>
+          <div class="arch-label" style="color:var(--orange);">Ledger Append</div>
+          <div class="arch-desc">Immutable JSONL append. Correlation ID, actor, verdict, and hash stored.</div>
+        </div>
+        <div class="arch-col" style="border-color:rgba(148,163,184,.15);background:rgba(148,163,184,.04);">
+          <div class="arch-icon">🔁</div>
+          <div class="arch-label" style="color:var(--soft);">Replay / Audit</div>
+          <div class="arch-desc">Any event can be replayed, projected, or verified via crypto verification endpoint.</div>
+        </div>
+      </div>
+
+      <!-- State machine chain for CARSHUNTER -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:var(--soft);margin-bottom:10px;">CARSHUNTER State Machine — Governed Transition Graph</div>
+        <div class="state-chain">
+          <div class="state-step done">INTAKE</div>
+          <div class="state-step done">VERIFIED</div>
+          <div class="state-step done">COMPLIANCE PENDING</div>
+          <div class="state-step done">PAYMENT CONFIRMED</div>
+          <div class="state-step done">GOVERNANCE REVIEW</div>
+          <div class="state-step active">EXPORT APPROVED</div>
+          <div class="state-step">EXPORTED</div>
+          <div class="state-step">ARCHIVED</div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:12px;font-size:11px;">
+          <span style="color:var(--green);">■ Completed</span>
+          <span style="color:var(--cyan);">■ Current / Active</span>
+          <span style="color:var(--soft);">■ Pending</span>
+          <span class="chip chip-rose" style="font-size:10px;padding:2px 8px;">Illegal jumps rejected with DENY + FROZEN verdict</span>
+        </div>
+      </div>
+
+      <!-- Authority layer map -->
+      <div class="g2" style="margin-top:16px;">
+        <div class="card">
+          <h3>Constitutional Execution Stack</h3>
+          <div style="margin-top:12px;display:grid;gap:6px;font-size:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">execution-proof-stack/</span>
+              <span class="chip chip-cyan" style="padding:2px 8px;font-size:10px;">MVP Gateway</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">governance-core/src/</span>
+              <span class="chip chip-green" style="padding:2px 8px;font-size:10px;">Production Runtime</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">carshunter_app/governance/</span>
+              <span class="chip chip-violet" style="padding:2px 8px;font-size:10px;">Domain Application</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--muted);">governance-sdk/</span>
+              <span class="chip chip-gold" style="padding:2px 8px;font-size:10px;">Shared Contracts</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Authority Scope Policy</h3>
+          <div style="margin-top:12px;display:grid;gap:6px;font-size:12px;">
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">EXPORT_APPROVED state</span>
+              <span style="color:var(--rose);">min Level_2 required</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">GO command complexity ≥5</span>
+              <span style="color:var(--rose);">AA role + 2 signers</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;">
+              <span style="color:var(--muted);">Automotive GO</span>
+              <span style="color:var(--rose);">CARSHUNTER role required</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--muted);">Illegal state jump</span>
+              <span style="color:var(--rose);">DENY + FROZEN verdict</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       LIVE LEDGER EVIDENCE
+  ════════════════════════════════════════ -->
+  <section class="section" id="ledger">
+    <div class="sh">
+      <div class="sh-kicker">Authoritative Ledger — governance-core/authoritative_ledger.jsonl</div>
+      <h2>Live Evidence Records (13 events, SHA-256 chained)</h2>
+      <p class="sh-sub">Every record below is from the live ledger. Hash continuity is maintained across all entries. The DENY+FROZEN record for SHIPMENT-REAL-2026-0003 is the canonical proof of illegal state jump rejection.</p>
+    </div>
+    <div class="sb">
+
+      <!-- Key proof events highlighted -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:var(--soft);margin-bottom:10px;">Key Proof Events</div>
+
+        <div class="ledger-row" style="border-color:rgba(110,231,183,.25);background:rgba(110,231,183,.04);">
+          <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div class="ledger-id">EVID-37283C · TRACE-4C2FE2 · SHIPMENT-REAL-2026-0003</div>
+              <div style="margin-top:4px;font-size:13px;font-weight:600;">INTAKE → VERIFIED <span class="verdict-allow">✓ EXECUTE · COMMITTED</span></div>
+            </div>
+            <div class="chip chip-green" style="font-size:10px;">Constitutional execution boundary</div>
+          </div>
+          <div class="ledger-meta">
+            <span>Actor: ops.procurement@bpbsolutionsltd.com</span>
+            <span>Authority: Level_2</span>
+            <span>Amount: €45,000</span>
+            <span>Counterparty: VENDOR-ALPHA-77</span>
+            <span>Domain: trade_compliance</span>
+            <span>2026-06-15T15:52:19Z</span>
+          </div>
+          <div class="hash" style="margin-top:8px;">hash: 4e48745c0721354699ca02d9fed915b79544e64702e90d19bccff58305507615</div>
+        </div>
+
+        <div class="ledger-row" style="border-color:rgba(251,113,133,.3);background:rgba(251,113,133,.04);margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div class="ledger-id">EVID-1C5C8B · TRACE-F74C92 · SHIPMENT-REAL-2026-0003</div>
+              <div style="margin-top:4px;font-size:13px;font-weight:600;">VERIFIED → EXPORT_APPROVED <span class="verdict-deny">✗ DENY · FROZEN</span></div>
+            </div>
+            <div class="chip chip-rose" style="font-size:10px;">ILLEGAL_STATE_JUMP_REJECTED</div>
+          </div>
+          <div class="ledger-meta">
+            <span>Reason: Illegal state jump rejected by constitutional transition graph</span>
+            <span>Authority: Level_1 (insufficient)</span>
+            <span>2026-06-15T15:52:19Z</span>
+          </div>
+          <div class="hash" style="margin-top:8px;">hash: 793b60a0d7151b166b1139ff86d72ce3f2804ce3b89f0e8af9393a9361391c09</div>
+        </div>
+      </div>
+
+      <!-- Full ledger table -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Entity</th>
+              <th>Transition</th>
+              <th>Verdict</th>
+              <th>Evidence ID</th>
+              <th>Timestamp</th>
+              <th>Hash (truncated)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>TEST-001</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-AD2BEA</td><td style="color:var(--soft);">2026-06-03T05:28Z</td><td class="hash">b09168a2…</td></tr>
+            <tr><td>TEST-001</td><td>VERIFIED → COMPLIANCE_PENDING</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-88235B</td><td style="color:var(--soft);">2026-06-03T05:43Z</td><td class="hash">1d88c78f…</td></tr>
+            <tr><td>TEST-001</td><td>VERIFIED → COMPLIANCE_PENDING</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-E1E4B9</td><td style="color:var(--soft);">2026-06-03T05:54Z</td><td class="hash">3c7cf201…</td></tr>
+            <tr><td>TEST-002</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-584E66</td><td style="color:var(--soft);">2026-06-03T06:07Z</td><td class="hash">8bdbd508…</td></tr>
+            <tr><td>TEST-AUTH-1</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-E16E7B</td><td style="color:var(--soft);">2026-06-03T09:45Z</td><td class="hash">426e24aa…</td></tr>
+            <tr><td>TEST-AUTH-1</td><td>VERIFIED → COMPLIANCE_PENDING</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-D5D939</td><td style="color:var(--soft);">2026-06-03T09:45Z</td><td class="hash">d427db50…</td></tr>
+            <tr><td>TEST-002</td><td>VERIFIED → COMPLIANCE_PENDING</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-EB64B8</td><td style="color:var(--soft);">2026-06-05T00:51Z</td><td class="hash">f2b8d5cb…</td></tr>
+            <tr><td>TEST-003</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-80667D</td><td style="color:var(--soft);">2026-06-05T03:00Z</td><td class="hash">d02fbafe…</td></tr>
+            <tr><td>SHIPMENT-REAL-0001</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-58DC97</td><td style="color:var(--soft);">2026-06-15T15:44Z</td><td class="hash">8babfe33…</td></tr>
+            <tr><td>SHIPMENT-REAL-0001</td><td>VERIFIED → COMPLIANCE_PENDING</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-7CCE8F</td><td style="color:var(--soft);">2026-06-15T15:44Z</td><td class="hash">2011fd60…</td></tr>
+            <tr><td>SHIPMENT-REAL-0002</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE</span></td><td class="ledger-id">EVID-1208E3</td><td style="color:var(--soft);">2026-06-15T15:48Z</td><td class="hash">db425ef4…</td></tr>
+            <tr style="background:rgba(110,231,183,.03);"><td>SHIPMENT-REAL-0003</td><td>INTAKE → VERIFIED</td><td><span class="verdict-allow">EXECUTE · COMMITTED</span></td><td class="ledger-id">EVID-37283C</td><td style="color:var(--soft);">2026-06-15T15:52Z</td><td class="hash">4e48745c…</td></tr>
+            <tr style="background:rgba(251,113,133,.04);"><td>SHIPMENT-REAL-0003</td><td>VERIFIED → EXPORT_APPROVED</td><td><span class="verdict-deny">DENY · FROZEN</span></td><td class="ledger-id">EVID-1C5C8B</td><td style="color:var(--soft);">2026-06-15T15:52Z</td><td class="hash">793b60a0…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note" style="margin-top:14px;">
+        <strong>Hash continuity:</strong>
+        <p>Every event's <code style="font-family:monospace;color:var(--cyan);">previous_hash</code> equals the prior event's <code style="font-family:monospace;color:var(--cyan);">hash</code>, or <code style="font-family:monospace;color:var(--gold);">GENESIS</code> for first entries. This chain cannot be forged without invalidating all downstream hashes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       BACKEND SERVICES
+  ════════════════════════════════════════ -->
+  <section class="section" id="services">
+    <div class="sh">
+      <div class="sh-kicker">Engineering</div>
+      <h2>Backend Services — File Map</h2>
+      <p class="sh-sub">Six distinct service packages. Each has a defined boundary role in the authority chain.</p>
+    </div>
+    <div class="sb">
+      <div class="g2" style="margin-bottom:16px;">
+
+        <div class="card" style="border-color:rgba(103,232,249,.2);">
+          <div class="chip chip-cyan" style="font-size:10px;margin-bottom:10px;">governance-core/</div>
+          <h3>Constitutional Execution Runtime</h3>
+          <p>FastAPI service. The production authority runtime. Handles transitions, authority scopes, crypto verification, websocket event bus, and replay.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">src/api/main.py</code> — FastAPI app + QGED authority scope enforcement</li>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">src/runtime/replay_engine.py</code> — Replay and projection rebuilder</li>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">src/crypto/signer_registry.py</code> — Detached signature verification</li>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">src/db/ledger.py</code> — Event-sourced ledger (SQLAlchemy)</li>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">src/api/websocket_bus.py</code> — Real-time event bus</li>
+            <li><code style="font-family:monospace;color:var(--cyan);font-size:11px;">authoritative_ledger.jsonl</code> — 13 live evidence records</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(167,139,250,.2);">
+          <div class="chip chip-violet" style="font-size:10px;margin-bottom:10px;">execution-proof-stack/</div>
+          <h3>Constitutional Gateway (MVP)</h3>
+          <p>Minimal proof gateway. Evaluates admissibility, enforces execution boundary, issues constitutional verdicts, and records evidence.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">constitutional_gateway.py</code> — Evaluate → Admissibility → Verdict → Evidence</li>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">admissibility/admissibility_engine.py</code> — Risk, state, dependency checks</li>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">boundary/enforcement.py</code> — BoundaryViolation raises FREEZE</li>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">ledger/evidence.py</code> — Evidence record creation</li>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">failure/failure_constitution.py</code> — Failure type classification</li>
+            <li><code style="font-family:monospace;color:var(--violet);font-size:11px;">demo_financial_gateway.py</code> — Financial domain demo</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(110,231,183,.2);">
+          <div class="chip chip-green" style="font-size:10px;margin-bottom:10px;">carshunter_app/</div>
+          <h3>CARSHUNTER Automotive Governance</h3>
+          <p>Flask application. Governs automotive trade transitions via the shared governance runtime. Includes state machine, receipts, and ledger.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">governance/state_machine.py</code> — 8-state transition graph</li>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">governance/authority.py</code> — Authority verification</li>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">governance/receipts.py</code> — Signed execution receipts</li>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">governance/evidence.py</code> — Evidence record creation</li>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">governance/freeze.py</code> — Constitutional freeze</li>
+            <li><code style="font-family:monospace;color:var(--green);font-size:11px;">ledger/replay_lineage.py</code> — Lineage reconstruction</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(251,146,60,.2);">
+          <div class="chip chip-orange" style="font-size:10px;margin-bottom:10px;">operations-core/</div>
+          <h3>AegyptenHautnah FastAPI Backend</h3>
+          <p>Tourism operations backend. Lead registry, social agent, and governed intake routing for aegyptenhautnah.com.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--orange);font-size:11px;">lead_registry/</code> — Lead capture and governance routing</li>
+            <li><code style="font-family:monospace;color:var(--orange);font-size:11px;">social_agent/</code> — Telegram/WhatsApp intake agent</li>
+            <li>API: <code style="font-family:monospace;color:var(--orange);font-size:11px;">api.aegyptenhautnah.com</code></li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(252,211,77,.2);">
+          <div class="chip chip-gold" style="font-size:10px;margin-bottom:10px;">governance-sdk/</div>
+          <h3>Cross-Service SDK Contracts</h3>
+          <p>Python package. Shared types, states, receipts, and UI contracts used by governance-core, carshunter_app, and Next.js API adapters.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--gold);font-size:11px;">governance_sdk/states.py</code> — HuntState enum + ALLOWED_TRANSITIONS</li>
+            <li><code style="font-family:monospace;color:var(--gold);font-size:11px;">governance_sdk/receipts.py</code> — ExecutionReceipt dataclass</li>
+            <li><code style="font-family:monospace;color:var(--gold);font-size:11px;">governance_sdk/ui_contracts.py</code> — GovernanceEventUI, TraceViewerProps</li>
+            <li><code style="font-family:monospace;color:var(--gold);font-size:11px;">governance_sdk/exceptions.py</code> — IllegalStateJump</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-color:rgba(148,163,184,.15);">
+          <div class="chip" style="font-size:10px;margin-bottom:10px;color:var(--soft);border-color:rgba(148,163,184,.2);background:rgba(148,163,184,.05);">app/api/ + server.js</div>
+          <h3>Next.js API Adapters + YAI Server</h3>
+          <p>Thin Next.js API routes. Business logic stays in governance-core. YAI OpenAI server for the operator assistant layer.</p>
+          <ul>
+            <li><code style="font-family:monospace;color:var(--muted);font-size:11px;">app/api/agent/</code> — Agent API adapter</li>
+            <li><code style="font-family:monospace;color:var(--muted);font-size:11px;">app/api/yai/</code> — YAI Local operator API</li>
+            <li><code style="font-family:monospace;color:var(--muted);font-size:11px;">scripts/yai-openai-server.mjs</code> — YAI OpenAI proxy server</li>
+            <li><code style="font-family:monospace;color:var(--muted);font-size:11px;">scripts/start-yai-local-with-key.sh</code> — Local YAI launcher</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       APP ROUTES
+  ════════════════════════════════════════ -->
+  <section class="section" id="routes">
+    <div class="sh">
+      <div class="sh-kicker">Next.js App Router</div>
+      <h2>28 Application Routes</h2>
+      <p class="sh-sub">All routes use the App Router. Host-aware routing in app/page.tsx sends gtcs4u.com visitors to the GTCS4U surface. All other hosts render the PMS4U root.</p>
+    </div>
+    <div class="sb">
+      <div class="route-grid">
+        <div class="route-item"><div class="route-path">/</div><div class="route-desc">PMS4U root (host-aware). GTCS4U on gtcs4u.com.</div></div>
+        <div class="route-item"><div class="route-path">/console</div><div class="route-desc">Runtime governance console — DENY/DEFER/INTERRUPT demo</div></div>
+        <div class="route-item"><div class="route-path">/trace</div><div class="route-desc">Constitutional trace — lineage and evidence chain viewer</div></div>
+        <div class="route-item"><div class="route-path">/proof-surface</div><div class="route-desc">Proof surface — institutional demonstration of live components</div></div>
+        <div class="route-item"><div class="route-path">/investor</div><div class="route-desc">Investor brief — claim-disciplined executive summary</div></div>
+        <div class="route-item"><div class="route-path">/investor-technical-report</div><div class="route-desc">Technical investor report — architecture depth</div></div>
+        <div class="route-item"><div class="route-path">/gtcs4u</div><div class="route-desc">GTCS4U — trade, logistics, supplier governance surface</div></div>
+        <div class="route-item"><div class="route-path">/bpbsolutionsltd</div><div class="route-desc">BPB corporate entry + YAI Local operator hub</div></div>
+        <div class="route-item"><div class="route-path">/bpbsolutionsltd/yai</div><div class="route-desc">YAI Local — governed AI assistant layer</div></div>
+        <div class="route-item"><div class="route-path">/yai</div><div class="route-desc">YAI standalone surface</div></div>
+        <div class="route-item"><div class="route-path">/authority</div><div class="route-desc">Authority documentation and scope map</div></div>
+        <div class="route-item"><div class="route-path">/authority-audit-sprint</div><div class="route-desc">Paid 7-10 day authority audit sprint</div></div>
+        <div class="route-item"><div class="route-path">/reference-architecture</div><div class="route-desc">Reference architecture documentation surface</div></div>
+        <div class="route-item"><div class="route-path">/workspace-technical-report</div><div class="route-desc">Technical report for auditors and CTOs</div></div>
+        <div class="route-item"><div class="route-path">/research</div><div class="route-desc">Research foundation — PMS4U doctrine and publications</div></div>
+        <div class="route-item"><div class="route-path">/doctrine</div><div class="route-desc">Constitutional execution doctrine</div></div>
+        <div class="route-item"><div class="route-path">/executive-brief</div><div class="route-desc">Executive-level positioning brief</div></div>
+        <div class="route-item"><div class="route-path">/ecosystem</div><div class="route-desc">Full ecosystem map and domain relationships</div></div>
+        <div class="route-item"><div class="route-path">/carshunter-drops</div><div class="route-desc">Campaign redirect → CARSHUNTER BMW Big Day Drops</div></div>
+        <div class="route-item"><div class="route-path">/bpbsolutionsltd/carshunter-drops</div><div class="route-desc">Secondary campaign redirect</div></div>
+        <div class="route-item"><div class="route-path">/hurghada-mobility</div><div class="route-desc">Mobility MVP — subscription ride-hailing pilot</div></div>
+        <div class="route-item"><div class="route-path">/subscription-mobility</div><div class="route-desc">Driver subscription model blueprint</div></div>
+        <div class="route-item"><div class="route-path">/umeldonia</div><div class="route-desc">Aegypten Hautnah travel pilot app</div></div>
+        <div class="route-item"><div class="route-path">/agent</div><div class="route-desc">Agent surface — governed AI agent interface</div></div>
+        <div class="route-item"><div class="route-path">/marketing-research</div><div class="route-desc">Market intelligence surface</div></div>
+        <div class="route-item"><div class="route-path">/shab-report</div><div class="route-desc">SHAB Q1 2026 governance report</div></div>
+        <div class="route-item"><div class="route-path">/ops</div><div class="route-desc">Operations surface</div></div>
+        <div class="route-item"><div class="route-path">/linkedin</div><div class="route-desc">LinkedIn professional presence surface</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       DOMAIN MAP
+  ════════════════════════════════════════ -->
+  <section class="section" id="domains">
+    <div class="sh">
+      <div class="sh-kicker">Deployment</div>
+      <h2>6 Live Domains</h2>
+      <p class="sh-sub">Each domain has a distinct role and must not be replaced by another surface. CARSHUNTER and AegyptenHautnah are separate projects from PMS4U.</p>
+    </div>
+    <div class="sb">
+      <div class="domain-map">
+        <div class="domain-card" style="border-color:rgba(103,232,249,.2);">
+          <div class="domain-name" style="color:var(--cyan);">pms4u.vercel.app / pms.bpbsolutionsltd.com</div>
+          <div class="domain-meta">
+            <span>Role</span><span>PMS4U Runtime Governance Platform — primary surface</span>
+            <span>Stack</span><span>Next.js 15 · Tailwind v4 · Vercel</span>
+            <span>Repo</span><span>pms4u/ (this repository)</span>
+            <span>Deploy</span><span>npm run build → Vercel deploy from repo root</span>
+            <span>Recovery</span><span style="color:var(--green);">investor-live-2026-06-15</span>
+          </div>
+        </div>
+        <div class="domain-card" style="border-color:rgba(252,211,77,.2);">
+          <div class="domain-name" style="color:var(--gold);">gtcs4u.com / www.gtcs4u.com</div>
+          <div class="domain-meta">
+            <span>Role</span><span>GTCS4U holding + governance OS commercial surface</span>
+            <span>Stack</span><span>Host-based rewrite via middleware.ts → app/gtcs4u/page.tsx</span>
+            <span>Rule</span><span>Do not replace root experience without explicit approval</span>
+            <span>DNS</span><span>IONOS</span>
+          </div>
+        </div>
+        <div class="domain-card" style="border-color:rgba(110,231,183,.2);">
+          <div class="domain-name" style="color:var(--green);">carshunter.de</div>
+          <div class="domain-meta">
+            <span>Role</span><span>CARSHUNTER automotive governance operations</span>
+            <span>Stack</span><span>Flask · SQLite · ALL-INKL (80/443) · api.carshunter.de (8000)</span>
+            <span>Repo</span><span>carshunter_app/</span>
+            <span>Rule</span><span>Do not expose supplier or source names on public pages</span>
+          </div>
+        </div>
+        <div class="domain-card" style="border-color:rgba(251,146,60,.2);">
+          <div class="domain-name" style="color:var(--orange);">aegyptenhautnah.com</div>
+          <div class="domain-meta">
+            <span>Role</span><span>Tourism operations — Egypt long-stay, property, tours</span>
+            <span>Stack</span><span>FastAPI · ALL-INKL · api.aegyptenhautnah.com (8000)</span>
+            <span>Repo</span><span>operations-core/ · aegyptenhautnah-platform/</span>
+            <span>Rule</span><span>Separate project — do not deploy via PMS4U deploy</span>
+          </div>
+        </div>
+        <div class="domain-card" style="border-color:rgba(167,139,250,.2);">
+          <div class="domain-name" style="color:var(--violet);">bpbsolutionsltd.com</div>
+          <div class="domain-meta">
+            <span>Role</span><span>BPB Solutions corporate entry + YAI Local + governance console</span>
+            <span>Stack</span><span>Static / Next.js routes under /bpbsolutionsltd</span>
+            <span>Repo</span><span>app/bpbsolutionsltd/ · bpbsolutionsltd.com/</span>
+          </div>
+        </div>
+        <div class="domain-card" style="border-color:rgba(148,163,184,.15);">
+          <div class="domain-name">gmtc4u.de</div>
+          <div class="domain-meta">
+            <span>Role</span><span>GMTC4U documentation and governance information</span>
+            <span>Stack</span><span>Static · ALL-INKL · api.gmtc4u.de (8000)</span>
+            <span>DNS</span><span>IONOS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       SDK MODULE MAP
+  ════════════════════════════════════════ -->
+  <section class="section" id="sdk">
+    <div class="sh">
+      <div class="sh-kicker">Contracts</div>
+      <h2>governance-sdk — Cross-Service Contracts</h2>
+      <p class="sh-sub">Shared Python package. When contract fields change, update UI normalizers and API responses together.</p>
+    </div>
+    <div class="sb">
+      <div class="module-grid">
+        <div class="module-item">
+          <div class="module-name">HuntState</div>
+          <div class="module-file">governance_sdk/states.py</div>
+          <div class="module-desc">8-state enum: INTAKE → VERIFIED → COMPLIANCE_PENDING → PAYMENT_CONFIRMED → GOVERNANCE_REVIEW → EXPORT_APPROVED → EXPORTED → ARCHIVED</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">ALLOWED_TRANSITIONS</div>
+          <div class="module-file">governance_sdk/states.py</div>
+          <div class="module-desc">Dict mapping each state to its valid successors. Illegal jumps raise IllegalStateJump.</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">ExecutionReceipt</div>
+          <div class="module-file">governance_sdk/receipts.py</div>
+          <div class="module-desc">Signed receipt dataclass. Carries verdict, correlation_id, evidence_id, hash, timestamp.</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">IllegalStateJump</div>
+          <div class="module-file">governance_sdk/exceptions.py</div>
+          <div class="module-desc">Raised when a transition violates ALLOWED_TRANSITIONS. Triggers DENY + FROZEN verdict.</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">GovernanceEventUI</div>
+          <div class="module-file">governance_sdk/ui_contracts.py</div>
+          <div class="module-desc">Pydantic model for the constitutional event bus. Used by Next.js API adapters.</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">ExecutionTraceViewerProps</div>
+          <div class="module-file">governance_sdk/ui_contracts.py</div>
+          <div class="module-desc">Props contract for the /trace route viewer. Includes lineage, evidence, authority context.</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">ConstitutionalEventBusMessage</div>
+          <div class="module-file">governance_sdk/ui_contracts.py</div>
+          <div class="module-desc">WebSocket message contract for the real-time event bus (governance-core/src/api/websocket_bus.py).</div>
+        </div>
+        <div class="module-item">
+          <div class="module-name">ConstitutionalVerdict</div>
+          <div class="module-file">execution-proof-stack/constitutional_verdict.py</div>
+          <div class="module-desc">Verdict object: verdict, correlation_id, authority_chain, signer_threshold_met, drift_detected, evidence record.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       STATIC DOCUMENTS
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="sh">
+      <div class="sh-kicker">Knowledge Base</div>
+      <h2>Markdown Documents &amp; Static Reports</h2>
+      <p class="sh-sub">Institutional records, architecture maps, whitepapers, and investor materials living in the repository root.</p>
+    </div>
+    <div class="sb">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>File</th><th>Purpose</th><th>Audience</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">AGENTS.md</code></td><td>Full agent context — architecture, authority chain, routing, stop conditions, claim discipline, planning protocol</td><td>AI agents, coding assistants</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">ARCHITECTURE_MAP_MASTER.md</code></td><td>Domain → repository mapping, runtime stack, authority flow diagram</td><td>Technical leads</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">RELEASE_CONTROL.md</code></td><td>Canonical surface map, deployment rules, claim discipline</td><td>DevOps, deployment</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">DNS_DEPLOYMENT_MAP.md</code></td><td>All domains, subdomains, DNS hosts, hosting targets, ports</td><td>Infrastructure</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">PLATFORM_AUTHORITY_MAP.md</code></td><td>Asset → domain → runtime → database → governance cross-reference</td><td>Enterprise architects</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">WHITEPAPER.md</code></td><td>Constitutional execution whitepaper — doctrine, design, proof model</td><td>Academic, institutional</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">SOVEREIGN_STACK.md</code></td><td>Sovereign technology stack doctrine</td><td>Policymakers, enterprise</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">BCG_EGA_SET_DOCTRINE.md</code></td><td>BCG/EGA strategic execution doctrine reference</td><td>Executive, strategy</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">PMS4U_INVESTOR_ONE_PAGER.md</code></td><td>Single-page investor summary</td><td>Investors</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">PMS4U_ENTERPRISE_DECK.md</code></td><td>Enterprise positioning deck</td><td>Enterprise buyers</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">EVIDENCE_PACK_TEMPLATE.md</code></td><td>Standard evidence pack template for shipment governance records</td><td>Compliance, audit</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">EVIDENCE_PACK_EXAMPLE_SHIPMENT_0003.md</code></td><td>Canonical evidence pack for SHIPMENT-REAL-2026-0003 (€45,000 trade compliance case)</td><td>Auditors, enterprise</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">BPB_SHAP_Q1_2026_Report.md</code></td><td>SHAP Q1 2026 governance report</td><td>Board, investors</td></tr>
+            <tr><td><code style="font-family:monospace;color:var(--cyan);">REPOSITORY_AUDIT.md</code></td><td>Repository audit records</td><td>Governance, compliance</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       TIMELINE
+  ════════════════════════════════════════ -->
+  <section class="section" id="timeline">
+    <div class="sh">
+      <div class="sh-kicker">Chronology</div>
+      <h2>Engineering Timeline — Sep 2025 to Jul 2026</h2>
+    </div>
+    <div class="sb">
+      <div class="timeline">
+        <div class="tnode">
+          <div class="tnode-date">Sep – Nov 2025</div>
+          <h3>Foundation and doctrine</h3>
+          <p>Ecosystem established across multiple business directions. Public pages, architecture maps, and executive narratives aligned. Brand scope became system scope.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-cyan" style="font-size:10px;">Architecture maps</span>
+            <span class="chip chip-gold" style="font-size:10px;">Executive narratives</span>
+            <span class="chip chip-violet" style="font-size:10px;">Domain separation</span>
+          </div>
+        </div>
+        <div class="tnode">
+          <div class="tnode-date">Dec 2025 – Jan 2026</div>
+          <h3>Structural consolidation</h3>
+          <p>Governance language, claim discipline, and route separation formally aligned. Each public surface given a defined role. Basis for runtime governance pages established.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-green" style="font-size:10px;">Route boundaries</span>
+            <span class="chip chip-gold" style="font-size:10px;">Claim discipline</span>
+          </div>
+        </div>
+        <div class="tnode">
+          <div class="tnode-date">Feb – Mar 2026</div>
+          <h3>Runtime governance and proof surfaces</h3>
+          <p>Platform shifted from presentation to operational control. Proof surfaces, trace concepts, and runtime decisioning introduced. Authority, evidence, and admissibility demonstrated as a system.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-cyan" style="font-size:10px;">Proof surfaces</span>
+            <span class="chip chip-violet" style="font-size:10px;">execution-proof-stack</span>
+            <span class="chip chip-green" style="font-size:10px;">Trace infrastructure</span>
+          </div>
+        </div>
+        <div class="tnode">
+          <div class="tnode-date">Apr – May 2026</div>
+          <h3>Enterprise hardening and audit readiness</h3>
+          <p>Visual polish, route stabilization, repository hygiene. Workspace technical report, audit notes, and governance pages framed stack as enterprise-ready control plane.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-gold" style="font-size:10px;">Audit readiness</span>
+            <span class="chip chip-green" style="font-size:10px;">Route stabilization</span>
+          </div>
+        </div>
+        <div class="tnode">
+          <div class="tnode-date">Jun 2026</div>
+          <h3>Live ledger, messaging governance, investor recovery tag</h3>
+          <p>Authoritative ledger recorded 13 events including the canonical SHIPMENT-REAL-2026-0003 DENY+FROZEN record. Phone, Telegram, and webchat inbound governance implemented. investor-live-2026-06-15 tag set.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-rose" style="font-size:10px;">13 ledger events</span>
+            <span class="chip chip-green" style="font-size:10px;">Recovery tag set</span>
+            <span class="chip chip-orange" style="font-size:10px;">Messaging bridges</span>
+          </div>
+        </div>
+        <div class="tnode">
+          <div class="tnode-date">Jul 2026 (current)</div>
+          <h3>Homepage positioning push + AGENTS.md expansion</h3>
+          <p>Institutional positioning applied to both the full in-depth report and the public homepage. Four-question principle, sectors grid, and Governance Runtime Platform vocabulary propagated. AGENTS.md expanded into a full project context document for AI agents.</p>
+          <div class="tnode-tags">
+            <span class="chip chip-cyan" style="font-size:10px;">Four-question principle</span>
+            <span class="chip chip-gold" style="font-size:10px;">Sectors grid</span>
+            <span class="chip chip-violet" style="font-size:10px;">AGENTS.md expanded</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       INSTITUTIONAL POSITIONING
+  ════════════════════════════════════════ -->
+  <section class="section" id="positioning">
+    <div class="sh">
+      <div class="sh-kicker">Strategic Positioning</div>
+      <h2>From Report to Homepage — Completed Positioning Changes</h2>
+      <p class="sh-sub">Changes applied in this session. Report positioning propagated to the public homepage.</p>
+    </div>
+    <div class="sb">
+      <div class="g2" style="margin-bottom:16px;">
+        <div class="callout">
+          <h3>The Principle — Four Questions</h3>
+          <div style="margin-top:12px;line-height:2.1;font-size:.95rem;">
+            <strong style="color:var(--cyan);">1.</strong> Who has authority?<br/>
+            <strong style="color:var(--gold);">2.</strong> Is execution admissible now?<br/>
+            <strong style="color:var(--green);">3.</strong> Can execution be interrupted?<br/>
+            <strong style="color:var(--violet);">4.</strong> Can the consequence be independently verified?
+          </div>
+          <p style="margin-top:12px;font-size:.875rem;">If the answer to any is unknown, execution does not proceed. Engineering constraint, not policy statement.</p>
+        </div>
+        <div class="card">
+          <h3>Positioning Changes Applied</h3>
+          <ul>
+            <li>Hero kicker: <span style="color:var(--rose);">PMS4U Runtime Governance OS™</span> → <span style="color:var(--green);">Governance Runtime Platform</span></li>
+            <li>Four-question principle block added to homepage (between hero and commercial products)</li>
+            <li>Sectors grid added (8 sectors: Defense, Government, Trade &amp; Logistics, Finance, Critical Infrastructure, Healthcare, AI Platforms, Multi-Entity Operations)</li>
+            <li>Sectors nav link added to top navigation</li>
+            <li>AGENTS.md: stub → full project context document (10 sections)</li>
+            <li>allaatia-full-in-depth-report.html: proof, sectors, research-foundation, principle sections added</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Surface</th><th>File</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Homepage hero kicker</td><td><code style="font-family:monospace;color:var(--cyan);">app/page.tsx</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>Four-question principle section</td><td><code style="font-family:monospace;color:var(--cyan);">app/page.tsx</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>Sectors grid section</td><td><code style="font-family:monospace;color:var(--cyan);">app/page.tsx</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>Sectors nav link</td><td><code style="font-family:monospace;color:var(--cyan);">app/page.tsx</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>Full in-depth report — proof / sectors / research / principle</td><td><code style="font-family:monospace;color:var(--cyan);">public/allaatia-full-in-depth-report.html</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>AGENTS.md full expansion</td><td><code style="font-family:monospace;color:var(--cyan);">AGENTS.md</code></td><td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Applied</span></td></tr>
+            <tr><td>Service naming on other pages</td><td>app/bpbsolutionsltd/, public/ pages</td><td><span class="pill" style="color:var(--gold);border-color:rgba(252,211,77,.3);background:rgba(252,211,77,.06);">⟳ Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       GOVERNANCE GATE STATUS
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="sh">
+      <div class="sh-kicker">Safety Check</div>
+      <h2>Governance Gate — Current Status</h2>
+      <p class="sh-sub">Stop conditions evaluated against the current repository state.</p>
+    </div>
+    <div class="sb">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Stop Condition</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--soft);">1</td>
+              <td>git status shows large tracked deletions before deploy</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Clear</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--soft);">2</td>
+              <td>Code bypasses QGED gate, skips evidence, or omits ledger append</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Clear</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--soft);">3</td>
+              <td>Public copy makes ROI/prevented-loss claims without signed validation</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Clear</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--soft);">4</td>
+              <td>gtcs4u.com root replaced without explicit approval</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Clear</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--soft);">5</td>
+              <td>CARSHUNTER page exposes supplier or source names</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Clear</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--soft);">6</td>
+              <td>investor-live-2026-06-15 tag deleted or overwritten</td>
+              <td><span class="pill" style="color:var(--green);border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.06);">✓ Preserved</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:14px;border-color:rgba(110,231,183,.2);background:rgba(110,231,183,.04);">
+        <strong style="color:var(--green);">PROCEED</strong>
+        <p>All six stop conditions are clear. Repository is safe to build and deploy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       CLAIM DISCIPLINE
+  ════════════════════════════════════════ -->
+  <section class="section">
+    <div class="sh">
+      <div class="sh-kicker">Investor Safety</div>
+      <h2>Claim Discipline</h2>
+    </div>
+    <div class="sb">
+      <div class="g2">
+        <div class="card" style="border-color:rgba(110,231,183,.2);">
+          <h3 style="color:var(--green);">Proven claims — safe to publish</h3>
+          <ul>
+            <li>Runtime interception</li>
+            <li>Signed evidence</li>
+            <li>Replay reconstruction</li>
+            <li>Hash continuity</li>
+            <li>Ledger verification</li>
+            <li>Authority traceability</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:rgba(251,113,133,.2);">
+          <h3 style="color:var(--rose);">Forbidden without signed business validation</h3>
+          <ul>
+            <li>ROI improvement</li>
+            <li>Prevented losses / exposure avoided</li>
+            <li>Compliance breach prevention</li>
+            <li>Enterprise risk reduction</li>
+            <li>Production adoption at named clients</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <p>PMS4U — Session Report · 8 July 2026 · <span style="color:var(--cyan);">pms4u.vercel.app</span> · Governance Runtime Platform</p>
+    <p style="margin-top:6px;">Recovery point: <code style="font-family:monospace;color:var(--green);">investor-live-2026-06-15</code> · Restore: <code style="font-family:monospace;color:var(--soft);">git checkout investor-live-2026-06-15</code></p>
+    <p style="margin-top:6px;color:rgba(100,116,139,.6);">Private — Business Use Only · BPB Solutions LTD · AA Investitionen und Beratung</p>
+  </footer>
+
+</div>
+</body>
+</html>

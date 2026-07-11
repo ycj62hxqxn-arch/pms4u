@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alaatia — Full In-Depth Ecosystem Report (Draft)</title>
+  <meta name="description" content="Draft full in-depth report covering projects, ecosystems, milestones, case studies, financial impact pathways, and session summaries from September 2025 to July 2026." />
+  <style>
+    :root {
+      --bg: #050816;
+      --panel: rgba(255,255,255,.05);
+      --panel-strong: rgba(255,255,255,.08);
+      --line: rgba(255,255,255,.10);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --soft: #94a3b8;
+      --cyan: #67e8f9;
+      --gold: #fcd34d;
+      --green: #6ee7b7;
+      --rose: #fda4af;
+      --shadow: 0 30px 120px rgba(0,0,0,.42);
+      --radius: 26px;
+      --radius-sm: 18px;
+      --max: 1240px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 12%, rgba(56,189,248,.15), transparent 20%),
+        radial-gradient(circle at 92% 8%, rgba(252,211,77,.11), transparent 18%),
+        radial-gradient(circle at 50% 100%, rgba(34,197,94,.07), transparent 22%),
+        var(--bg);
+      line-height: 1.6;
+    }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 48px; }
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(103,232,249,.13), transparent 22%),
+        radial-gradient(circle at 80% 14%, rgba(252,211,77,.12), transparent 18%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.45fr .9fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid rgba(252,211,77,.22);
+      background: rgba(252,211,77,.08);
+      color: #fef3c7;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .24em;
+    }
+    h1, h2, h3, h4 { margin: 0; line-height: 1.15; }
+    h1 { margin-top: 18px; font-size: clamp(2.4rem, 4vw, 4.8rem); letter-spacing: -.05em; }
+    h2 { font-size: clamp(1.45rem, 2.2vw, 2.2rem); }
+    h3 { font-size: 1.05rem; }
+    .lead {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      max-width: 78ch;
+    }
+    .mini { color: var(--soft); font-size: 13px; }
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+    .nav a {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.18);
+      background: rgba(15,23,42,.6);
+      color: #dbeafe;
+      font-size: 13px;
+    }
+    .nav a:hover { text-decoration: none; border-color: rgba(103,232,249,.5); }
+    .facts {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .fact, .card, .section, .note, .callout, .table-wrap {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .fact {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.28);
+    }
+    .label {
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .value { margin-top: 6px; font-size: 1.02rem; font-weight: 800; }
+    .section {
+      margin-top: 26px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .section-head {
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+    }
+    .section-body { padding: 22px; }
+    .section-sub { color: var(--muted); max-width: 92ch; margin-top: 8px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .card {
+      border-radius: 20px;
+      padding: 18px;
+      background: rgba(0,0,0,.28);
+    }
+    .card p { margin: 0; }
+    .card ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+    .card li { margin: 6px 0; }
+    .callout {
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(252,211,77,.08);
+      border-color: rgba(252,211,77,.18);
+      color: #fff7d6;
+    }
+    .timeline {
+      display: grid;
+      gap: 14px;
+      border-left: 2px solid rgba(103,232,249,.25);
+      margin-left: 8px;
+      padding-left: 16px;
+    }
+    .node {
+      position: relative;
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .node::before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 18px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--cyan);
+      border: 2px solid #050816;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,.23); }
+    th, td {
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: rgba(255,255,255,.04);
+      color: #e2e8f0;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+    }
+    tr:last-child td { border-bottom: none; }
+    .table-wrap {
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .ok { color: var(--green); border-color: rgba(110,231,183,.24); background: rgba(110,231,183,.08); }
+    .warn { color: var(--gold); border-color: rgba(252,211,77,.24); background: rgba(252,211,77,.08); }
+    .note {
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,.03);
+    }
+    .source-list { margin: 0; padding-left: 18px; color: var(--muted); }
+    .source-list li { margin: 6px 0; }
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--soft);
+      font-size: 12px;
+    }
+    .compact p { margin: 0; }
+    @media (max-width: 1040px) {
+      .hero-grid, .grid-2, .grid-3, .grid-4, .facts { grid-template-columns: 1fr; }
+      .nav { justify-content: flex-start; }
+    }
+    @media print {
+      body { background: #fff; color: #000; }
+      .shell { width: 100%; padding: 0; }
+      .hero, .section, .fact, .card, .callout, .table-wrap, .note { box-shadow: none !important; }
+      .hero, .section { border-color: #ddd; background: #fff; }
+      .hero::before, .nav { display: none !important; }
+      .pill { border-color: #ddd; background: #fef3c7; color: #111; }
+      .muted, .mini, .section-sub, .source-list { color: #333; }
+      th { background: #f3f4f6; color: #111; }
+      td, th { border-bottom-color: #e5e7eb; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">Governance Runtime Platform</div>
+          <h1>Governance Infrastructure for Consequence-Bearing AI and Enterprise Operations</h1>
+          <p class="lead" style="font-size:1.16rem;color:#fff;margin-top:14px;max-width:46ch;">
+            We design governance systems that verify authority before execution.
+          </p>
+          <p class="lead">
+            This draft documents the work accomplished across projects and ecosystems from September 2025 through July 2026.
+            It is written as an institutional report for executive, academic, and enterprise readers. It shows what was engineered,
+            what the runtime actually proves, where the authority model operates, and how consequence-bearing execution is constrained by admissibility and evidence.
+          </p>
+          <p class="mini">
+            Draft report for allaatia.com.
+          </p>
+          <p class="mini" style="margin-top:6px;">
+            Important: financial impacts in this draft are framed as operational and commercial pathways, not audited claims.
+            Any quantified return must be validated separately before external publication.
+          </p>
+        </div>
+        <div class="nav">
+          <a href="#abstract">Abstract</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#proof">Runtime Proof</a>
+          <a href="#sectors">Target Sectors</a>
+          <a href="#timeline">Timeline</a>
+          <a href="#ecosystems">Ecosystems</a>
+          <a href="#carshunter-ops">CARSHUNTER Ops</a>
+          <a href="#marketing">Marketing Research</a>
+          <a href="#cases">Case Studies</a>
+          <a href="#operational-evidence">Operational Evidence</a>
+          <a href="#financial">Financial Impact</a>
+          <a href="#validation">External Validation</a>
+          <a href="#research-foundation">Built on Research</a>
+          <a href="#principle">Our Principle</a>
+          <a href="#sessions">Session Reports</a>
+          <a href="#sources">Sources</a>
+        </div>
+      </div>
+
+      <div class="facts">
+        <div class="fact"><div class="label">Report Window</div><div class="value">Sep 2025 → Jul 2026</div></div>
+        <div class="fact"><div class="label">Primary Lens</div><div class="value">Governance Runtime Engineering</div></div>
+        <div class="fact"><div class="label">Proof Surfaces</div><div class="value">Console, receipts, replay, traces</div></div>
+        <div class="fact"><div class="label">Target Context</div><div class="value">Government, trade, AI, critical ops</div></div>
+      </div>
+    </header>
+
+    <section class="section" id="abstract">
+      <div class="section-head">
+        <div class="kicker">Executive abstract</div>
+        <h2>What this body of work became</h2>
+        <p class="section-sub">
+          The repository evolved from a multi-brand presence into a governance-first ecosystem with shared runtime controls,
+          evidence handling, messaging bridges, and domain-specific public surfaces. Across the period, the main shift was from
+          static narrative to operationalized authority: messages can be qualified, traced, reviewed, and routed without losing the claim boundary.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card compact">
+            <h3>Runtime authority architecture</h3>
+            <p class="muted" style="margin-top:8px;">
+              The ecosystem positions authority before consequence. It does not merely describe governance; it enforces authority checks, admissibility checks,
+              evidence issuance, and operator handoff in runtime surfaces.
+            </p>
+          </div>
+          <div class="callout">
+            <strong>Positioning for allaatia.com</strong>
+            <div style="margin-top:10px; color:#fff; font-size:1.02rem;">
+              This should read as the website of a boutique governance architecture firm, not a generic consulting portfolio.
+            </div>
+            <div style="margin-top:10px; color:#fff7d6;">
+              The central differentiator is the Governance Runtime Platform: authority, admissibility, interruption, and verification enforced before consequences occur.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="yai-assessment">
+      <div class="section-head">
+        <div class="kicker">YAI assessment</div>
+        <h2>Independent scrutiny summary</h2>
+        <p class="section-sub">
+          If this report is read as a governance-oriented assistant would read it, the strongest interpretation is that the project is moving from a research concept into an operational governance platform.
+          The next challenge is no longer adding features; it is proving the architecture under independent scrutiny.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>What is strongest</h3>
+            <ul>
+              <li>A coherent thesis: authority before consequence appears across PMS4U, GTCS4U, CARSHUNTER, and Aegypten Hautnah.</li>
+              <li>Operational direction: phone webhooks, Telegram, evidence persistence, operator workflows, and runtime governance are moving the work from documentation toward execution.</li>
+              <li>Claim discipline: the report distinguishes draft operational impact from audited business results.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Where the project must mature</h3>
+            <ul>
+              <li>Independent reproducibility</li>
+              <li>Adversarial testing</li>
+              <li>Load benchmarks</li>
+              <li>Third-party architectural review</li>
+              <li>Real enterprise pilot outcomes</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>The most valuable shift</strong>
+            <div style="margin-top:10px; color:#fff;">
+              The ecosystem now looks less like a governance framework and more like a Governance Runtime Platform.
+            </div>
+            <div style="margin-top:10px; color:#fff7d6;">
+              That changes the question from “What is your governance model?” to “Can your governance model actively control execution?”
+            </div>
+          </div>
+          <div class="note">
+            <strong>One-line narrative for allaatia.com</strong>
+            <p style="margin-top:10px;">
+              PMS4U is a runtime governance platform that verifies whether consequence-bearing actions are admissible before execution and preserves independent evidence of that decision.
+            </p>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <div class="label" style="margin-bottom:10px;">YAI Maturity Scores — Jul 2026</div>
+          <div class="grid-4">
+            <div class="fact">
+              <div class="label">Vision &amp; Coherence</div>
+              <div class="value" style="color:var(--green)">9.5 / 10</div>
+            </div>
+            <div class="fact">
+              <div class="label">Architecture Maturity</div>
+              <div class="value" style="color:var(--green)">9.0 / 10</div>
+            </div>
+            <div class="fact">
+              <div class="label">Technical / Academic Readiness</div>
+              <div class="value" style="color:var(--cyan)">8.5 / 10</div>
+            </div>
+            <div class="fact">
+              <div class="label">External Proof Level</div>
+              <div class="value" style="color:var(--gold)">6.5 / 10</div>
+            </div>
+          </div>
+          <div class="note" style="margin-top:10px;">
+            The external proof gap is the highest-priority investment area for the next period. Independent reproducibility, third-party review, and real pilot outcomes will raise that score.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="section-head">
+        <div class="kicker">Governance Runtime Platform</div>
+        <h2>Platform architecture — one-minute institutional view</h2>
+        <p class="section-sub">The six layers of the runtime governance platform. Each layer has a distinct role and a defined handoff to the next.</p>
+      </div>
+      <div class="section-body">
+        <div style="display:grid;gap:0;">
+          <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;align-items:stretch;">
+            <div style="border:1px solid rgba(103,232,249,.35);background:rgba(103,232,249,.07);border-radius:16px 0 0 0;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">🛡</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#67e8f9;">Runtime Authority</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">Resolves who is permitted to trigger a consequence-bearing action. The entry point for all governed transitions.</p>
+            </div>
+            <div style="border:1px solid rgba(252,211,77,.3);background:rgba(252,211,77,.06);border-left:none;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">⚖️</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#fcd34d;">Admissibility Engine</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">Checks whether the requested action is admissible given current state, policy, and evidence completeness.</p>
+            </div>
+            <div style="border:1px solid rgba(110,231,183,.3);background:rgba(110,231,183,.06);border-left:none;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">🚦</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#6ee7b7;">Execution Gate</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">The binary decision: ALLOW or DENY/FREEZE. No execution proceeds without a gate decision and a signed record.</p>
+            </div>
+            <div style="border:1px solid rgba(167,139,250,.3);background:rgba(167,139,250,.06);border-left:none;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">🔗</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#a78bfa;">Evidence Spine</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">Append-only hash-chained ledger. Stores every gate decision with signed receipt, correlation ID, and SHA-256 digest.</p>
+            </div>
+            <div style="border:1px solid rgba(251,146,60,.3);background:rgba(251,146,60,.06);border-left:none;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">📡</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#fb923c;">Messaging Bridges</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">Phone, Telegram, and webchat inbound routes. All messages become evidence records routed to operator review.</p>
+            </div>
+            <div style="border:1px solid rgba(148,163,184,.2);background:rgba(148,163,184,.05);border-left:none;border-radius:0 16px 0 0;padding:18px 14px;">
+              <div style="font-size:22px;margin-bottom:8px;">🌐</div>
+              <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:#94a3b8;">Reference Applications</div>
+              <p class="muted" style="font-size:13px;margin-top:6px;">CARSHUNTER, Aegypten Hautnah, GTCS4U, BPB Solutions — each governed by the shared authority model above.</p>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;">
+            <div style="border:1px solid rgba(103,232,249,.2);border-top:none;border-radius:0 0 0 16px;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#67e8f9;font-weight:700;">Who may act?</div>
+            </div>
+            <div style="border:1px solid rgba(252,211,77,.18);border-top:none;border-left:none;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#fcd34d;font-weight:700;">Is this action admissible?</div>
+            </div>
+            <div style="border:1px solid rgba(110,231,183,.18);border-top:none;border-left:none;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#6ee7b7;font-weight:700;">ALLOW or DENY/FREEZE</div>
+            </div>
+            <div style="border:1px solid rgba(167,139,250,.18);border-top:none;border-left:none;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#a78bfa;font-weight:700;">Signed, immutable record</div>
+            </div>
+            <div style="border:1px solid rgba(251,146,60,.18);border-top:none;border-left:none;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#fb923c;font-weight:700;">Governed intake</div>
+            </div>
+            <div style="border:1px solid rgba(148,163,184,.15);border-top:none;border-left:none;border-radius:0 0 16px 0;background:rgba(0,0,0,.18);padding:10px 14px;">
+              <div style="font-size:11px;color:#94a3b8;font-weight:700;">Domain surfaces</div>
+            </div>
+          </div>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          <strong>Reading this map:</strong> Every user action enters at Runtime Authority and flows left to right. An action can only reach execution if it clears all gates. The Evidence Spine records every decision regardless of outcome.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="section-head">
+        <div class="kicker">Runtime demonstrations</div>
+        <h2>What is already proven in live runtime surfaces</h2>
+        <p class="section-sub">
+          The core differentiator is not governance language alone. It is the presence of working runtime components that show authority verification,
+          admissibility gating, evidence creation, replayability, and intervention logic.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Live runtime proof components</h3>
+            <ul>
+              <li>✓ Authority Verification</li>
+              <li>✓ Admissibility Engine</li>
+              <li>✓ Evidence Receipts</li>
+              <li>✓ Replay Infrastructure</li>
+              <li>✓ Runtime Console Surfaces</li>
+              <li>✓ Intervention / HOLD / DENY patterns</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Demonstration surfaces in the ecosystem</h3>
+            <ul>
+              <li>Proof and trace routes that expose runtime state as an explainable system surface</li>
+              <li>Evidence-backed inbound messaging via phone, Telegram, and governed webchat</li>
+              <li>Session-aware qualification flows that stop unclear execution paths before escalation</li>
+              <li>Recorded DENY, HOLD, FREEZE, and classification decisions with verification snapshots</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>Institutional reading</strong>
+            <div style="margin-top:10px;color:#fff;">
+              Visitors should immediately see that the value proposition is not governance advice in the abstract.
+            </div>
+            <div style="margin-top:8px;color:#fff7d6;">
+              It is engineering the execution layer where authority, admissibility, and evidence are enforced before action becomes consequence.
+            </div>
+          </div>
+          <div class="note">
+            <strong>Commercial implication</strong>
+            <p style="margin-top:10px;">
+              This framing is stronger for government, sovereign, and Fortune 500 audiences than generic consulting language because it ties the offer to a verifiable runtime capability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sectors">
+      <div class="section-head">
+        <div class="kicker">Target sectors</div>
+        <h2>Who this platform is designed to serve</h2>
+        <p class="section-sub">
+          The work is most relevant where execution has operational, legal, financial, or reputational consequence and where authority cannot be assumed.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-4">
+          <div class="fact"><div class="label">Sector</div><div class="value">Defense</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Government</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Trade &amp; Logistics</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Finance</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Critical Infrastructure</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Healthcare</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">AI Platforms</div></div>
+          <div class="fact"><div class="label">Sector</div><div class="value">Multi-Entity Operations</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="timeline">
+      <div class="section-head">
+        <div class="kicker">When</div>
+        <h2>Chronological milestones since September 2025</h2>
+        <p class="section-sub">
+          The chronology below is a narrative reconstruction from the workspace artifacts, route evolution, deployed surfaces, and recorded implementation sessions.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="timeline">
+          <div class="node">
+            <strong>Sep–Nov 2025 — Foundation and positioning</strong>
+            <p class="muted" style="margin-top:8px;">
+              The ecosystem matured from general brand presence into a more explicit doctrine-led structure. Public pages, architecture maps,
+              and executive narratives were used to establish a shared identity across multiple business directions.
+            </p>
+            <span class="tag">What changed: brand scope became system scope</span>
+          </div>
+          <div class="node">
+            <strong>Dec 2025–Jan 2026 — Structural consolidation</strong>
+            <p class="muted" style="margin-top:8px;">
+              The work became more formal: governance language, claim discipline, and route separation were aligned so that each public surface had a defined role.
+              This period set the basis for later runtime governance pages and evidence-backed reporting.
+            </p>
+            <span class="tag">How: shared architecture, clearer route boundaries</span>
+          </div>
+          <div class="node">
+            <strong>Feb–Mar 2026 — Runtime governance and proof surfaces</strong>
+            <p class="muted" style="margin-top:8px;">
+              The platform shifted from presentation to operational control. Proof surfaces, trace concepts, and runtime decisioning were introduced so that authority,
+              evidence, and admissibility could be demonstrated as a system, not just described as doctrine.
+            </p>
+            <span class="tag">Why: governance had to be visible at execution time</span>
+          </div>
+          <div class="node">
+            <strong>Apr–May 2026 — Enterprise hardening and audit readiness</strong>
+            <p class="muted" style="margin-top:8px;">
+              Visual polish, route stabilization, and repository hygiene advanced together. The workspace technical report, audit notes, and governance pages framed the stack
+              as an enterprise-ready control plane with a much clearer claim boundary.
+            </p>
+            <span class="tag">Impact: stronger trust posture and maintainability</span>
+          </div>
+          <div class="node">
+            <strong>Jun 2026 — Messaging and inbound automation</strong>
+            <p class="muted" style="margin-top:8px;">
+              Major functionality landed for inbound message governance: phone webhook handling, Telegram intake, evidence persistence, operator dashboarding, and session-based trace continuity.
+              The system became able to see, classify, and store inbound requests as governed records.
+            </p>
+            <span class="tag">Change: from public pages to operational intake</span>
+          </div>
+          <div class="node">
+            <strong>Jul 2026 — Sale-unit privacy and public risk control</strong>
+            <p class="muted" style="margin-top:8px;">
+              The Egypt-facing experience was hardened to avoid exposing exact addresses and full video previews publicly. Sale-unit wording replaced rental wording in the public presentation,
+              and the bot context was updated to use area-level qualification only.
+            </p>
+            <span class="tag">Reason: reduce disclosure risk while preserving conversion</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ecosystems">
+      <div class="section-head">
+        <div class="kicker">Ecosystems</div>
+        <h2>Projects and ecosystems covered by this report</h2>
+        <p class="section-sub">
+          The ecosystem is multi-brand by design, but the governance model keeps the surfaces separated so one domain does not replace another.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Project / Ecosystem</th>
+                <th>Role</th>
+                <th>What changed</th>
+                <th>Enterprise significance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PMS4U</td>
+                <td>Governance runtime and canonical workspace</td>
+                <td>Expanded from narrative pages into runtime proof, trace, console, and report surfaces.</td>
+                <td>Provides the shared doctrine and proof stack for the wider portfolio.</td>
+              </tr>
+              <tr>
+                <td>GTCS4U</td>
+                <td>Public-facing entry and brand separation layer</td>
+                <td>Root routing and host-aware separation preserved the pilot/start-offer experience.</td>
+                <td>Protects domain identity and keeps the public surface coherent.</td>
+              </tr>
+              <tr>
+                <td>BPB Solutions</td>
+                <td>Corporate and advisory surfaces</td>
+                <td>Public content aligned with enterprise positioning and governed messaging.</td>
+                <td>Supports B2B trust, advisory credibility, and structured offerings.</td>
+              </tr>
+              <tr>
+                <td>CARSHUNTER</td>
+                <td>Automotive campaign and governed transaction path</td>
+                <td>Campaign routes and drop pages were maintained as separate public surfaces.</td>
+                <td>Demonstrates controlled domain campaigns without leakage across brands.</td>
+              </tr>
+              <tr>
+                <td>Aegypten Hautnah</td>
+                <td>Egypt tourism / sale / investment access layer</td>
+                <td>Upgraded to a governed YAI-style bot, with sale-unit language and private-preview hygiene.</td>
+                <td>Shows how qualification, privacy, and operator routing can coexist in one consumer-facing experience.</td>
+              </tr>
+              <tr>
+                <td>Operations core</td>
+                <td>Inbound messaging, lead registry, operator workflow</td>
+                <td>Phone, Telegram, and webchat routes feed evidence-backed intake.</td>
+                <td>Turns inbound communication into an auditable business process.</td>
+              </tr>
+              <tr>
+                <td>Execution-proof stack</td>
+                <td>Minimal evidence flow and gateway logic</td>
+                <td>Supports interception, recording, hash continuity, and replay-friendly evidence structure.</td>
+                <td>Useful for enterprise assurance and forensic clarity.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="carshunter-ops">
+      <div class="section-head">
+        <div class="kicker">CARSHUNTER compliance and due-diligence</div>
+        <h2>Automotive due-diligence operations and data analysis</h2>
+        <p class="section-sub">
+          This section documents the operational and compliance work carried out to support the CARSHUNTER automotive platform. It covers sourcing intelligence, communication analysis, VIN governance, and the market research pipeline.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>WhatsApp communication extraction and analysis</h3>
+            <p class="muted" style="margin-top:8px;">
+              The reviewed Downloads evidence shows a frozen WhatsApp-derived contact and communication analysis pipeline rather than a loose archive claim. A sealed contact-analysis operation recorded <strong>13,665 source entries</strong>, <strong>2,940 deduplicated unique consolidated records</strong>, and a classification split of <strong>225 internal</strong>, <strong>13,271 external</strong>, and <strong>169 unclassified</strong> entities.
+            </p>
+            <p class="muted" style="margin-top:8px;">
+              Evidence-backed uses of this corpus included:
+            </p>
+            <ul>
+              <li>Intent pattern identification — understanding how real buyer and seller conversations unfold</li>
+              <li>Compliance signal mapping — identifying language that indicated fraud risk, price anomalies, or incomplete documentation</li>
+              <li>Operator workflow design — the conversation patterns directly shaped how CARSHUNTER routes requests through governance gates</li>
+              <li>Bot and agent design — message templates, routing logic, and qualification prompts were derived from this analysis</li>
+              <li>Regulator-safe evidence publishing — a public variant without PII and an executive-proof variant with a freeze record were created under the same operation</li>
+            </ul>
+            <div class="note" style="margin-top:10px;">
+              <strong>Status:</strong> The contact-analysis operation was frozen on 25 Jan 2026 with an evidence ID, SHA256 seal, and explicit authority-chain note. In parallel, a CARSHUNTER archive reorganization run on 18 Jun 2026 recorded <strong>5,891 related files before dedupe</strong> and <strong>5,887 remaining files</strong> across web, document, data, media, and code groups.
+            </div>
+          </div>
+          <div class="card">
+            <h3>BMW campaign inventory and VIN governance</h3>
+            <p class="muted" style="margin-top:8px;">The BMW Big Day Drops campaign (17 Jun 2026) was built on a verified inventory list of BMW X5, X6, and X7 units. Each vehicle required:</p>
+            <ul>
+              <li>VIN-level verification and quality scoring</li>
+              <li>Masked VIN publication — last three digits suppressed to prevent direct copying without engagement</li>
+              <li>Exterior, interior, specification, and year verification before offer-readiness</li>
+              <li>WhatsApp offer routing using masked VIN reference</li>
+            </ul>
+            <p class="muted" style="margin-top:8px;">
+              The campaign generated direct buyer conversations and demonstrated a governed offer flow: no unit is presented without quality confirmation, no VIN is exposed without intent qualification.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Due-diligence process structure</h3>
+            <ul>
+              <li>Supplier sourcing: cross-referencing market listings against price benchmarks</li>
+              <li>Document completeness: spec sheets, seller proof, and customs path</li>
+              <li>Counterparty validation: external due-diligence reports prepared for named entities such as 2A RENOV and Kargo group LLC</li>
+              <li>Sanction and compliance screening: flagged units placed on HOLD with reason codes</li>
+              <li>State machine transitions: VERIFIED → READY → EXPORTED governed by ALCATARA Gate</li>
+              <li>Evidence issuance: every approved state change receives a signed evidence ID (e.g. EVID-2026-8841)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Compliance findings</h3>
+            <ul>
+              <li>Units with title gaps were classified as HIGH RISK and routed to HOLD</li>
+              <li>Units with customs review pending were blocked from export release</li>
+              <li>Sanction-flagged units received DENY decisions with reason codes</li>
+              <li>WhatsApp-origin documents were promoted into the registry as governed records, including invoice-received evidence dated 27 Nov 2025</li>
+              <li>All DENY/HOLD decisions are recorded in the evidence ledger for audit replay</li>
+            </ul>
+            <div class="note" style="margin-top:10px;">
+              <strong>Doctrine applied:</strong> Execution authority and admissibility checks were required before any unit advanced to EXPORTED state.
+            </div>
+          </div>
+          <div class="card">
+            <h3>Jaguar case and legal strike-pack evidence</h3>
+            <p class="muted" style="margin-top:8px;">
+              The newly reviewed Downloads archive contains a Jaguar F-PACE complaint and strike-pack chain, including a formal Dubai Police filing draft tied to VIN <strong>SADCA2BE2SA744683</strong> and bill of lading <strong>HLCUDX3251127760</strong>.
+            </p>
+            <ul>
+              <li>Structured complaint package against Autohaul Shipping And Logistic L.L.C. and Mohammed Akil</li>
+              <li>Explicit attachment chain referencing email threads, WhatsApp exports, evidence manifests, and preservation reports</li>
+              <li>Legal-strike-pack reorganization into hashed copies under the June 2026 CARSHUNTER archive normalization pass</li>
+              <li>Demonstrates that CARSHUNTER operations extended beyond marketing into dispute preparation, custody reconstruction, and documentary escalation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="marketing">
+      <div class="section-head">
+        <div class="kicker">Marketing research and development</div>
+        <h2>Research, market intelligence, and conversion design</h2>
+        <p class="section-sub">
+          Marketing research was not a separate activity — it was embedded into product design, content strategy, and operator workflows.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-3">
+          <div class="card">
+            <h3>CARSHUNTER market research</h3>
+            <ul>
+              <li>BMW X5/X6/X7 price benchmarking across German, GCC, and international markets</li>
+              <li>Margin modeling under different origin/destination routes</li>
+              <li>Buyer intent research derived from WhatsApp communication analysis</li>
+              <li>Competitive positioning: how CARSHUNTER differentiates as a governed broker vs. open marketplaces</li>
+              <li>Documented market-intelligence packaging in enterprise solution artifacts covering pricing, demand analysis, dealer studies, and go-to-market research</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Aegypten Hautnah market research</h3>
+            <ul>
+              <li>Research into Egypt tourism demand from German-speaking markets</li>
+              <li>Red Sea property market — zone analysis (Hurghada, El Gouna, Makadi, Sahl Hasheesh)</li>
+              <li>Yield scenario research for sale units</li>
+              <li>Buyer-type segmentation: tourism visitors, winter-stay guests, property investors</li>
+              <li>Competitor mapping of Egypt-focused German travel and real-estate platforms</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Conversion and qualification design</h3>
+            <ul>
+              <li>WhatsApp-first conversion flow tested across CARSHUNTER and Egypt surfaces</li>
+              <li>Deposit/screening payment pages designed to move intent qualification forward</li>
+              <li>Consultation booking as a pre-conversion capture mechanism</li>
+              <li>Bot qualification prompts designed from real communication pattern research</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Compliance research</h3>
+            <ul>
+              <li>Research into EU automotive export compliance requirements</li>
+              <li>Egypt property ownership routes for foreign nationals</li>
+              <li>Disclosure minimization research — understanding what can be shown publicly vs. privately</li>
+              <li>GDPR-relevant data handling research for inbound communication capture</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Content strategy</h3>
+            <ul>
+              <li>Claim boundary discipline applied across all public content</li>
+              <li>Egypt sale-unit language refined to avoid rental/address disclosure</li>
+              <li>Investment copy deliberately conservative — target yield scenarios, not guaranteed returns</li>
+              <li>All public content reviewed against RELEASE_CONTROL claim boundary before publication</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Messaging intelligence</h3>
+            <ul>
+              <li>Phone number monitoring (+4917681330467) for CARSHUNTER-related activity</li>
+              <li>Inbound message governance — classification, evidence tagging, operator routing</li>
+              <li>Telegram channel as a secondary delivery and alert mechanism</li>
+              <li>Webchat bot qualification as a pre-WhatsApp conversion layer</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cases">
+      <div class="section-head">
+        <div class="kicker">Case studies</div>
+        <h2>Detailed case studies</h2>
+        <p class="section-sub">
+          These case studies show how the work moved from idea to runtime, and why each track matters to an academic or enterprise audience.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <article class="card">
+            <h3>Case 1 — Runtime governance stack</h3>
+            <ul>
+              <li><strong>Problem:</strong> Governance had to be visible before execution, not only after review.</li>
+              <li><strong>Intervention:</strong> Proof, trace, console, and report surfaces were created as live system components.</li>
+              <li><strong>Outcome:</strong> The workspace now demonstrates admissibility, evidence, and authority as runtime ideas.</li>
+              <li><strong>Why it matters:</strong> This is a strong model for constitutional runtime control in enterprise systems.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Case 2 — Lead registry and messaging ops</h3>
+            <ul>
+              <li><strong>Problem:</strong> Inbound messages arrived through different channels and needed consistent governance.</li>
+              <li><strong>Intervention:</strong> Phone webhook, Telegram webhook, evidence persistence, and operator dashboarding were added.</li>
+              <li><strong>Outcome:</strong> Requests are classified, stored, and reviewed with trace continuity.</li>
+              <li><strong>Why it matters:</strong> This converts messaging from inbox chaos into a structured operating system.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Case 3 — CARSHUNTER campaign separation</h3>
+            <ul>
+              <li><strong>Problem:</strong> Campaign drops and public automotive surfaces needed isolation from other brands.</li>
+              <li><strong>Intervention:</strong> Dedicated campaign routes and drop pages were preserved.</li>
+              <li><strong>Outcome:</strong> CARSHUNTER remains its own public and campaign identity.</li>
+              <li><strong>Why it matters:</strong> This is a brand-architecture lesson in domain separation.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Case 4 — Aegypten Hautnah governed bot</h3>
+            <ul>
+              <li><strong>Problem:</strong> The Egypt assistant had to feel like a real governed agent, not a scripted FAQ.</li>
+              <li><strong>Intervention:</strong> The widget gained modes, memory, intent extraction, runtime context, and clarification logic.</li>
+              <li><strong>Outcome:</strong> The site now qualifies tourism, property, and investment requests at the area level.</li>
+              <li><strong>Why it matters:</strong> This is a useful consumer-facing example of controlled assistance with guardrails.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Case 5 — Public sale-unit privacy control</h3>
+            <ul>
+              <li><strong>Problem:</strong> Public pages were exposing rental language and full-media previews too openly.</li>
+              <li><strong>Intervention:</strong> Sale-unit wording replaced rental wording, and preview media became private-only guidance.</li>
+              <li><strong>Outcome:</strong> The public surface is more aligned with disclosure minimization.</li>
+              <li><strong>Why it matters:</strong> It demonstrates privacy-aware marketing without killing conversion.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Case 6 — Investor and authority surfaces</h3>
+            <ul>
+              <li><strong>Problem:</strong> The portfolio needed a coherent enterprise explanation for auditors, investors, and partners.</li>
+              <li><strong>Intervention:</strong> Authority pages, investor pages, and technical reports were aligned.</li>
+              <li><strong>Outcome:</strong> The ecosystem now has a layered narrative: public brand, control plane, and proof surface.</li>
+              <li><strong>Why it matters:</strong> This is how technical work becomes enterprise-readable.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="financial">
+      <div class="section-head">
+        <div class="kicker">Financial impacts</div>
+        <h2>Draft financial impact pathways, not audited claims</h2>
+        <p class="section-sub">
+          This section is intentionally conservative. It describes mechanisms through which the work can affect financial performance,
+          but it does not claim audited ROI, prevented loss, or guaranteed uplift.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Impact pathway</th>
+                <th>What changed</th>
+                <th>Likely business effect</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Lead qualification efficiency</td>
+                <td>Inbound messages now pass through structured qualification and memory.</td>
+                <td>Less manual triage, faster routing, cleaner handoff to operators.</td>
+                <td><span class="pill ok">Operationally plausible</span></td>
+              </tr>
+              <tr>
+                <td>Conversion readiness</td>
+                <td>Tourism, property, and investment requests are separated into modes.</td>
+                <td>Better matching between request type and next business action.</td>
+                <td><span class="pill ok">Commercially relevant</span></td>
+              </tr>
+              <tr>
+                <td>Disclosure risk reduction</td>
+                <td>Exact addresses and full video sharing were removed from the public presentation.</td>
+                <td>Lower exposure risk and less unintentional public leakage.</td>
+                <td><span class="pill ok">Risk control benefit</span></td>
+              </tr>
+              <tr>
+                <td>Brand coherence</td>
+                <td>Each ecosystem has clearer separation and a defined purpose.</td>
+                <td>Lower confusion across domains, easier partner understanding.</td>
+                <td><span class="pill ok">Strategic value</span></td>
+              </tr>
+              <tr>
+                <td>Operating overhead</td>
+                <td>Shared widgets, shared evidence model, shared runtime patterns.</td>
+                <td>Reduced duplication and lower maintenance complexity.</td>
+                <td><span class="pill warn">Estimate only</span></td>
+              </tr>
+              <tr>
+                <td>Revenue enablement</td>
+                <td>Public-facing surfaces are more likely to route qualified requests into consultation flows.</td>
+                <td>Potential uplift in booked conversations and follow-up opportunities.</td>
+                <td><span class="pill warn">To validate</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          <strong>Interpretation note:</strong> If this report is published externally, the financial section should be labeled as draft impact analysis.
+          Audited revenue, margins, and ROI can be added later from business records or signed validation.
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="kicker">Academic framing</div>
+        <h2>How this work reads in an academic setting</h2>
+      </div>
+      <div class="section-body">
+        <div class="grid-3">
+          <div class="card">
+            <h3>Sociotechnical systems</h3>
+            <p class="muted" style="margin-top:8px;">
+              The ecosystem is a live example of how social intent, interface design, operational routing, and evidence can be unified.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Governance as runtime</h3>
+            <p class="muted" style="margin-top:8px;">
+              The central research idea is that authority should be enforced at the boundary where action becomes consequence.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Controlled disclosure</h3>
+            <p class="muted" style="margin-top:8px;">
+              Sale-unit privacy changes illustrate an academically useful tension: marketing visibility versus disclosure minimization.
+            </p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="card">
+            <h3>Possible academic themes</h3>
+            <ul>
+              <li>Runtime admissibility as a governance principle</li>
+              <li>Evidence continuity and traceable operator handoff</li>
+              <li>Domain separation in multi-brand digital ecosystems</li>
+              <li>Human-in-the-loop qualification design</li>
+              <li>Trust architecture for consumer and enterprise portals</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Research value</h3>
+            <ul>
+              <li>Shows how doctrine can be translated into product surfaces</li>
+              <li>Demonstrates practical governance beyond policy documentation</li>
+              <li>Supports case-study analysis in digital transformation</li>
+              <li>Provides a basis for future publications or whitepapers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="kicker">Enterprise framing</div>
+        <h2>How this work reads in an enterprise setting</h2>
+      </div>
+      <div class="section-body">
+        <div class="grid-4">
+          <div class="fact"><div class="label">Trust</div><div class="value">Evidence-backed routing</div></div>
+          <div class="fact"><div class="label">Control</div><div class="value">Authority before action</div></div>
+          <div class="fact"><div class="label">Efficiency</div><div class="value">Shared runtime patterns</div></div>
+          <div class="fact"><div class="label">Risk</div><div class="value">Disclosure hygiene</div></div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="card">
+            <h3>Enterprise advantages</h3>
+            <ul>
+              <li>Clear public and private boundary for multiple brands</li>
+              <li>Structured operator workflow instead of ad hoc chat handling</li>
+              <li>Reusable evidence model for future services</li>
+              <li>Better auditability for message handling and routing</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Enterprise cautions</h3>
+            <ul>
+              <li>Published financial claims should remain conservative until validated</li>
+              <li>All public-facing promises must stay inside the claim boundary</li>
+              <li>Operational surfaces must remain synchronized with docs and runtime behavior</li>
+              <li>Multi-domain separation must be preserved during future updates</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="research-foundation">
+      <div class="section-head">
+        <div class="kicker">Built on research</div>
+        <h2>The intellectual foundation behind the platform</h2>
+        <p class="section-sub">
+          The platform should not appear as a stack of disconnected services. It is built around a coherent body of runtime-governance concepts translated into operating surfaces.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-3">
+          <div class="card">
+            <h3>PMS4U</h3>
+            <ul>
+              <li>Authority-first execution</li>
+              <li>Consequence-aware workflow control</li>
+              <li>Governance as runtime, not paperwork</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Core research themes</h3>
+            <ul>
+              <li>Constitutional Execution</li>
+              <li>Runtime Authority</li>
+              <li>Governance Runtime Platform</li>
+              <li>Evidence Spine</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Institutional outputs</h3>
+            <ul>
+              <li>Enterprise case studies</li>
+              <li>Technical notes and architecture maps</li>
+              <li>Proof surfaces and replay-oriented records</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sessions">
+      <div class="section-head">
+        <div class="kicker">Session reports</div>
+        <h2>Session-by-session summary of work accomplished</h2>
+        <p class="section-sub">
+          These are high-level implementation sessions, not terminal logs. They are useful for board-level review and portfolio storytelling.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="timeline">
+          <div class="node">
+            <strong>Session band 1 — Sep to Nov 2025</strong>
+            <p class="muted" style="margin-top:8px;">
+              Established the narrative structure, mapped the broader ecosystem, and began separating business domains into legible public surfaces.
+            </p>
+          </div>
+          <div class="node">
+            <strong>Session band 2 — Dec 2025 to Jan 2026</strong>
+            <p class="muted" style="margin-top:8px;">
+              Tightened doctrine, clarified the governance language, and prepared the stack for runtime-control style reporting.
+            </p>
+          </div>
+          <div class="node">
+            <strong>Session band 3 — Feb to Mar 2026</strong>
+            <p class="muted" style="margin-top:8px;">
+              Built proof-oriented surfaces, trace concepts, and report views that explain how authority is attached to action.
+            </p>
+          </div>
+          <div class="node">
+            <strong>Session band 4 — Apr to May 2026</strong>
+            <p class="muted" style="margin-top:8px;">
+              Improved polish, stabilized routes, aligned documentation, and confirmed repository hygiene and audit readiness.
+            </p>
+          </div>
+          <div class="node">
+            <strong>Session band 5 — June 2026</strong>
+            <p class="muted" style="margin-top:8px;">
+              Implemented phone, Telegram, and webchat inbound governance, evidence storage, and the messaging operations dashboard.
+            </p>
+          </div>
+          <div class="node">
+            <strong>Session band 6 — late June to July 2026</strong>
+            <p class="muted" style="margin-top:8px;">
+              Upgraded the Egypt-facing bot into a governed access assistant, then changed the public sale language to reduce address and media disclosure risk.
+            </p>
+          </div>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          <strong>Session narrative takeaway:</strong> the work progressed from architecture and doctrine into live operations, then into public conversion surfaces with privacy-aware constraints.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="principle">
+      <div class="section-head">
+        <div class="kicker">Our principle</div>
+        <h2>Every consequential action answers four questions</h2>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="callout">
+            <div style="font-size:1.03rem;color:#fff;line-height:1.9;">
+              <strong>1.</strong> Who has authority?<br/>
+              <strong>2.</strong> Is execution admissible now?<br/>
+              <strong>3.</strong> Can execution be interrupted?<br/>
+              <strong>4.</strong> Can the consequence be independently verified?
+            </div>
+          </div>
+          <div class="note">
+            <strong>Execution rule</strong>
+            <p style="margin-top:10px;">
+              If the answer to any of these questions is unknown, execution should not proceed.
+            </p>
+            <p style="margin-top:10px;" class="muted">
+              This principle is the shortest reliable explanation of the platform for enterprise leaders, researchers, and public-sector buyers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="kicker">What changed, why, and how</div>
+        <h2>Change summary for decision-makers</h2>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>What changed</h3>
+            <ul>
+              <li>Static narratives became governed runtime surfaces.</li>
+              <li>Inbound communication became evidence-backed workflow.</li>
+              <li>Consumer-facing Egypt content shifted to sale-unit language.</li>
+              <li>Public media and address disclosure were reduced.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Why it changed</h3>
+            <ul>
+              <li>To make governance operational, not symbolic.</li>
+              <li>To improve trust and clarity for operators and users.</li>
+              <li>To support enterprise-grade separation between brands and surfaces.</li>
+              <li>To minimize avoidable disclosure risk in public marketing.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>How it changed</h3>
+            <ul>
+              <li>Using Next.js routes, shared components, and evidence storage.</li>
+              <li>Using webhook layers for phone, Telegram, and webchat.</li>
+              <li>Using a governed widget with modes, memory, and clarification logic.</li>
+              <li>Using private preview patterns instead of public full-media exposure.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What to keep next</h3>
+            <ul>
+              <li>Clear claim boundary discipline.</li>
+              <li>Domain separation across all brand surfaces.</li>
+              <li>Evidence and trace continuity.</li>
+              <li>Conservative financial language until validated.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="operational-evidence">
+      <div class="section-head">
+        <div class="kicker">Operational evidence</div>
+        <h2>Recorded governance decisions from test and pilot operations</h2>
+        <p class="section-sub">
+          These are documented governance decisions from the test and pilot environment. They are not audited production outcomes, but they are real records created by the running system.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>System decision</th>
+                <th>Reason code</th>
+                <th>Evidence ID</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shipment SHIPMENT-REAL-2026-0003 attempted illegal state jump</td>
+                <td>DENY / FROZEN</td>
+                <td>ILLEGAL_STATE_JUMP_REJECTED</td>
+                <td>EVID-1C5C8B</td>
+                <td><span class="pill ok">Recorded &amp; Verified</span></td>
+              </tr>
+              <tr>
+                <td>BMW unit with title gap submitted for export</td>
+                <td>HOLD — export blocked</td>
+                <td>TITLE_GAP_DETECTED</td>
+                <td>EVID-2026-8841</td>
+                <td><span class="pill ok">Recorded</span></td>
+              </tr>
+              <tr>
+                <td>Inbound phone message matched CARSHUNTER filter</td>
+                <td>Classified, evidence stored, forwarded to operator</td>
+                <td>CARSHUNTER_SIGNAL_MATCH</td>
+                <td>SHA-256 hash recorded</td>
+                <td><span class="pill ok">Live</span></td>
+              </tr>
+              <tr>
+                <td>Egypt bot request missing timeframe and budget</td>
+                <td>Clarification gate triggered — no API call made</td>
+                <td>CONFIDENCE_BELOW_THRESHOLD</td>
+                <td>YAI-CLARIFY trace</td>
+                <td><span class="pill ok">Live</span></td>
+              </tr>
+              <tr>
+                <td>Webchat session with intent extracted</td>
+                <td>Context enriched, routed to operator review</td>
+                <td>INTENT_QUALIFIED</td>
+                <td>YAI trace ID</td>
+                <td><span class="pill ok">Live</span></td>
+              </tr>
+              <tr>
+                <td>Hash-chain and signature validation</td>
+                <td>PASS — all records verified</td>
+                <td>HASH_CHAIN_VERIFIED</td>
+                <td>Runtime verification snapshot</td>
+                <td><span class="pill ok">100% PASS</span></td>
+              </tr>
+              <tr>
+                <td>WhatsApp contact export frozen into regulator-safe and executive-proof variants</td>
+                <td>FROZEN / SEALED</td>
+                <td>CONTACT_ANALYSIS_LIVE_OPS</td>
+                <td>EVD_CONTACT_ANALYSIS_20260125_001</td>
+                <td><span class="pill ok">Frozen</span></td>
+              </tr>
+              <tr>
+                <td>CARSHUNTER invoice received through WhatsApp-origin channel</td>
+                <td>Document registered</td>
+                <td>DOCUMENT_CREATED / SOURCE_WHATSAPP</td>
+                <td>INVOICE_RCVD_20251127_171001</td>
+                <td><span class="pill ok">Recorded</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          <strong>Interpretation note:</strong> All records above are from test and pilot runs. Production-scale evidence requires enterprise pilots with independent validation.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="validation">
+      <div class="section-head">
+        <div class="kicker">External validation roadmap</div>
+        <h2>What independent proof looks like for this platform</h2>
+        <p class="section-sub">
+          The external proof score is currently 6.5/10. This section defines the roadmap to close that gap.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>What is already present</h3>
+            <ul>
+              <li>Runtime metrics: gate decisions, evidence records, trace IDs</li>
+              <li>Pilot evidence chains with DENY/FREEZE decisions</li>
+              <li>Live working integrations: phone, Telegram, webchat</li>
+              <li>Hash-chain continuity and signature validation — 100% PASS</li>
+              <li>Public demonstration surfaces: proof route, trace route, console</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What is needed next</h3>
+            <ul>
+              <li>Independent reproducibility: a third party can replay the evidence chain and verify it</li>
+              <li>Adversarial testing: attempts to bypass the gate and documented results</li>
+              <li>Load benchmarks: governance decisions under realistic throughput</li>
+              <li>Third-party architectural review: an external reviewer publishes findings</li>
+              <li>Real enterprise pilot outcomes: a named partner runs a governed workflow and signs off results</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Priority order</h3>
+            <ul>
+              <li><strong>1.</strong> Identify one external partner for a 30-day governed pilot</li>
+              <li><strong>2.</strong> Run adversarial testing on the gate and document every attempt</li>
+              <li><strong>3.</strong> Publish a third-party reproducibility report</li>
+              <li><strong>4.</strong> Run load tests and publish benchmarks</li>
+              <li><strong>5.</strong> Seek one academic or industry reviewer to publish findings</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>The key unlock</strong>
+            <div style="margin-top:10px;color:#fff;">
+              Adding external validation raises the report from an impressive internal claim to an independently verified technical contribution.
+            </div>
+            <div style="margin-top:8px;color:#fff7d6;">
+              That is what turns a Governance Runtime Platform into something enterprises and researchers can rely on.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sources">
+      <div class="section-head">
+        <div class="kicker">Sources</div>
+        <h2>Report source notes</h2>
+        <p class="section-sub">
+          This draft is based on the workspace artifacts, report surfaces, deployed routes, and implementation history currently present in the repository.
+        </p>
+      </div>
+      <div class="section-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Primary sources</h3>
+            <ul class="source-list">
+              <li>README.md</li>
+              <li>REPOSITORY_AUDIT.md</li>
+              <li>WORKSPACE_TECHNICAL_REPORT.html</li>
+              <li>AI_GOVERNANCE_ECOSYSTEM_PROGRESS_REPORT.html</li>
+              <li>BPB_SHAP_Q1_2026_Report.md</li>
+              <li>ARCHITECTURE_MAP_MASTER.md</li>
+              <li>PLATFORM_AUTHORITY_MAP.md</li>
+              <li>RELEASE_CONTROL.md</li>
+              <li>Downloads/BPB_SHAP_Comprehensive_Quarterly_Report_Q1_2026.html</li>
+              <li>Downloads/BPB_Solutions_LTD_Governance_Due_Diligence_Report.html</li>
+              <li>Downloads/MASTER_EVIDENCE_VAULT_INDEX.md</li>
+              <li>Downloads/Operational_Evidence_Live_Execution_Governance_Level2.md</li>
+              <li>Downloads/1. Project AI Manifest/operations_RAM_RAG1447_YAI_1/OPERATION_EVIDENCE_MAP_CONTACT_ANALYSIS.md</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Implementation surfaces</h3>
+            <ul class="source-list">
+              <li>app/api/agent/inbound/phone/route.ts</li>
+              <li>app/api/agent/inbound/telegram/route.ts</li>
+              <li>app/api/agent/inbound/webchat/route.ts</li>
+              <li>lib/evidence.ts</li>
+              <li>app/ops/messaging/page.tsx</li>
+              <li>public/webchat-widget.js</li>
+              <li>public/aegyptenhautnah.html</li>
+              <li>public/allaatia-full-in-depth-report.html</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note" style="margin-top:14px;">
+          <strong>Publication note:</strong> if this is published on allaatia.com, the title can stay as a draft until all commercial numbers are signed off.
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">Draft prepared for allaatia.com · governance-first, enterprise-readable, academic-friendly</div>
+  </div>
+</body>
+</html>

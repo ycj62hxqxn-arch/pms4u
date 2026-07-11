@@ -14,7 +14,16 @@ import {
 export const metadata: Metadata = {
   title: "PMS4U Research — Runtime Governance Knowledge Layer",
   description:
-    "PMS4U Research publishes technical notes, doctrine, white papers, reference architecture, and standards for constitutional runtime governance.",
+    "PMS4U Research publishes the core specification, technical notes, doctrine, white papers, reference architecture, and standards for constitutional runtime governance.",
+};
+
+const coreSpecification = {
+  id: "SPEC-001",
+  title: "Specification 1.0 — Constitutional Runtime Governance",
+  status: "Published",
+  href: "/research/specification-1-0",
+  summary:
+    "Foundational specification defining the constitutional model, runtime authority, admissibility, evidence, execution gate, consequence, and conformance.",
 };
 
 const technicalNotes = [
@@ -30,7 +39,7 @@ const technicalNotes = [
   {
     id: "TN-002",
     title: "Authority vs Permission",
-    theme: "Execution Governance",
+    theme: "Runtime Authority",
     status: "Queued",
     href: null,
     summary:
@@ -38,24 +47,33 @@ const technicalNotes = [
   },
   {
     id: "TN-003",
-    title: "Runtime Legitimacy",
-    theme: "Constitutional Model",
-    status: "Queued",
-    href: null,
-    summary:
-      "A runtime can execute correctly and still lack legitimacy if delegated authority, constraints, and consequence ownership are absent.",
-  },
-  {
-    id: "TN-004",
-    title: "Constitutional Admissibility",
+    title: "Admissibility",
     theme: "Admissibility",
     status: "Queued",
     href: null,
     summary:
-      "A decision is admissible only when it survives authority, constraint, evidence, and consequence checks immediately before execution.",
+      "How authority, policy state, evidence, and consequence classification determine whether execution may proceed now.",
+  },
+  {
+    id: "TN-004",
+    title: "Evidence Continuity",
+    theme: "Evidence",
+    status: "Queued",
+    href: null,
+    summary:
+      "How evidence supports admissibility before consequence and remains replayable after consequence.",
   },
   {
     id: "TN-005",
+    title: "Execution Gate",
+    theme: "Execution Governance",
+    status: "Queued",
+    href: null,
+    summary:
+      "How consequence is released only after admissibility survives at the final mutation boundary.",
+  },
+  {
+    id: "TN-006",
     title: "Authority Drift",
     theme: "Runtime Risk",
     status: "Queued",
@@ -64,7 +82,7 @@ const technicalNotes = [
       "How authority becomes stale when workflows, tools, users, vendors, or agent capabilities change faster than governance controls.",
   },
   {
-    id: "TN-006",
+    id: "TN-007",
     title: "Delegated Authority",
     theme: "Institutional Control",
     status: "Queued",
@@ -90,8 +108,8 @@ const researchTracks = [
 const referenceArchitecture = [
   ["Constitutional Model", "Defines authority, constraints, roles, evidence rules, and consequence ownership outside the runtime verifier."],
   ["Runtime Authority", "Evaluates whether the actor and context may execute the requested transition at this moment."],
-  ["Admissibility Gate", "Returns allow, deny, defer, interrupt, or observe before mutation."],
-  ["Evidence Spine", "Binds receipts, hashes, signatures, transitions, and trace context to every governed execution."],
+  ["Admissibility Evaluation", "Resolves whether execution is defensible now using authority, policy state, evidence, and consequence context."],
+  ["Evidence Spine", "Feeds admissibility with verifiable proof material and then binds receipts, hashes, signatures, transitions, and trace context after the decision."],
   ["Product Layer", "GTCS4U turns the research model into console, pilot, demo, and case-study surfaces."],
 ];
 
@@ -99,6 +117,8 @@ const downloads = [
   ["TN PDFs", "Technical note PDFs exported from the canonical HTML pages."],
   ["Doctrine Packs", "Versioned doctrine documents after every 5-6 technical notes."],
   ["Architecture Diagrams", "Reference architecture diagrams for enterprise and audit discussions."],
+  ["Runtime SDK", "Developer package surface for JavaScript/Python adoption patterns."],
+  ["Playground Reports", "Decision snapshots (allow/deny/review/defer) for demos and workshops."],
   ["Pilot Briefs", "Commercial pilot briefs that translate research into GTCS4U implementation scope."],
 ];
 
@@ -161,6 +181,18 @@ export default function ResearchPage() {
             <a href="#architecture" className="hover:text-slate-950">
               Architecture
             </a>
+            <Link href="/playground" className="hover:text-slate-950">
+              Playground
+            </Link>
+            <Link href="/research/runtime-sdk" className="hover:text-slate-950">
+              Runtime SDK
+            </Link>
+            <Link href="/case-studies" className="hover:text-slate-950">
+              Case Studies
+            </Link>
+            <Link href="/adopt" className="hover:text-slate-950">
+              Adopt PMS4U
+            </Link>
             <Link href="/ops" className="hover:text-slate-950">
               Ops Control Plane
             </Link>
@@ -225,6 +257,34 @@ export default function ResearchPage() {
               <p className="mt-3 text-sm leading-6 text-slate-600">{body}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="px-5 pb-2">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            icon={<Layers size={16} />}
+            label="Normative Base"
+            title="Core Specification"
+            body="The specification is the reference document. Technical notes extend it; they do not replace it."
+          />
+
+          <Link href={coreSpecification.href} className="block">
+            <article className="border border-slate-200 bg-white p-6 transition hover:border-slate-400">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{coreSpecification.id}</div>
+                  <h3 className="mt-2 text-2xl font-semibold text-slate-950">{coreSpecification.title}</h3>
+                </div>
+                <StatusBadge status={coreSpecification.status} />
+              </div>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-600">{coreSpecification.summary}</p>
+              <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-950">
+                Read specification
+                <ArrowRight size={15} />
+              </div>
+            </article>
+          </Link>
         </div>
       </section>
 

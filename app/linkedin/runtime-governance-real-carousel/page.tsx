@@ -4,7 +4,7 @@ import { CarouselViewer } from "./CarouselViewer";
 export const metadata = {
   title: "Runtime Governance Is Real | LinkedIn Carousel",
   description:
-    "LinkedIn carousel explaining runtime governance proof, claim discipline, and PMS4U execution control.",
+    "LinkedIn carousel explaining runtime governance proof, claim discipline, and YAI Studio execution control.",
 };
 
 export default function RuntimeGovernanceCarouselPage() {

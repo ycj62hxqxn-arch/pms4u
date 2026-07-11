@@ -16,8 +16,13 @@ export function middleware(request: NextRequest) {
     "www.gtcs4u.com": "/gtcs4u",
     "bpbsolutionsltd.com": "/bpbsolutionsltd",
     "www.bpbsolutionsltd.com": "/bpbsolutionsltd",
+    "yai.bpbsolutionsltd.com": "/bpbsolutionsltd/yai-studio",
+    "studio.bpbsolutionsltd.com": "/bpbsolutionsltd/yai-studio",
+    "creator.bpbsolutionsltd.com": "/bpbsolutionsltd/yai-studio",
     "aegyptenhautnah.com": "/aegyptenhautnah.html",
     "www.aegyptenhautnah.com": "/aegyptenhautnah.html",
+    "allaatia.com": "/allaatia-full-in-depth-report.html",
+    "www.allaatia.com": "/allaatia-full-in-depth-report.html",
   };
 
   const targetPathname = rootDomainRoutes[host];

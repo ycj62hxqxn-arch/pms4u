@@ -138,6 +138,9 @@ export default async function Home() {
             <a href="#runtime" className="transition hover:text-white">
               Runtime
             </a>
+            <a href="#sectors" className="transition hover:text-white">
+              Sectors
+            </a>
             <Link href="/research" className="font-medium text-emerald-300 transition hover:text-emerald-100">
               Research
             </Link>
@@ -162,7 +165,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-7xl gap-10 pb-16 md:grid-cols-[1.05fr_0.95fr] md:items-center lg:pb-20">
           <div>
             <div className="mb-5 inline-flex border border-emerald-300/30 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-200">
-              PMS4U Runtime Governance OS™
+              Governance Runtime Platform
             </div>
 
             <h1 className="max-w-4xl text-4xl font-semibold leading-[1.05] tracking-normal text-white sm:text-6xl lg:text-7xl">
@@ -243,6 +246,43 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="principle" className="border-b border-white/10 px-5 py-16">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300">
+                The principle
+              </div>
+              <h2 className="mt-4 text-2xl font-semibold tracking-normal text-white sm:text-4xl">
+                Every consequential action answers four questions.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-gray-400">
+                If the answer to any is unknown, execution does not proceed. This is not a policy
+                statement — it is an engineering constraint enforced at the execution boundary.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              <div className="flex items-start gap-4 border border-white/10 bg-black/40 px-5 py-4">
+                <span className="font-mono text-base font-bold text-emerald-300">1</span>
+                <span className="text-sm leading-6 text-white">Who has authority?</span>
+              </div>
+              <div className="flex items-start gap-4 border border-white/10 bg-black/40 px-5 py-4">
+                <span className="font-mono text-base font-bold text-amber-300">2</span>
+                <span className="text-sm leading-6 text-white">Is execution admissible now?</span>
+              </div>
+              <div className="flex items-start gap-4 border border-white/10 bg-black/40 px-5 py-4">
+                <span className="font-mono text-base font-bold text-sky-300">3</span>
+                <span className="text-sm leading-6 text-white">Can execution be interrupted?</span>
+              </div>
+              <div className="flex items-start gap-4 border border-white/10 bg-black/40 px-5 py-4">
+                <span className="font-mono text-base font-bold text-violet-300">4</span>
+                <span className="text-sm leading-6 text-white">Can the consequence be independently verified?</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="commercial-products" className="border-b border-white/10 bg-white/[0.02] px-5 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl">
@@ -278,6 +318,33 @@ export default async function Home() {
                 </Link>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="sectors" className="border-b border-white/10 bg-white/[0.02] px-5 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+              Target sectors
+            </div>
+            <h2 className="mt-4 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
+              Where execution carries consequence.
+            </h2>
+            <p className="mt-5 text-base leading-7 text-gray-400">
+              The platform is relevant where authority cannot be assumed, evidence cannot be
+              reconstructed retroactively, and unauthorized execution cannot be reversed.
+            </p>
+          </div>
+          <div className="mt-10 grid grid-cols-2 gap-px border border-white/10 bg-white/10 md:grid-cols-4">
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Defense</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Government</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Trade &amp; Logistics</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Finance</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Critical Infrastructure</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Healthcare</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">AI Platforms</div>
+            <div className="bg-black px-5 py-6 text-sm font-semibold text-white">Multi-Entity Operations</div>
           </div>
         </div>
       </section>

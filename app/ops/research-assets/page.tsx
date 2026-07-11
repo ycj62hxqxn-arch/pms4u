@@ -37,6 +37,9 @@ export default function ResearchAssetsPage() {
             <Link href="/research" className="hover:text-slate-950">
               Research Hub
             </Link>
+            <Link href="/research/specification-1-0" className="hover:text-slate-950">
+              SPEC-001
+            </Link>
             <Link href="/research/technical-notes/tn-001" className="hover:text-slate-950">
               TN-001
             </Link>

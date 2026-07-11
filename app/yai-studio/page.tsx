@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-export default function BpbYaiPage() {
+export default function YaiStudioRootRedirectPage() {
   redirect("/bpbsolutionsltd/yai-studio");
 }

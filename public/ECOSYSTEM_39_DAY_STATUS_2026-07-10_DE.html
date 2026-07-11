@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PMS4U Ökosystem — 39-Tage-Statusbericht</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #111827;
+      --panel-2: #0b1220;
+      --line: #23314d;
+      --text: #dbe7ff;
+      --muted: #94a3b8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --setup: #38bdf8;
+      --title: #f8fafc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 5% 0%, #18253f 0%, var(--bg) 50%);
+      color: var(--text);
+      font: 14px/1.6 Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      padding: 28px;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; }
+    .hero { border: 1px solid var(--line); background: linear-gradient(135deg, #111a2c 0%, #0b1220 100%); padding: 28px; border-radius: 16px; }
+    h1 { margin: 0 0 10px; color: var(--title); font-size: 30px; }
+    h2 { margin: 0 0 14px; color: var(--title); font-size: 20px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .chips { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip { border: 1px solid var(--line); background: #0c1529; border-radius: 999px; padding: 6px 10px; color: #c7d7ff; font-size: 12px; }
+    .grid { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); }
+    .card { grid-column: span 12; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 18px; }
+    @media (min-width: 960px) {
+      .col-6 { grid-column: span 6; }
+      .col-4 { grid-column: span 4; }
+      .col-8 { grid-column: span 8; }
+    }
+    .kpi { display: flex; gap: 14px; flex-wrap: wrap; }
+    .kpi .box { min-width: 140px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 12px; padding: 12px; }
+    .num { font-size: 24px; font-weight: 700; color: var(--title); }
+    .label { color: var(--muted); font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #1f2c44; vertical-align: top; }
+    th { color: #b7caee; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    td { color: #d8e5ff; }
+    .status { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 999px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .done { background: rgba(34,197,94,.15); color: #86efac; border: 1px solid rgba(34,197,94,.35); }
+    .closed { background: rgba(34,197,94,.15); color: #bbf7d0; border: 1px solid rgba(34,197,94,.35); }
+    .setup { background: rgba(56,189,248,.15); color: #93c5fd; border: 1px solid rgba(56,189,248,.35); }
+    .queued { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.35); }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    code { background: #0b152c; border: 1px solid #203153; color: #bfd2ff; padding: 2px 6px; border-radius: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .foot { margin-top: 16px; color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>PMS4U Ökosystem — 39-Tage-Lieferbericht</h1>
+      <div class="meta">Zeitraum: <strong>2026-06-01 → 2026-07-10</strong> · Umfang: PMS4U / GTCS4U / BPB Oberflächen, Governance-Runtime, YAI Studio und Research-Layer.</div>
+      <div class="chips">
+        <span class="chip">Authority Before Execution</span>
+        <span class="chip">Admissibility mit Evidence-Input</span>
+        <span class="chip">Execution Gate + Evidence Continuity</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card col-6">
+        <h2>Management-Überblick</h2>
+        <div class="kpi">
+          <div class="box"><div class="num">12</div><div class="label">Infrastruktur-Endpunkte erfasst</div></div>
+          <div class="box"><div class="num">5</div><div class="label">YAI Studio APIs aktiv</div></div>
+          <div class="box"><div class="num">2</div><div class="label">Publizierte Research-Anker</div></div>
+          <div class="box"><div class="num">5</div><div class="label">Nächste Technical Notes in Queue</div></div>
+        </div>
+      </article>
+
+      <article class="card col-6">
+        <h2>Was jetzt etabliert ist</h2>
+        <ul>
+          <li>Kern-Spezifikation als <code>SPEC-001</code> publiziert, inklusive Evidence-in-Admissibility-Logik.</li>
+          <li>YAI-Studio-Pipeline unterstützt Plan-Erstellung, KI-Visual-Generierung und finale Medien-Render (WebM/MP4/PNG).</li>
+          <li>Research- und Operations-Inventar unter einer kanonischen Struktur ausgerichtet.</li>
+          <li>Klare Trennung der Domänenverantwortung (PMS4U vs GTCS4U vs BPB vs AegyptenHautnah).</li>
+        </ul>
+      </article>
+
+      <article class="card col-8">
+        <h2>Erreichte Meilensteine (39 Tage)</h2>
+        <table>
+          <thead><tr><th>Meilenstein</th><th>Status</th><th>Nachweis im Repo</th><th>Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td>YAI Studio Generierungs-Stack stabilisiert</td><td><span class="status done">Erreicht</span></td><td><code>app/api/yai-studio/video-maker/route.ts</code>, <code>app/api/yai-studio/image-generator/route.ts</code></td><td>Planungs-Endpunkte stabil für gesteuerte Generierungsabläufe.</td></tr>
+            <tr><td>KI-Visual-Assets integriert</td><td><span class="status done">Erreicht</span></td><td><code>.../video-maker/assets/route.ts</code>, <code>.../image-generator/assets/route.ts</code></td><td>Modellgenerierte Szenen-/Konzeptbilder für Preview und Rendering verfügbar.</td></tr>
+            <tr><td>Serverseitige MP4-Pipeline integriert</td><td><span class="status done">Erreicht</span></td><td><code>.../video-maker/render/route.ts</code>, <code>next.config.ts</code>, <code>package.json</code></td><td>MP4-Route aktiv mit ffmpeg-static Packaging-Konfiguration.</td></tr>
+            <tr><td>Freeze-Wahrnehmung im UI behoben</td><td><span class="status done">Erreicht</span></td><td><code>VideoMakerClient.tsx</code>, <code>ImageGeneratorClient.tsx</code></td><td>Fortschritt/Abschluss während KI-Visual-Generierung sichtbar.</td></tr>
+            <tr><td>Spezifikationsbasis veröffentlicht</td><td><span class="status done">Erreicht</span></td><td><code>app/research/specification-1-0/page.tsx</code></td><td>Ein normativer Referenzanker für Model, Authority, Admissibility, Evidence, Execution, Consequence, Conformance.</td></tr>
+            <tr><td>Research-Inventory auf Spec-First ausgerichtet</td><td><span class="status done">Erreicht</span></td><td><code>app/research/page.tsx</code>, <code>app/ops/ops-data.ts</code>, <code>app/ops/research-assets/page.tsx</code></td><td>TN-Sequenz und Operations-Inventar verweisen auf SPEC-001 als Basis.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-4">
+        <h2>Abgeschlossene Projekte</h2>
+        <table>
+          <thead><tr><th>Projekt</th><th>Status</th><th>Abschluss</th></tr></thead>
+          <tbody>
+            <tr><td>YAI Studio Media-Output Remediation</td><td><span class="status closed">Closed</span></td><td>E2E API + Render + UX-Feedback vorhanden.</td></tr>
+            <tr><td>Spec-First Research-Neustrukturierung (Phase 1)</td><td><span class="status closed">Closed</span></td><td>SPEC-001 publiziert und verlinkt.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-6">
+        <h2>Projekte im Setup / in Queue</h2>
+        <table>
+          <thead><tr><th>Element</th><th>Status</th><th>Stand</th></tr></thead>
+          <tbody>
+            <tr><td>TN-002 — Authority vs Permission</td><td><span class="status queued">Queued</span></td><td>Im Inventar definiert; Publikationsroute ausstehend.</td></tr>
+            <tr><td>TN-003 — Admissibility</td><td><span class="status queued">Queued</span></td><td>Zur Spezifikation gemappt; Draft-Seite ausstehend.</td></tr>
+            <tr><td>TN-004 — Evidence Continuity</td><td><span class="status queued">Queued</span></td><td>Konzept gesetzt; Publikation ausstehend.</td></tr>
+            <tr><td>TN-005 — Execution Gate</td><td><span class="status queued">Queued</span></td><td>In Sequenz hinzugefügt; Publikation ausstehend.</td></tr>
+            <tr><td>DG-001 / WP-001 / RA-001 / STD-001</td><td><span class="status setup">Setup</span></td><td>Im Ops-Inventar als Draft/Queued geführt.</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-6">
+        <h2>Pipelines (operativ)</h2>
+        <table>
+          <thead><tr><th>Pipeline</th><th>Komponenten</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Frontend Build Pipeline</td><td><code>npm run build</code> → Next.js Build, Static Generation, Postbuild Copy</td><td><span class="status done">Aktiv</span></td></tr>
+            <tr><td>Lokale Runtime Start Pipeline</td><td><code>start_dev.sh</code> → FastAPI (<code>governance-core</code>) + Next.js Dev</td><td><span class="status done">Aktiv</span></td></tr>
+            <tr><td>YAI Video Pipeline</td><td>Plan API → Scene Assets API → Render API (MP4/WebM)</td><td><span class="status done">Aktiv</span></td></tr>
+            <tr><td>YAI Image Pipeline</td><td>Plan API → Concept Assets API → PNG Export</td><td><span class="status done">Aktiv</span></td></tr>
+            <tr><td>Research Publication Pipeline</td><td>Spezifikationsseite + TN-Seiten + Ops-Inventory-Verlinkung</td><td><span class="status setup">Im Setup</span></td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>Ökosystem-Infrastrukturkarte</h2>
+        <table>
+          <thead><tr><th>Domain / Host</th><th>Gruppe</th><th>Owner</th><th>Rolle</th><th>Ziel</th></tr></thead>
+          <tbody>
+            <tr><td>pms.bpbsolutionsltd.com (+ pms4u.vercel.app)</td><td>Production</td><td>PMS4U Research</td><td>Research, Technical Notes, Standards, Reference Architecture</td><td>/research</td></tr>
+            <tr><td>gtcs4u.com (+ www.gtcs4u.com)</td><td>Production</td><td>GTCS4U Platform</td><td>Enterprise Governance Platform (Demo, Console, Pilot)</td><td>/gtcs4u</td></tr>
+            <tr><td>bpbsolutionsltd.com (+ www)</td><td>Production</td><td>BPB Corporate</td><td>Corporate Identity und Routing</td><td>/bpbsolutionsltd</td></tr>
+            <tr><td>aegyptenhautnah.com</td><td>Production</td><td>Aegypten Hautnah</td><td>Unabhängiges Travel-Projekt</td><td>Unabhängige Public Site</td></tr>
+            <tr><td>api.aegyptenhautnah.com</td><td>Production</td><td>Aegypten Hautnah</td><td>Tours und Booking API</td><td>/health</td></tr>
+            <tr><td>governance.gtcs4u.com</td><td>Production</td><td>GTCS4U Platform</td><td>Public Governance Runtime Origin</td><td>governance-core</td></tr>
+            <tr><td>trace.gtcs4u.local</td><td>Local Runtime</td><td>PMS4U Engineering</td><td>Lokales Trace UI</td><td>127.0.0.1:3000</td></tr>
+            <tr><td>governance.gtcs4u.local</td><td>Local Runtime</td><td>PMS4U Engineering</td><td>Lokale konstitutionelle Runtime</td><td>127.0.0.1:8000</td></tr>
+            <tr><td>carshunter.gtcs4u.local</td><td>Local Runtime</td><td>CARSHUNTER</td><td>Legacy lokaler Intake</td><td>127.0.0.1:5001</td></tr>
+            <tr><td>operations-core.local</td><td>Local Runtime</td><td>Operations Core</td><td>Lokaler Ops-Service</td><td>127.0.0.1:8000</td></tr>
+            <tr><td>vercel-site-tau-six.vercel.app</td><td>Review</td><td>PMS4U Engineering</td><td>Review-Deployment für Cleanup</td><td>Review Host</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>Governance-Modell (aktueller Stand)</h2>
+        <ul>
+          <li>Konstitutionelles Modell bleibt unabhängig vom Runtime-Verifier.</li>
+          <li>Admissibility ist Execution-Time Evaluation, nicht nur statische Permission-Prüfung.</li>
+          <li>Evidence wird als Entscheidungsinput und Continuity-Output behandelt.</li>
+          <li>Execution wird erst am Gate freigegeben, wenn Admissibility besteht.</li>
+        </ul>
+      </article>
+
+      <article class="card col-6">
+        <h2>Technische Einordnung (Kurzfassung)</h2>
+        <ul>
+          <li><strong>Über die Ideenphase hinaus:</strong> YAI Studio verhält sich zunehmend wie ein Produktsystem statt wie einzelne Demos.</li>
+          <li><strong>Architekturtrennung:</strong> BPB (Corporate), PMS4U (Research), GTCS4U (Platform), YAI Studio (AI-Produkte), AegyptenHautnah (unabhängig).</li>
+          <li><strong>Research-Reife:</strong> SPEC-001 dient als normativer Anker vor der Erweiterung durch Notes.</li>
+          <li><strong>Runtime-Differenzierung:</strong> Authority + Admissibility + Evidence + Gate vor Consequence.</li>
+          <li><strong>Fortschritt über mehrere Ebenen:</strong> API, Rendering, UX, Publikation, Domain-Struktur und Ops-Inventar.</li>
+        </ul>
+      </article>
+
+      <article class="card col-6">
+        <h2>Fokus für die nächsten 30–60 Tage</h2>
+        <table>
+          <thead><tr><th>Priorität</th><th>Warum wichtig</th><th>Erwartetes Ergebnis</th></tr></thead>
+          <tbody>
+            <tr><td>Formale Reference Architecture</td><td>Konstitutionellen Ablauf für Enterprise-Teams sofort verständlich machen</td><td>Leitdokument für Technik- und Käufergespräche</td></tr>
+            <tr><td>Runtime SDK</td><td>Adoption durch Integration ermöglichen, nicht nur durch Lesen</td><td>Erstes SDK-Paket mit lauffähigen Beispielen</td></tr>
+            <tr><td>Public Playground</td><td>Allow/Deny/Review/Defer live demonstrieren</td><td>Interaktive Entscheidungsoberfläche mit Reasoning-Trace</td></tr>
+            <tr><td>Case Studies</td><td>Bestehende Domänenbeispiele in enterprise-taugliche Narrative überführen</td><td>Polierte, strukturierte Case-Study-Sammlung</td></tr>
+            <tr><td>Einheitliches Design System</td><td>Wahrgenommene Enterprise-Reife erhöhen</td><td>Konsistente Typografie, Abstände, Cards, Icons und visuelle Sprache</td></tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="card col-12">
+        <h2>Reifegrad-Snapshot (indikativ)</h2>
+        <table>
+          <thead><tr><th>Bereich</th><th>Bewertung</th><th>Hinweis</th></tr></thead>
+          <tbody>
+            <tr><td>Governance model</td><td>9.5 / 10</td><td>Starke Differenzierung bei Governance vor Ausführung.</td></tr>
+            <tr><td>Technical architecture</td><td>9 / 10</td><td>Klare Trennung und kohärente Runtime-Pfade.</td></tr>
+            <tr><td>Research organization</td><td>9 / 10</td><td>Spec-First-Ansatz ist ein robuster Unterbau.</td></tr>
+            <tr><td>Product separation</td><td>9 / 10</td><td>Domänengrenzen sind für externe Leser deutlich nachvollziehbar.</td></tr>
+            <tr><td>Engineering implementation</td><td>8.5 / 10</td><td>Substanzieller Fortschritt über API-, Rendering- und UX-Schichten.</td></tr>
+            <tr><td>Enterprise UI polish</td><td>7 / 10</td><td>Benötigt ein einheitliches Design System.</td></tr>
+            <tr><td>Developer ecosystem</td><td>6 / 10</td><td>SDK und Playground würden Adoption deutlich erhöhen.</td></tr>
+            <tr><td>Commercial readiness</td><td>7.5 / 10</td><td>Gute Richtung; Adoption-Packaging ist der nächste Hebel.</td></tr>
+          </tbody>
+        </table>
+        <p class="foot">Hinweis: Die Werte sind eine technische Richtungsbewertung, keine finanzielle oder kommerzielle Zertifizierung.</p>
+        <p class="foot">Compliance-Hinweis: Dieser Bericht ist ein Implementierungs-Statusbericht. Keine ROI- oder Verlustvermeidungs-Claims ohne separate signierte Business-Validierung.</p>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

@@ -15,21 +15,21 @@ PMS4U should be read as an operational governance platform, not a loose collecti
 ```
 PMS4U
 │
+├── Constitutional Layer
 ├── Runtime Authority
 ├── Admissibility Engine
-├── Execution Gate
 ├── Evidence Spine
-├── Constitutional Layer
+├── Execution Gate
 └── Reference Implementations
 ```
 
 ### Core runtime stack
 
-1. **Runtime Authority** — resolves who may request consequence-bearing execution.
-2. **Admissibility Engine** — determines whether the requested action is constitutionally allowed.
-3. **Execution Gate** — blocks or releases mutation only after runtime checks pass.
-4. **Evidence Spine** — seals request, hashes, media, receipts, and runtime proof objects.
-5. **Constitutional Layer** — preserves the doctrine, release discipline, and replayability rules.
+1. **Constitutional Layer** — defines authority, constraints, evidence obligations, and consequence ownership outside the runtime verifier.
+2. **Runtime Authority** — resolves who may request consequence-bearing execution in the live context.
+3. **Admissibility Engine** — determines whether the requested action is constitutionally allowed using current authority, policy state, and evidentiary sufficiency.
+4. **Evidence Spine** — supplies the proof material required for admissibility and then seals receipts, hashes, media, and replay objects after the decision.
+5. **Execution Gate** — blocks or releases mutation only after runtime checks pass.
 6. **Reference Implementations** — GTCS4U, CARSHUNTER, YAI, investor surfaces, and governed messaging flows.
 
 ### Evaluation lens
@@ -38,7 +38,7 @@ For enterprise or technical review, the repository should be understood in this 
 
 - **Governance model first**
 - **Runtime enforcement second**
-- **Evidence and replay third**
+- **Evidence in decision and replay third**
 - **Reference products fourth**
 
 That means the operative story is not “AI connected to messaging.” The operative story is:

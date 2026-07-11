@@ -188,6 +188,18 @@ export const domainAssets: DomainAsset[] = [
 
 export const researchAssets: ResearchAsset[] = [
   {
+    id: "SPEC-001",
+    title: "Specification 1.0 — Constitutional Runtime Governance",
+    kind: "Standard",
+    track: "Core Specification",
+    status: "Published",
+    priority: "P0",
+    owner: "PMS4U Research",
+    href: "/research/specification-1-0",
+    summary:
+      "Normative base for constitutional model, runtime authority, admissibility, evidence, execution gate, consequence, and conformance.",
+  },
+  {
     id: "TN-001",
     title: "Who Verifies the Verifier?",
     kind: "Technical Note",
@@ -203,7 +215,7 @@ export const researchAssets: ResearchAsset[] = [
     id: "TN-002",
     title: "Authority vs Permission",
     kind: "Technical Note",
-    track: "Execution Governance",
+    track: "Runtime Authority",
     status: "Queued",
     priority: "P1",
     owner: "PMS4U Research",
@@ -213,19 +225,7 @@ export const researchAssets: ResearchAsset[] = [
   },
   {
     id: "TN-003",
-    title: "Runtime Legitimacy",
-    kind: "Technical Note",
-    track: "Constitutional Model",
-    status: "Queued",
-    priority: "P1",
-    owner: "PMS4U Research",
-    href: null,
-    summary:
-      "Why an execution can be technically correct while lacking delegated legitimacy.",
-  },
-  {
-    id: "TN-004",
-    title: "Constitutional Admissibility",
+    title: "Admissibility",
     kind: "Technical Note",
     track: "Admissibility",
     status: "Queued",
@@ -233,7 +233,31 @@ export const researchAssets: ResearchAsset[] = [
     owner: "PMS4U Research",
     href: null,
     summary:
-      "The criteria that must survive immediately before a runtime permits consequence.",
+      "How authority, evidence, policy state, and consequence classification determine whether execution may proceed now.",
+  },
+  {
+    id: "TN-004",
+    title: "Evidence Continuity",
+    kind: "Technical Note",
+    track: "Evidence",
+    status: "Queued",
+    priority: "P1",
+    owner: "PMS4U Research",
+    href: null,
+    summary:
+      "How evidence supports admissibility before consequence and remains replayable after consequence.",
+  },
+  {
+    id: "TN-005",
+    title: "Execution Gate",
+    kind: "Technical Note",
+    track: "Execution Governance",
+    status: "Queued",
+    priority: "P1",
+    owner: "PMS4U Research",
+    href: null,
+    summary:
+      "The final release boundary where admissible evaluation becomes actual consequence-bearing mutation.",
   },
   {
     id: "DG-001",
@@ -264,12 +288,36 @@ export const researchAssets: ResearchAsset[] = [
     title: "Constitutional Runtime Governance Reference Architecture",
     kind: "Reference Architecture",
     track: "Architecture",
-    status: "Draft",
-    priority: "P1",
+    status: "Published",
+    priority: "P0",
     owner: "PMS4U Research",
-    href: null,
+    href: "/reference-architecture",
     summary:
       "Canonical architecture connecting constitutional model, runtime authority, admissibility gate, and evidence spine.",
+  },
+  {
+    id: "SDK-001",
+    title: "Runtime SDK Surface",
+    kind: "Standard",
+    track: "Developer Adoption",
+    status: "Published",
+    priority: "P1",
+    owner: "PMS4U Research",
+    href: "/research/runtime-sdk",
+    summary:
+      "JavaScript and Python adoption surface for runtime decision contracts and evidence-aware integration patterns.",
+  },
+  {
+    id: "PG-001",
+    title: "Public Runtime Playground",
+    kind: "Standard",
+    track: "Developer Adoption",
+    status: "Published",
+    priority: "P1",
+    owner: "PMS4U Research",
+    href: "/playground",
+    summary:
+      "Interactive decision simulator for action, authority, and evidence with allow/deny/review/defer outcomes.",
   },
   {
     id: "STD-001",

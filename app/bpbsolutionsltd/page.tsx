@@ -29,6 +29,12 @@ const boundaries = [
     cta: "Open platform",
   },
   {
+    title: "YAI Studio",
+    body: "AI product suite under BPB Solutions: Video Maker, Image Generator, Voice, Agents, and Marketing Assistant.",
+    href: "/bpbsolutionsltd/yai-studio",
+    cta: "Open YAI Studio",
+  },
+  {
     title: "Corporate contact",
     body: "Company-level contact, relationship routing, contracting context, and formal inquiries.",
     href: "mailto:info@bpbsolutionsltd.com",
@@ -51,6 +57,9 @@ export default function BpbSolutionsPage() {
             <a href="#boundaries" className="hover:text-slate-950">
               Domain Boundaries
             </a>
+            <Link href="/bpbsolutionsltd/yai-studio" className="hover:text-slate-950">
+              YAI Studio
+            </Link>
             <Link href="/research" className="hover:text-slate-950">
               PMS4U
             </Link>
@@ -104,7 +113,7 @@ export default function BpbSolutionsPage() {
             <h2 className="mt-2 text-2xl font-semibold tracking-tight">One system, three public roles.</h2>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-4">
             {boundaries.map((item) => {
               const external = item.href.startsWith("mailto:");
               const content = (
