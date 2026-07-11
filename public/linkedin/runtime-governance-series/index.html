@@ -89,9 +89,29 @@
       font-size: 13px;
       color: #cbd5e1;
     }
+    .back-btn {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 999;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+    }
+    .back-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
+  <button class="back-btn" onclick="goBack()" aria-label="Go back">← Back</button>
   <div class="wrap">
     <section class="card">
       <span class="badge published">LIVE NOW</span>
@@ -198,5 +218,14 @@
 
     <div class="footer">BPB Solutions LTD · bpbsolutionsltd.com</div>
   </div>
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.href = "https://bpbsolutionsltd.com/bpbsolutionsltd";
+    }
+  </script>
 </body>
 </html>

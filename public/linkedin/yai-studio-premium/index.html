@@ -153,12 +153,33 @@
 
       .footer span:last-child { color: var(--accent); }
 
+      .back-btn {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1000;
+        border: 1px solid var(--line);
+        background: rgba(3, 6, 7, 0.9);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .back-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
       @media screen and (max-width: 1100px) {
         body { align-items: start; justify-items: start; overflow: auto; }
       }
     </style>
   </head>
   <body>
+    <button class="back-btn" onclick="goBack()" aria-label="Go back">← Back</button>
     <section class="artboard">
       <div class="top">
         <div class="brand"><span class="dot"></span>YAI Studio</div>
@@ -177,5 +198,15 @@
         <span>studio.bpbsolutionsltd.com</span>
       </div>
     </section>
+
+    <script>
+      function goBack() {
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+        window.location.href = "https://bpbsolutionsltd.com/bpbsolutionsltd";
+      }
+    </script>
   </body>
 </html>
