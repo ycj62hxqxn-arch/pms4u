@@ -75,6 +75,20 @@
       background: #0b1324;
       color: #cbd5e1;
     }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .flow-step {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      background: #0b1222;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
   </style>
 </head>
 <body>
@@ -86,6 +100,27 @@
       <p>
         This page contains the full 10-post sequence, release calendar, and the first post published in public format.
       </p>
+      <p class="muted"><strong>Editorial rule:</strong> one narrative, one visual language, and evidence over opinion.</p>
+    </section>
+
+    <section class="card">
+      <h2>Narrative Roadmap (Reader Progression)</h2>
+      <p class="muted">Each post answers one question and leads to the next.</p>
+      <div class="flow">
+        <div class="flow-step">1) Why policies alone do not control execution</div>
+        <div class="flow-step">2) What controls execution in real time</div>
+        <div class="flow-step">3) Authority</div>
+        <div class="flow-step">4) Admissibility</div>
+        <div class="flow-step">5) Execution Gate</div>
+        <div class="flow-step">6) Evidence</div>
+        <div class="flow-step">7) Runtime controls</div>
+        <div class="flow-step">8) Architecture</div>
+        <div class="flow-step">9) Working software</div>
+        <div class="flow-step">10) Future research</div>
+      </div>
+      <blockquote>
+        Research → Specification → Reference Architecture → Reference Implementation → Working Platform → Enterprise Adoption
+      </blockquote>
     </section>
 
     <section class="card">
@@ -116,45 +151,48 @@
     </section>
 
     <section class="card">
-      <h2>Release Calendar (2-day sequence)</h2>
+      <h2>Release Calendar (2-day sequence, evidence-first)</h2>
       <table>
         <thead>
           <tr>
             <th>Part</th>
             <th>Title</th>
             <th>Release / Pub Date</th>
+            <th>Primary Evidence</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Part 1</td><td>Why this project exists</td><td>2026-07-12</td><td><span class="badge published">Published</span></td></tr>
-          <tr><td>Part 2</td><td>Why Runtime Matters</td><td>2026-07-14</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 3</td><td>From Research to Software</td><td>2026-07-16</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 4</td><td>The Execution Gate</td><td>2026-07-18</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 5</td><td>Deployment Is Part of Governance</td><td>2026-07-20</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 6</td><td>YAI Studio and Governed Generation</td><td>2026-07-22</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 7</td><td>Evidence Matters</td><td>2026-07-24</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 8</td><td>One Architecture, Multiple Products</td><td>2026-07-26</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 9</td><td>What Went Wrong (and Why It Improved the System)</td><td>2026-07-28</td><td><span class="badge scheduled">Scheduled</span></td></tr>
-          <tr><td>Part 10</td><td>The Bigger Vision</td><td>2026-07-30</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 1</td><td>Why policies don’t control execution</td><td>2026-07-12</td><td>Foundational architecture diagram</td><td><span class="badge published">Published</span></td></tr>
+          <tr><td>Part 2</td><td>What actually controls execution?</td><td>2026-07-14</td><td>Runtime decision path (ALLOW/DENY)</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 3</td><td>Authority</td><td>2026-07-16</td><td>Authority chain + signer mapping</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 4</td><td>Admissibility</td><td>2026-07-18</td><td>Admissibility inputs matrix</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 5</td><td>Execution Gate</td><td>2026-07-20</td><td>Gate outcomes + refusal example</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 6</td><td>Evidence</td><td>2026-07-22</td><td>Receipts / replay / continuity trace</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 7</td><td>Runtime controls in practice</td><td>2026-07-24</td><td>Governance console screenshots</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 8</td><td>Architecture (one system, many surfaces)</td><td>2026-07-26</td><td>Ecosystem topology diagram</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 9</td><td>Working software</td><td>2026-07-28</td><td>Live pages + deployment verification</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 10</td><td>Future research</td><td>2026-07-30</td><td>Open questions + next experiments</td><td><span class="badge scheduled">Scheduled</span></td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="card">
-      <h2>All 10 Post Titles (Series Index)</h2>
+      <h2>All 10 Post Titles (Course Index)</h2>
       <ol>
-        <li>Why this project exists</li>
-        <li>Why Runtime Matters</li>
-        <li>From Research to Software</li>
-        <li>The Execution Gate</li>
-        <li>Deployment Is Part of Governance</li>
-        <li>YAI Studio and Governed Generation</li>
-        <li>Evidence Matters</li>
-        <li>One Architecture, Multiple Products</li>
-        <li>What Went Wrong (and Why It Improved the System)</li>
-        <li>The Bigger Vision</li>
+        <li>Why policies don’t control execution</li>
+        <li>What actually controls execution?</li>
+        <li>Authority</li>
+        <li>Admissibility</li>
+        <li>Execution Gate</li>
+        <li>Evidence</li>
+        <li>Runtime controls in practice</li>
+        <li>Architecture (one system, many surfaces)</li>
+        <li>Working software</li>
+        <li>Future research</li>
       </ol>
+      <p class="muted">Term discipline: use only two core terms repeatedly — <strong>Runtime Governance</strong> and <strong>Execution Gate</strong>.</p>
+      <p class="muted">Target ratio per post: 40% concept / 60% implementation evidence.</p>
       <p class="muted">Canonical series URL target: bpbsolutionsltd.com</p>
     </section>
 
