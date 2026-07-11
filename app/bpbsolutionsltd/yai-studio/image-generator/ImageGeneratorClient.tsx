@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import BackNavButton from "../../../components/BackNavButton";
 
 type ImagePrompt = {
   index: number;
@@ -345,6 +346,7 @@ export function ImageGeneratorClient() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
+      <BackNavButton />
       <section className="border-b border-white/10 px-5 py-10">
         <div className="mx-auto max-w-7xl">
           <div className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">YAI Studio · Image Generator</div>

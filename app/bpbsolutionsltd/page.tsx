@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Building2, ExternalLink, Mail, ShieldCheck } from "lucide-react";
+import BackNavButton from "../components/BackNavButton";
 
 export const metadata: Metadata = {
   title: "BPB Solutions LTD — Corporate",
@@ -45,6 +46,7 @@ const boundaries = [
 export default function BpbSolutionsPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
+      <BackNavButton />
       <nav className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between">
           <Link href="/bpbsolutionsltd" className="text-sm font-bold tracking-[0.28em] text-slate-950">

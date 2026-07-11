@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Bot, Clapperboard, Image as ImageIcon, Megaphone, Mic, Sparkles } from "lucide-react";
+import BackNavButton from "../../components/BackNavButton";
 
 export const metadata: Metadata = {
   title: "YAI Studio | BPB Solutions LTD",
@@ -60,6 +61,7 @@ const domains = [
 export default function YaiStudioPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
+      <BackNavButton />
       <nav className="border-b border-white/10 bg-black/30 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between">
           <Link href="/bpbsolutionsltd" className="text-sm font-semibold tracking-[0.28em] text-white">

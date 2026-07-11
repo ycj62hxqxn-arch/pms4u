@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import BackNavButton from "../../../components/BackNavButton";
 
 export const metadata: Metadata = {
   title: "YAI Studio Marketing Assistant | BPB Solutions LTD",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default function YaiStudioMarketingAssistantPage() {
   return (
     <main className="min-h-screen bg-slate-950 px-5 py-16 text-white">
+      <BackNavButton />
       <div className="mx-auto max-w-3xl border border-white/10 bg-white/[0.03] p-8">
         <div className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">YAI Studio</div>
         <h1 className="mt-3 text-3xl font-semibold">Marketing Assistant (Planned)</h1>
