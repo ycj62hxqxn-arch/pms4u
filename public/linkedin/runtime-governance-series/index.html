@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building Runtime Governance for AI — 10-Post Series</title>
+  <style>
+    :root {
+      --bg: #020617;
+      --panel: #0f172a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #22d3ee;
+      --accent2: #3b82f6;
+      --ok: #10b981;
+      --pending: #f59e0b;
+      --border: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 10% 10%, #0b1222 0%, var(--bg) 45%);
+      color: var(--text);
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.65;
+      padding: 26px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    h1 { margin: 0 0 8px; font-size: 36px; }
+    h2 { margin: 0 0 8px; font-size: 26px; }
+    h3 { margin: 0 0 6px; font-size: 20px; }
+    .muted { color: var(--muted); }
+    .accent { color: var(--accent); }
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .published { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.35); }
+    .scheduled { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35); }
+    .hero-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-top: 14px;
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1222;
+    }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #182234; text-align: left; font-size: 14px; }
+    th { color: #bae6fd; background: #0a1425; letter-spacing: 0.02em; }
+    tr:last-child td { border-bottom: none; }
+    .footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 10px; }
+    blockquote {
+      margin: 12px 0;
+      padding: 12px 14px;
+      border-left: 3px solid var(--accent2);
+      background: #0b1324;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <span class="badge published">LIVE NOW</span>
+      <h1>Building Runtime Governance for AI — From Research to Working Platform</h1>
+      <p class="muted">Publishing cadence: one post every 2 days. Start date: 12 July 2026.</p>
+      <p>
+        This page contains the full 10-post sequence, release calendar, and the first post published in public format.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="accent">Post 1 Published</span> — Why this project exists</h2>
+      <p class="muted">Published: 12 July 2026 · Status: Live</p>
+      <h3>We have spent years making AI smarter. We have spent far less time asking: who authorizes AI execution?</h3>
+      <p>
+        We have spent years making AI more capable: larger models, better reasoning, faster inference.
+        Yet one question remains underexplored:
+        <strong>Who authorizes an AI system to execute a real-world consequence?</strong>
+      </p>
+      <p>
+        Safety helps model behavior. Security protects systems. Compliance aligns with regulation.
+        But immediately before an action happens, another question still exists:
+        <strong>Should this action happen now?</strong>
+      </p>
+      <p>
+        That answer depends on authority, policy state, evidence, timing, and context—not just model capability.
+        Over the next weeks, I will share how PMS4U moved from theory to a working runtime governance platform.
+      </p>
+      <blockquote>
+        Trustworthy AI is not only about intelligence. It is also about execution.
+      </blockquote>
+      <p><strong>Discussion question:</strong> What is the missing layer in today’s AI governance stack?</p>
+
+      <img class="hero-img" src="/linkedin/runtime-governance-series/post-01-generated-architecture.svg" alt="Generated architecture image for post 1: Human to Authority to Governance to AI to Execution" />
+      <p class="muted">Generated visual concept: Human → Authority → Governance → AI → Execution</p>
+    </section>
+
+    <section class="card">
+      <h2>Release Calendar (2-day sequence)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Part</th>
+            <th>Title</th>
+            <th>Release / Pub Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Part 1</td><td>Why this project exists</td><td>2026-07-12</td><td><span class="badge published">Published</span></td></tr>
+          <tr><td>Part 2</td><td>Why Runtime Matters</td><td>2026-07-14</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 3</td><td>From Research to Software</td><td>2026-07-16</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 4</td><td>The Execution Gate</td><td>2026-07-18</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 5</td><td>Deployment Is Part of Governance</td><td>2026-07-20</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 6</td><td>YAI Studio and Governed Generation</td><td>2026-07-22</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 7</td><td>Evidence Matters</td><td>2026-07-24</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 8</td><td>One Architecture, Multiple Products</td><td>2026-07-26</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 9</td><td>What Went Wrong (and Why It Improved the System)</td><td>2026-07-28</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+          <tr><td>Part 10</td><td>The Bigger Vision</td><td>2026-07-30</td><td><span class="badge scheduled">Scheduled</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>All 10 Post Titles (Series Index)</h2>
+      <ol>
+        <li>Why this project exists</li>
+        <li>Why Runtime Matters</li>
+        <li>From Research to Software</li>
+        <li>The Execution Gate</li>
+        <li>Deployment Is Part of Governance</li>
+        <li>YAI Studio and Governed Generation</li>
+        <li>Evidence Matters</li>
+        <li>One Architecture, Multiple Products</li>
+        <li>What Went Wrong (and Why It Improved the System)</li>
+        <li>The Bigger Vision</li>
+      </ol>
+      <p class="muted">Canonical series URL target: bpbsolutionsltd.com</p>
+    </section>
+
+    <div class="footer">BPB Solutions LTD · bpbsolutionsltd.com</div>
+  </div>
+</body>
+</html>
