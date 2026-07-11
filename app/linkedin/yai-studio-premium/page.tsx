@@ -1,3 +1,5 @@
+import BackNavButton from "../../components/BackNavButton";
+
 export const metadata = {
   title: "YAI Studio Premium | LinkedIn Graphic",
   description:
@@ -7,6 +9,7 @@ export const metadata = {
 export default function YaiStudioPremiumPage() {
   return (
     <main className="h-screen w-screen overflow-hidden bg-black">
+      <BackNavButton />
       <iframe
         title="YAI Studio Premium LinkedIn Graphic"
         src="/linkedin/yai-studio-premium/index.html"
