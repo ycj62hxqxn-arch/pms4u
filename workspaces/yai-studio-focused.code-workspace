@@ -1,0 +1,21 @@
+{
+  "folders": [
+    { "path": "../app/bpbsolutionsltd/yai-studio" },
+    { "path": "../app/api/yai-studio" },
+    { "path": "../governance-sdk" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true
+    },
+    "search.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true
+    }
+  }
+}

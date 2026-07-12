@@ -1,0 +1,223 @@
+[
+  {
+    "id": "e93c1547-816a-442a-a002-2ef674ef2968",
+    "name": "QA User",
+    "email": "qa+1783816206@example.com",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T00:30:07.483Z",
+    "role": "qa",
+    "pmsMemberId": "PMS-QA-000",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": []
+  },
+  {
+    "id": "5d96f731-9653-48ec-9a0d-1b93f4ce6001",
+    "name": "Alex Rivera",
+    "email": "agent01@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:00:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-001",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "e3646b76-49e6-450b-befa-a7e0a7ed6002",
+    "name": "Jordan Hayes",
+    "email": "agent02@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:01:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-002",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "f4ea0b96-6015-4b66-9e2e-0cc7b8476003",
+    "name": "Casey Morgan",
+    "email": "agent03@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:02:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-003",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "13f82949-2a7f-4736-b127-ec9414f56004",
+    "name": "Taylor Chen",
+    "email": "agent04@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:03:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-004",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "858f5f20-f419-4d2d-8db4-72953cc46005",
+    "name": "Morgan Lee",
+    "email": "agent05@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:04:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-005",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "9f5ecbc4-f6c3-40ea-9480-148c9a8c6006",
+    "name": "Jordan Patel",
+    "email": "agent06@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:05:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-006",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "0c0eab9d-271f-48fe-a775-bf8818ea6007",
+    "name": "Sam Rodriguez",
+    "email": "agent07@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:06:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-007",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "499bc1c9-c0db-4524-9a18-f12442b56008",
+    "name": "Riley Thompson",
+    "email": "agent08@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:07:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-008",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-009",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "d4038b2f-c7fa-40b2-9fcb-64f7f7a56009",
+    "name": "Avery Kim",
+    "email": "agent09@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:08:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-009",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-010"
+    ]
+  },
+  {
+    "id": "42f67d9a-738f-4a88-bcd0-8aefce996010",
+    "name": "Quinn Davis",
+    "email": "agent10@pulsenet.ai",
+    "passwordHash": "$2b$10$lz63w.b5Hc5BpNkmzqbbq.axNEJCjxpNTRkwxcUnRfoud0I/76px6",
+    "createdAt": "2026-07-12T02:09:00.000Z",
+    "role": "agent",
+    "pmsMemberId": "PMS-AGENT-010",
+    "pmsWorkspace": "pms4u",
+    "connectedTo": [
+      "PMS-AGENT-001",
+      "PMS-AGENT-002",
+      "PMS-AGENT-003",
+      "PMS-AGENT-004",
+      "PMS-AGENT-005",
+      "PMS-AGENT-006",
+      "PMS-AGENT-007",
+      "PMS-AGENT-008",
+      "PMS-AGENT-009"
+    ]
+  }
+]

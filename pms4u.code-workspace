@@ -1,7 +1,23 @@
 {
     "folders": [
         {
-            "path": "aegyptenhautnah.com"
+            "path": "."
         }
-    ]
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.next": true,
+            "**/out": true,
+            "**/.vercel": true,
+            "**/.venv": true,
+            "**/__pycache__": true
+        },
+        "search.exclude": {
+            "**/.next": true,
+            "**/out": true,
+            "**/.vercel": true,
+            "**/archive": true,
+            "**/audit": true
+        }
+    }
 }

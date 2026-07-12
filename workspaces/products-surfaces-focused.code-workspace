@@ -1,0 +1,22 @@
+{
+  "folders": [
+    { "path": "../app/gtcs4u" },
+    { "path": "../app/carshunter-drops" },
+    { "path": "../app/bpbsolutionsltd" },
+    { "path": "../public" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true
+    },
+    "search.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true
+    }
+  }
+}

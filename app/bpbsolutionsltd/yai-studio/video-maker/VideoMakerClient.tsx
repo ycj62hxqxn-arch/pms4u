@@ -347,8 +347,14 @@ export function VideoMakerClient() {
   const [sceneAssets, setSceneAssets] = useState<Record<number, string>>({});
   const [generatingAssets, setGeneratingAssets] = useState(false);
   const [assetError, setAssetError] = useState("");
+  const [assetFallbackUsed, setAssetFallbackUsed] = useState(false);
+  const [assetRequestId, setAssetRequestId] = useState("");
   const generatedSceneCount = Object.keys(sceneAssets).length;
   const totalSceneCount = plan?.scenes.length ?? 0;
+
+  function userFacingFallbackMessage() {
+    return "AI generation is temporarily unavailable. A governed template visual was used instead.";
+  }
 
   function loadSmartExample(example: SmartExample) {
     setBrief(example.brief);
@@ -362,6 +368,8 @@ export function VideoMakerClient() {
     setVideoError("");
     setMp4Error("");
     setAssetError("");
+    setAssetFallbackUsed(false);
+    setAssetRequestId("");
   }
 
   async function requestSceneAssets(nextPlan: VideoPlan) {
@@ -382,6 +390,8 @@ export function VideoMakerClient() {
 
       const data = (await response.json()) as {
         assets?: SceneAsset[];
+        fallbackUsed?: boolean;
+        requestId?: string;
       };
 
       if (!Array.isArray(data.assets) || data.assets.length === 0) {
@@ -400,8 +410,11 @@ export function VideoMakerClient() {
       }
 
       setSceneAssets(next);
+      setAssetFallbackUsed(Boolean(data.fallbackUsed));
+      setAssetRequestId(typeof data.requestId === "string" ? data.requestId : "");
     } catch (err) {
       setAssetError(err instanceof Error ? err.message : "Scene asset generation failed.");
+      setAssetFallbackUsed(true);
     } finally {
       setGeneratingAssets(false);
     }
@@ -455,6 +468,8 @@ export function VideoMakerClient() {
       });
       setSceneAssets({});
       setAssetError("");
+      setAssetFallbackUsed(false);
+      setAssetRequestId("");
       void requestSceneAssets(data.plan);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error");
@@ -468,6 +483,8 @@ export function VideoMakerClient() {
         return "";
       });
       setSceneAssets({});
+      setAssetFallbackUsed(false);
+      setAssetRequestId("");
     } finally {
       setSending(false);
     }
@@ -738,6 +755,12 @@ export function VideoMakerClient() {
                       AI visuals ready for all scenes. Preview and MP4 rendering now use the generated images.
                     </div>
                   )}
+                  {assetFallbackUsed && (
+                    <div className="rounded border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">
+                      {userFacingFallbackMessage()}
+                      {assetRequestId ? <div className="mt-1 text-xs text-amber-200/80">Request ID: {assetRequestId}</div> : null}
+                    </div>
+                  )}
                   {plan.scenes[activeScene] && (
                     <div className="grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
                       <div className="relative">
@@ -758,7 +781,11 @@ export function VideoMakerClient() {
                       <div className="border border-white/10 bg-black/30 p-4 text-sm text-slate-300">
                         <div className="text-xs uppercase tracking-[0.16em] text-slate-400">Rendered Scene</div>
                         <p className="mt-2 text-xs text-slate-400">
-                          Source: {sceneAssets[activeScene] ? "model-generated image" : "template render"}
+                          Source: {sceneAssets[activeScene]
+                            ? sceneAssets[activeScene].startsWith("data:image/svg+xml")
+                              ? "governed template fallback"
+                              : "model-generated image"
+                            : "template render"}
                         </p>
                         <p className="mt-2"><strong>Overlay:</strong> {plan.scenes[activeScene].overlay}</p>
                         <p className="mt-2"><strong>Visual:</strong> {plan.scenes[activeScene].visual}</p>
@@ -767,7 +794,7 @@ export function VideoMakerClient() {
                       </div>
                     </div>
                   )}
-                  {assetError && <div className="rounded border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{assetError}</div>}
+                  {assetError && <div className="rounded border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">{userFacingFallbackMessage()}</div>}
                 </div>
 
                 <div className="space-y-3 border border-white/10 bg-black/30 p-4">

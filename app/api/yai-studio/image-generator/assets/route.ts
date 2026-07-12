@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
 
 type PromptItem = {
   index: number;
@@ -24,6 +25,15 @@ type AssetItem = {
   index: number;
   imageDataUrl: string;
 };
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
 
 function asText(value: unknown, fallback = ""): string {
   return typeof value === "string" ? value.trim() : fallback;
@@ -62,6 +72,33 @@ function sizeFor(aspectRatio: string): "1024x1024" | "1536x1024" | "1024x1536" {
   if (normalized === "16:9") return "1536x1024";
   if (normalized === "9:16" || normalized === "4:5") return "1024x1536";
   return "1024x1024";
+}
+
+function fallbackImage(promptItem: PromptItem, plan: ImagePlanPayload): string {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#020617"/>
+          <stop offset="100%" stop-color="#1e293b"/>
+        </linearGradient>
+      </defs>
+      <rect width="1080" height="1080" fill="url(#bg)"/>
+      <rect x="72" y="72" width="936" height="936" rx="44" fill="#0b1220" fill-opacity="0.92" stroke="#334155"/>
+      <text x="112" y="140" font-size="18" fill="#94a3b8" font-family="Inter, Arial, sans-serif" letter-spacing="1.4">YAI STUDIO · TEMPLATE FALLBACK</text>
+      <text x="112" y="212" font-size="48" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="800">${escapeXml(promptItem.overlayText)}</text>
+      <text x="112" y="270" font-size="24" fill="#cbd5e1" font-family="Inter, Arial, sans-serif">${escapeXml(plan.style)} · ${escapeXml(plan.aspectRatio)} · ${escapeXml(plan.palette)}</text>
+      <rect x="112" y="326" width="856" height="240" rx="24" fill="#020617" stroke="#334155"/>
+      <text x="144" y="370" font-size="17" fill="#94a3b8" font-family="Inter, Arial, sans-serif" letter-spacing="1.2">CONCEPT</text>
+      <text x="144" y="408" font-size="28" fill="#e2e8f0" font-family="Inter, Arial, sans-serif">${escapeXml(promptItem.title)}</text>
+      <text x="144" y="456" font-size="20" fill="#cbd5e1" font-family="Inter, Arial, sans-serif">${escapeXml(promptItem.prompt.slice(0, 180))}</text>
+      <text x="144" y="506" font-size="18" fill="#94a3b8" font-family="Inter, Arial, sans-serif">${escapeXml(promptItem.negativePrompt.slice(0, 140))}</text>
+      <circle cx="900" cy="878" r="72" fill="#2dd4bf" fill-opacity="0.22"/>
+      <circle cx="880" cy="878" r="26" fill="#2dd4bf"/>
+    </svg>
+  `.trim();
+
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
 async function generateOne(prompt: string, size: string): Promise<string> {
@@ -110,6 +147,9 @@ async function generateOne(prompt: string, size: string): Promise<string> {
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const requestId = `image-assets-${randomUUID()}`;
+  const provider = process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1";
+
   try {
     const body = ((await request.json().catch(() => ({}))) ?? {}) as AssetsRequest;
     const plan = parsePlan(body.plan);
@@ -133,13 +173,29 @@ export async function POST(request: Request) {
         "No logos, no watermark, no text inside image unless naturally part of scene objects.",
       ].join("\n");
 
-      const imageDataUrl = await generateOne(prompt, size);
-      assets.push({ index: promptItem.index, imageDataUrl });
+      try {
+        const imageDataUrl = await generateOne(prompt, size);
+        assets.push({ index: promptItem.index, imageDataUrl });
+      } catch {
+        assets.push({ index: promptItem.index, imageDataUrl: fallbackImage(promptItem, plan) });
+      }
     }
+
+    const fallbackUsed = assets.some((asset) => asset.imageDataUrl.startsWith("data:image/svg+xml"));
+
+    console.info("image_generation_completed", {
+      fallbackUsed,
+      provider,
+      requestId,
+      timestamp: new Date().toISOString(),
+      status: "ok",
+    });
 
     return NextResponse.json({
       source: "openai-images",
-      model: process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1",
+      fallbackUsed,
+      requestId,
+      model: provider,
       assets,
       governance: {
         decision: "PLAN_ONLY",
@@ -148,10 +204,19 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
+    console.info("image_generation_completed", {
+      fallbackUsed: true,
+      provider,
+      requestId,
+      timestamp: new Date().toISOString(),
+      status: "fatal_error",
+    });
+
     return NextResponse.json(
       {
         message: "Image asset generation failed.",
-        detail: error instanceof Error ? error.message : "Unknown error",
+        detail: "Asset generation could not complete. Governed template fallback is unavailable for this request.",
+        requestId,
       },
       { status: 500 }
     );

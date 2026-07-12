@@ -41,6 +41,12 @@ const boundaries = [
     href: "mailto:info@bpbsolutionsltd.com",
     cta: "Email BPB",
   },
+  {
+    title: "Services",
+    body: "Runtime governance implementation, evidence flow, approval architecture, and governed AI workflow services.",
+    href: "/services",
+    cta: "Open services",
+  },
 ];
 
 export default function BpbSolutionsPage() {
@@ -56,6 +62,9 @@ export default function BpbSolutionsPage() {
             <a href="#company" className="hover:text-slate-950">
               Company
             </a>
+            <Link href="/services" className="hover:text-slate-950">
+              Services
+            </Link>
             <a href="#boundaries" className="hover:text-slate-950">
               Domain Boundaries
             </a>

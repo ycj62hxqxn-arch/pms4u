@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "mkdir -p .next/server && cp .next/server/chunks/*.js .next/server/ 2>/dev/null || true",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@upstash/redis": "^1.35.6",
@@ -23,6 +24,8 @@
     "@types/node": "^22.15.21",
     "@types/react": "^19.0.6",
     "@types/react-dom": "^19.0.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
     "typescript": "^5.8.3"
   }
 }

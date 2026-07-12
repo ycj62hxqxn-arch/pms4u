@@ -1,0 +1,25 @@
+{
+  "folders": [
+    { "path": ".." }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true,
+      "**/.venv": true,
+      "**/__pycache__": true,
+      "**/*.db": true
+    },
+    "search.exclude": {
+      "**/.next": true,
+      "**/node_modules": true,
+      "**/out": true,
+      "**/.vercel": true,
+      "**/Downloads": true,
+      "**/archive": true,
+      "**/audit": true
+    }
+  }
+}

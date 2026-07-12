@@ -138,6 +138,9 @@ export default async function Home() {
             <a href="#runtime" className="transition hover:text-white">
               Runtime
             </a>
+            <Link href="/services" className="transition hover:text-white">
+              Services
+            </Link>
             <a href="#sectors" className="transition hover:text-white">
               Sectors
             </a>
