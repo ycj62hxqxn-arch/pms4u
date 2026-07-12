@@ -6,111 +6,163 @@ import Link from "next/link";
 type Member = {
   id: string;
   name: string;
-  email: string;
   createdAt: string;
   bio?: string;
   location?: string;
-  avatar?: string;
 };
+
+const AVATAR_COLORS = [
+  "from-violet-500 to-indigo-500",
+  "from-pink-500 to-rose-500",
+  "from-emerald-500 to-teal-500",
+  "from-orange-500 to-amber-500",
+  "from-cyan-500 to-blue-500",
+];
+
+function Avatar({ name }: { name: string }) {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  const color = AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
+  return (
+    <div
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${color} text-sm font-bold text-white`}
+    >
+      {initials}
+    </div>
+  );
+}
 
 export default function MembersPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/members");
-        if (!res.ok) {
-          setError("Failed to load members.");
-          return;
-        }
-        const json = (await res.json()) as { members?: Member[] };
-        setMembers(Array.isArray(json.members) ? json.members : []);
-      } catch {
-        setError("Network error.");
-      } finally {
-        setLoading(false);
-      }
-    })();
+    fetch("/api/members")
+      .then((r) => r.json())
+      .then((json: { members?: Member[] }) =>
+        setMembers(Array.isArray(json.members) ? json.members : [])
+      )
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = members.filter(
     (m) =>
-      m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.email.toLowerCase().includes(searchTerm.toLowerCase()),
+      m.name.toLowerCase().includes(search.toLowerCase()) ||
+      (m.location ?? "").toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10 md:px-10">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Member Directory</h1>
-        <p className="text-slate-300">{filtered.length} members in the network</p>
-      </div>
+    <div className="min-h-screen bg-[#0f0f11]">
+      <nav className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#0f0f11]/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+          <Link href="/" className="text-lg font-bold tracking-tight">
+            Pulse<span className="text-violet-400">Net</span>
+          </Link>
+          <Link
+            href="/feed"
+            className="rounded-lg px-3 py-1.5 text-sm text-zinc-400 hover:bg-white/[0.07] hover:text-white transition-colors"
+          >
+            Feed
+          </Link>
+        </div>
+      </nav>
 
-      <div className="mb-6 rounded-xl border border-white/20 bg-black/30 px-4 py-2">
-        <input
-          type="text"
-          placeholder="Search members by name or email..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full bg-transparent text-white outline-none placeholder:text-slate-400"
-        />
-      </div>
+      <main className="mx-auto max-w-5xl px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">Members</h1>
+          <p className="mt-1 text-sm text-zinc-500">{members.length} people in the network</p>
+        </div>
 
-      {loading && <p className="text-center text-slate-300">Loading members...</p>}
-      {error && <p className="text-center text-rose-300">{error}</p>}
+        {/* Search */}
+        <div className="relative mb-6">
+          <svg
+            className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search members…"
+            className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] py-3 pl-10 pr-4 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
+          />
+        </div>
 
-      {!loading && members.length === 0 && (
-        <p className="text-center text-slate-300">No members found.</p>
-      )}
-
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((member) => {
-          const initials = member.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .toUpperCase();
-
-          return (
-            <Link key={member.id} href={`/profile/${member.id}`}>
-              <article className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-5 hover:border-white/30 transition cursor-pointer h-full">
-                <div className="flex items-start gap-3">
-                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-cyan-300 to-fuchsia-300 flex items-center justify-center text-lg font-bold text-slate-900 flex-shrink-0">
-                    {member.avatar ? (
-                      <img
-                        src={member.avatar}
-                        alt={member.name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      initials
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="font-semibold text-white truncate">{member.name}</h2>
-                    <p className="text-xs text-cyan-300 truncate">{member.email}</p>
-                    {member.location && (
-                      <p className="text-xs text-slate-400 mt-1">📍 {member.location}</p>
-                    )}
-                  </div>
+        {/* Loading skeletons */}
+        {loading && (
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="flex animate-pulse gap-3 rounded-2xl border border-white/[0.07] bg-[#16161a] p-4"
+              >
+                <div className="h-12 w-12 shrink-0 rounded-full bg-white/[0.07]" />
+                <div className="flex-1 space-y-2 pt-1">
+                  <div className="h-3 w-24 rounded bg-white/[0.07]" />
+                  <div className="h-3 w-32 rounded bg-white/[0.05]" />
                 </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-                {member.bio && (
-                  <p className="mt-3 text-sm text-slate-300 line-clamp-2">{member.bio}</p>
-                )}
+        {/* Member grid */}
+        {!loading && (
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((member) => (
+              <Link key={member.id} href={`/profile/${member.id}`}>
+                <article className="group flex cursor-pointer gap-3 rounded-2xl border border-white/[0.07] bg-[#16161a] p-4 transition-all hover:border-violet-500/40 hover:bg-[#1c1c22]">
+                  <Avatar name={member.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-white transition-colors group-hover:text-violet-300">
+                      {member.name}
+                    </p>
+                    {member.location ? (
+                      <p className="mt-0.5 truncate text-xs text-zinc-500">📍 {member.location}</p>
+                    ) : (
+                      <p className="mt-0.5 text-xs text-zinc-600">
+                        Joined{" "}
+                        {new Date(member.createdAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    )}
+                    {member.bio && (
+                      <p className="mt-1 line-clamp-2 text-xs text-zinc-500">{member.bio}</p>
+                    )}
+                  </div>
+                  <svg
+                    className="h-4 w-4 shrink-0 self-center text-zinc-700 transition-colors group-hover:text-violet-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                  </svg>
+                </article>
+              </Link>
+            ))}
+          </div>
+        )}
 
-                <p className="text-xs text-slate-500 mt-3">
-                  Joined {new Date(member.createdAt).toLocaleDateString()}
-                </p>
-              </article>
-            </Link>
-          );
-        })}
-      </div>
-    </main>
+        {!loading && filtered.length === 0 && (
+          <p className="py-12 text-center text-sm text-zinc-500">
+            No members match your search.
+          </p>
+        )}
+      </main>
+    </div>
   );
 }

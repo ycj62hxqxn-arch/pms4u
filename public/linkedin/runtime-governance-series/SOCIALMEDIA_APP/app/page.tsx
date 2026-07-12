@@ -1,77 +1,71 @@
 import Link from "next/link";
 
-const highlights = [
-  "AI-curated home feed",
-  "Real-time chat and notifications",
-  "Groups and community moderation",
-  "Creator and business profile tools",
-  "Safe growth controls and trust layers",
-] as const;
-
-const productSlices = [
-  {
-    title: "Modern Feed UX",
-    text: "High-density story cards, short-form media rails, reactions, comments, and saved content patterns.",
-  },
-  {
-    title: "Identity & Auth",
-    text: "Signup, login, session cookie auth, and extensible account settings prepared for OAuth providers.",
-  },
-  {
-    title: "Realtime Layer",
-    text: "Messaging and notifications architecture ready for WebSocket transport and event fanout.",
-  },
-  {
-    title: "Creator Monetization",
-    text: "Foundations for subscriptions, premium posts, ad surfaces, and analytics-driven growth.",
-  },
-] as const;
-
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen overflow-hidden px-6 py-10 md:px-10">
-      <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 top-28 h-80 w-80 rounded-full bg-fuchsia-400/20 blur-3xl" />
+    <div className="min-h-screen bg-[#0f0f11] flex flex-col">
+      <nav className="border-b border-white/[0.07] px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between">
+          <span className="text-xl font-bold tracking-tight">
+            Pulse<span className="text-violet-400">Net</span>
+          </span>
+          <div className="flex gap-3">
+            <Link href="/login" className="rounded-lg px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors">
+              Log in
+            </Link>
+            <Link href="/signup" className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-500 transition-colors">
+              Get started
+            </Link>
+          </div>
+        </div>
+      </nav>
 
-      <section className="mx-auto max-w-6xl rounded-3xl border border-white/15 bg-gradient-to-br from-white/15 to-white/5 p-8 shadow-2xl backdrop-blur-xl md:p-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">PulseNet Social OS</p>
-        <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight md:text-6xl">
-          High-end social platform starter with working auth and modern product-grade UI.
+      <main className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-medium text-violet-300">
+          ✦ Now live &mdash; join the network today
+        </div>
+        <h1 className="max-w-3xl text-5xl font-bold leading-[1.1] tracking-tight text-white md:text-7xl">
+          Your network,
+          <br />
+          <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+            built different.
+          </span>
         </h1>
-        <p className="mt-5 max-w-3xl text-base text-slate-200 md:text-lg">
-          Designed for teams building a serious Facebook-class competitor: premium interface patterns, account system, and scalable architecture foundations.
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400">
+          PulseNet is a modern social platform — real feed, rich profiles, real connections. Built for the people who move fast.
         </p>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/signup" className="rounded-xl bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-cyan-200">
-            Create account
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <Link
+            href="/signup"
+            className="rounded-xl bg-violet-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 hover:bg-violet-500 transition-colors"
+          >
+            Create free account
           </Link>
-          <Link href="/login" className="rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold transition hover:border-white">
-            Login
-          </Link>
-          <Link href="/members" className="rounded-xl border border-fuchsia-300/40 bg-fuchsia-400/10 px-5 py-3 text-sm font-semibold text-fuchsia-100 transition hover:border-fuchsia-200">
-            View members
-          </Link>
-          <Link href="/feed" className="rounded-xl border border-fuchsia-300/40 bg-fuchsia-400/10 px-5 py-3 text-sm font-semibold text-fuchsia-100 transition hover:border-fuchsia-200">
-            Open feed
+          <Link
+            href="/feed"
+            className="rounded-xl border border-white/[0.12] bg-white/[0.06] px-8 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+          >
+            Browse feed →
           </Link>
         </div>
 
-        <ul className="mt-8 grid gap-2 text-sm text-slate-200 md:grid-cols-2">
-          {highlights.map((item) => (
-            <li key={item}>✦ {item}</li>
+        <div className="mt-24 grid w-full max-w-4xl grid-cols-1 gap-4 text-left md:grid-cols-3">
+          {[
+            { icon: "⚡", title: "Live Feed", desc: "Posts, likes, comments and media — everything in one stream." },
+            { icon: "◉", title: "Rich Profiles", desc: "Full member profiles with bio, location, links and social stats." },
+            { icon: "◎", title: "Member Network", desc: "Find and connect with everyone in your community." },
+          ].map((f) => (
+            <div key={f.title} className="rounded-2xl border border-white/[0.07] bg-[#16161a] p-6">
+              <div className="mb-3 text-2xl">{f.icon}</div>
+              <h3 className="font-semibold text-white">{f.title}</h3>
+              <p className="mt-1 text-sm text-zinc-500">{f.desc}</p>
+            </div>
           ))}
-        </ul>
-      </section>
+        </div>
+      </main>
 
-      <section className="mx-auto mt-8 grid max-w-6xl gap-4 md:grid-cols-2">
-        {productSlices.map((slice) => (
-          <article key={slice.title} className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur">
-            <h2 className="text-2xl font-semibold">{slice.title}</h2>
-            <p className="mt-2 text-slate-300">{slice.text}</p>
-          </article>
-        ))}
-      </section>
-    </main>
+      <footer className="border-t border-white/[0.07] py-4 text-center text-xs text-zinc-700">
+        © 2026 PulseNet
+      </footer>
+    </div>
   );
 }

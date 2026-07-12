@@ -10,97 +10,100 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (loading) return;
-
     setLoading(true);
-    setMessage("");
-
+    setError("");
     try {
-      const response = await fetch("/api/auth/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-
-      const data = (await response.json().catch(() => ({}))) as { message?: string };
-
-      if (!response.ok) {
+      const data = (await res.json().catch(() => ({}))) as { message?: string };
+      if (!res.ok) {
         setLoading(false);
-        setMessage(data.message ?? `Signup failed: ${response.status}`);
-        console.error("Signup error:", response.status, data);
+        setError(data.message ?? "Signup failed.");
         return;
       }
-
       router.push("/feed");
-    } catch (err) {
+    } catch {
       setLoading(false);
-      console.error("Signup exception:", err);
-      setMessage("Network error. Please try again.");
+      setError("Network error. Please try again.");
     }
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-10">
-      <section className="w-full max-w-lg rounded-3xl border border-white/15 bg-gradient-to-br from-white/15 to-white/5 p-8 backdrop-blur-xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.26em] text-fuchsia-300">Get started</p>
-        <h1 className="mt-3 text-3xl font-semibold">Create your PulseNet account</h1>
-        <p className="mt-2 text-sm text-slate-300">Join the network with a modern identity and social-ready profile.</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0f0f11] px-4">
+      <Link href="/" className="mb-8 text-2xl font-bold tracking-tight">
+        Pulse<span className="text-violet-400">Net</span>
+      </Link>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
-          <label className="block text-sm text-slate-200">
-            Full name
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-white">Create your account</h1>
+        <p className="mt-1 text-sm text-zinc-400">Join PulseNet — it only takes a minute.</p>
+
+        <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-400">Full name</label>
             <input
               required
               minLength={2}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none transition focus:border-fuchsia-300"
+              placeholder="Alex Rivera"
+              className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
             />
-          </label>
-          <label className="block text-sm text-slate-200">
-            Email
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-400">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none transition focus:border-fuchsia-300"
+              placeholder="you@example.com"
+              className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
             />
-          </label>
-          <label className="block text-sm text-slate-200">
-            Password
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-400">Password</label>
             <input
               type="password"
               required
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none transition focus:border-fuchsia-300"
+              placeholder="Min. 8 characters"
+              className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
             />
-          </label>
+          </div>
+
+          {error && (
+            <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-fuchsia-300 px-4 py-3 font-semibold text-slate-900 transition hover:bg-fuchsia-200 disabled:opacity-70"
+            className="mt-2 w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Create account"}
+            {loading ? "Creating account…" : "Create account"}
           </button>
         </form>
 
-        {message ? <p className="mt-4 text-sm text-rose-200">{message}</p> : null}
-
-        <p className="mt-6 text-sm text-slate-300">
+        <p className="mt-6 text-center text-sm text-zinc-500">
           Already a member?{" "}
-          <Link href="/login" className="font-semibold text-fuchsia-300 hover:text-fuchsia-200">
-            Login
+          <Link href="/login" className="font-semibold text-violet-400 transition-colors hover:text-violet-300">
+            Sign in
           </Link>
         </p>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

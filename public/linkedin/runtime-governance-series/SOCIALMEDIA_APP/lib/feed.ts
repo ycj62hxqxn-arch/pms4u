@@ -10,6 +10,7 @@ export type PostComment = {
 
 export type PostRecord = {
   id: string;
+  authorId?: string;
   authorName: string;
   authorEmail: string;
   text: string;

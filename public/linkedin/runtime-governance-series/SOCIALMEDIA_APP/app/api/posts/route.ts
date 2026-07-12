@@ -7,7 +7,7 @@ import { readPosts, writePosts } from "@/lib/feed";
 
 const createPostSchema = z.object({
   text: z.string().trim().min(1).max(500),
-  mediaUrl: z.string().url().optional(),
+  mediaUrl: z.string().max(8_000_000).optional(),
   mediaType: z.enum(["image", "video"]).optional(),
 });
 
@@ -24,10 +24,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
   }
 
-  let session: { name: string; email: string };
+  let session: { userId: string; name: string; email: string };
   try {
     const parsed = await verifySessionToken(token);
-    session = { name: parsed.name, email: parsed.email };
+    session = { userId: parsed.userId, name: parsed.name, email: parsed.email };
   } catch {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
   }
@@ -42,6 +42,7 @@ export async function POST(request: Request) {
   const posts = await readPosts();
   const post = {
     id: randomUUID(),
+    authorId: session.userId,
     authorName: session.name,
     authorEmail: session.email,
     text: result.data.text,

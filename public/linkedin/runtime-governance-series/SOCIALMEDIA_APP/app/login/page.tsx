@@ -9,80 +9,84 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (loading) return;
-
     setLoading(true);
-    setMessage("");
-
-    const response = await fetch("/api/auth/login", {
+    setError("");
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-
-    const data = (await response.json().catch(() => ({}))) as { message?: string };
-
-    if (!response.ok) {
+    const data = (await res.json().catch(() => ({}))) as { message?: string };
+    if (!res.ok) {
       setLoading(false);
-      setMessage(data.message ?? "Login failed.");
+      setError(data.message ?? "Login failed.");
       return;
     }
-
     router.push("/feed");
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-10">
-      <section className="w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-br from-white/15 to-white/5 p-8 backdrop-blur-xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300">Welcome back</p>
-        <h1 className="mt-3 text-3xl font-semibold">Login to PulseNet</h1>
-        <p className="mt-2 text-sm text-slate-300">Access your feed, communities, and realtime social dashboard.</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0f0f11] px-4">
+      <Link href="/" className="mb-8 text-2xl font-bold tracking-tight">
+        Pulse<span className="text-violet-400">Net</span>
+      </Link>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
-          <label className="block text-sm text-slate-200">
-            Email
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+        <p className="mt-1 text-sm text-zinc-400">Sign in to your account to continue.</p>
+
+        <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-400">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none transition focus:border-cyan-300"
+              placeholder="you@example.com"
+              className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
             />
-          </label>
-          <label className="block text-sm text-slate-200">
-            Password
+          </div>
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-zinc-400">Password</label>
             <input
               type="password"
               required
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 outline-none transition focus:border-cyan-300"
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-white/[0.1] bg-[#16161a] px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40"
             />
-          </label>
+          </div>
+
+          {error && (
+            <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-cyan-300 px-4 py-3 font-semibold text-slate-900 transition hover:bg-cyan-200 disabled:opacity-70"
+            className="mt-2 w-full rounded-xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Login"}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
 
-        {message ? <p className="mt-4 text-sm text-rose-200">{message}</p> : null}
-
-        <p className="mt-6 text-sm text-slate-300">
-          New here?{" "}
-          <Link href="/signup" className="font-semibold text-cyan-300 hover:text-cyan-200">
-            Create your account
+        <p className="mt-6 text-center text-sm text-zinc-500">
+          New to PulseNet?{" "}
+          <Link href="/signup" className="font-semibold text-violet-400 transition-colors hover:text-violet-300">
+            Create an account
           </Link>
         </p>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
