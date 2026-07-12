@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,6 +10,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [verified, setVerified] = useState<"0" | "1" | "">("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get("verified");
+    if (value === "0" || value === "1") {
+      setVerified(value);
+    }
+  }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,6 +48,16 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold text-white">Welcome back</h1>
         <p className="mt-1 text-sm text-zinc-400">Sign in to your account to continue.</p>
+        {verified === "1" && (
+          <p className="mt-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+            Email verified. Your member account is active.
+          </p>
+        )}
+        {verified === "0" && (
+          <p className="mt-3 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-300">
+            Verification link is invalid or expired.
+          </p>
+        )}
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <div>

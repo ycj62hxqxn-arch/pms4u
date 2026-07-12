@@ -8,6 +8,9 @@ export type UserRecord = {
   email: string;
   passwordHash: string;
   createdAt: string;
+  emailVerified?: boolean;
+  verificationToken?: string;
+  termsAcceptedAt?: string;
   bio?: string;
   location?: string;
   role?: string;
