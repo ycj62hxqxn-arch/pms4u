@@ -19,8 +19,11 @@ export async function sendVerificationEmail(payload: VerificationPayload) {
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
   const smtpFrom = process.env.SMTP_FROM;
+  const hasPlaceholderCreds = [smtpUser, smtpPass, smtpFrom]
+    .filter(Boolean)
+    .some((value) => String(value).includes("replace-with-real"));
 
-  if (!smtpHost || !smtpUser || !smtpPass || !smtpFrom) {
+  if (!smtpHost || !smtpUser || !smtpPass || !smtpFrom || hasPlaceholderCreds) {
     console.info("[MAIL] Verification link (SMTP not configured):", {
       to: payload.to,
       verifyUrl,
@@ -39,13 +42,22 @@ export async function sendVerificationEmail(payload: VerificationPayload) {
     },
   });
 
-  await transport.sendMail({
-    from: smtpFrom,
-    to: payload.to,
-    subject: "PulseNet: Confirm your email",
-    text: `Hi ${payload.name},\n\nPlease confirm your email and activate your member account:\n${verifyUrl}\n\nBy continuing, you agree to the platform regulations accepted during signup.\n\nPulseNet Team`,
-    html: `<p>Hi ${payload.name},</p><p>Please confirm your email and activate your member account:</p><p><a href="${verifyUrl}">${verifyUrl}</a></p><p>By continuing, you agree to the platform regulations accepted during signup.</p><p>PulseNet Team</p>`,
-  });
+  try {
+    await transport.sendMail({
+      from: smtpFrom,
+      to: payload.to,
+      subject: "PulseNet: Confirm your email",
+      text: `Hi ${payload.name},\n\nPlease confirm your email and activate your member account:\n${verifyUrl}\n\nBy continuing, you agree to the platform regulations accepted during signup.\n\nPulseNet Team`,
+      html: `<p>Hi ${payload.name},</p><p>Please confirm your email and activate your member account:</p><p><a href="${verifyUrl}">${verifyUrl}</a></p><p>By continuing, you agree to the platform regulations accepted during signup.</p><p>PulseNet Team</p>`,
+    });
 
-  return { delivered: true, fallback: false, verifyUrl };
+    return { delivered: true, fallback: false, verifyUrl };
+  } catch (error) {
+    console.error("[MAIL] Delivery failed, using fallback verification link:", {
+      to: payload.to,
+      message: error instanceof Error ? error.message : String(error),
+      verifyUrl,
+    });
+    return { delivered: false, fallback: true, verifyUrl };
+  }
 }
