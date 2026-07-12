@@ -20,10 +20,10 @@ export async function POST(
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
   }
 
-  let session: { name: string; email: string };
+  let session: { userId: string; name: string; email: string };
   try {
     const parsed = await verifySessionToken(token);
-    session = { name: parsed.name, email: parsed.email };
+    session = { userId: parsed.userId, name: parsed.name, email: parsed.email };
   } catch {
     return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
   }
@@ -44,6 +44,7 @@ export async function POST(
 
   const comment = {
     id: randomUUID(),
+    authorId: session.userId,
     authorName: session.name,
     authorEmail: session.email,
     text: result.data.text,

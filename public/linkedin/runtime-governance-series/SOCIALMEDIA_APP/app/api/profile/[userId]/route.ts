@@ -15,8 +15,9 @@ export async function GET(
   context: { params: Promise<{ userId: string }> },
 ) {
   const { userId } = await context.params;
+  const key = decodeURIComponent(userId).toLowerCase();
   const users = await readUsers();
-  const user = users.find((u) => u.id === userId);
+  const user = users.find((u) => u.id === userId || u.email.toLowerCase() === key);
 
   if (!user) {
     return NextResponse.json({ message: "User not found." }, { status: 404 });

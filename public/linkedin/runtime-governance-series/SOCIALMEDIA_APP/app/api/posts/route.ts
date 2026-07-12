@@ -6,10 +6,12 @@ import { getSessionCookieName, verifySessionToken } from "@/lib/auth";
 import { readPosts, writePosts } from "@/lib/feed";
 
 const createPostSchema = z.object({
-  text: z.string().trim().min(1).max(500),
+  text: z.string().trim().max(500).optional(),
   mediaUrl: z.string().max(8_000_000).optional(),
   mediaType: z.enum(["image", "video"]).optional(),
-});
+}).refine((value) => {
+  return Boolean((value.text && value.text.length > 0) || value.mediaUrl);
+}, { message: "Post must include text or media." });
 
 export async function GET() {
   const posts = await readPosts();
@@ -45,7 +47,7 @@ export async function POST(request: Request) {
     authorId: session.userId,
     authorName: session.name,
     authorEmail: session.email,
-    text: result.data.text,
+    text: result.data.text ?? "",
     createdAt: new Date().toISOString(),
     likes: [] as string[],
     comments: [] as Array<{

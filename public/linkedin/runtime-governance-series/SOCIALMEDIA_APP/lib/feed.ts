@@ -2,6 +2,7 @@ import { store } from "./store";
 
 export type PostComment = {
   id: string;
+  authorId?: string;
   authorName: string;
   authorEmail: string;
   text: string;

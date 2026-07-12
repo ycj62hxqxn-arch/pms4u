@@ -7,6 +7,7 @@ type Comment = {
   id: string;
   authorId?: string;
   authorName: string;
+  authorEmail?: string;
   text: string;
   createdAt: string;
 };
@@ -100,37 +101,50 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
       });
       mediaType = mediaFile.type.startsWith("image") ? "image" : "video";
     }
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: composerText.trim() || " ", mediaUrl, mediaType }),
-    });
-    if (!res.ok) {
-      const d = (await res.json().catch(() => ({}))) as { message?: string };
-      setError(d.message || "Could not post.");
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: composerText.trim(), mediaUrl, mediaType }),
+      });
+      if (!res.ok) {
+        const d = (await res.json().catch(() => ({}))) as { message?: string };
+        setError(d.message || "Could not post.");
+        setPosting(false);
+        return;
+      }
+      setComposerText("");
+      setMediaFile(null);
+      setMediaPreview(null);
       setPosting(false);
-      return;
+      await loadPosts();
+    } catch {
+      setError("Network error while posting.");
+      setPosting(false);
     }
-    setComposerText("");
-    setMediaFile(null);
-    setMediaPreview(null);
-    setPosting(false);
-    await loadPosts();
   }
 
   async function toggleLike(postId: string) {
-    await fetch(`/api/posts/${postId}/like`, { method: "POST" });
+    const res = await fetch(`/api/posts/${postId}/like`, { method: "POST" });
+    if (!res.ok) {
+      setError("Could not update like.");
+      return;
+    }
     await loadPosts();
   }
 
   async function addComment(postId: string) {
     const text = (commentText[postId] ?? "").trim();
     if (!text) return;
-    await fetch(`/api/posts/${postId}/comments`, {
+    const res = await fetch(`/api/posts/${postId}/comments`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
     });
+    if (!res.ok) {
+      setError("Could not add comment.");
+      return;
+    }
     setCommentText((p) => ({ ...p, [postId]: "" }));
     await loadPosts();
   }
@@ -290,7 +304,7 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
 
             {posts.map((post) => {
               const liked = post.likes.includes(currentUserEmail);
-              const profileHref = post.authorId ? `/profile/${post.authorId}` : "#";
+              const profileHref = `/profile/${encodeURIComponent(post.authorId ?? post.authorEmail)}`;
               const commentsOpen = openComments[post.id] ?? false;
 
               return (
@@ -355,7 +369,7 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
                   {commentsOpen && (
                     <div className="border-t border-white/[0.06] bg-black/20 p-4 space-y-3">
                       {post.comments.map((c) => {
-                        const cHref = c.authorId ? `/profile/${c.authorId}` : "#";
+                        const cHref = `/profile/${encodeURIComponent(c.authorId ?? c.authorEmail ?? "")}`;
                         return (
                           <div key={c.id} className="flex gap-2.5">
                             <Link href={cHref}><Avatar name={c.authorName} size="sm" /></Link>
