@@ -1,0 +1,120 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: flights-scanner-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-flightuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-flightpass}
+      POSTGRES_DB: ${DB_NAME:-flights_scanner}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persist database data between restarts
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-flightuser}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - flights-network
+    restart: unless-stopped
+
+  # Next.js Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development  # Use development stage for docker-compose
+      args:
+        NODE_ENV: development
+    container_name: flights-scanner-app
+    environment:
+      # Database configuration
+      DATABASE_URL: "postgresql://${DB_USER:-flightuser}:${DB_PASSWORD:-flightpass}@postgres:5432/${DB_NAME:-flights_scanner}"
+      
+      # Flight provider
+      FLIGHT_PROVIDER_MODE: "mock"
+      
+      # Proxy endpoints (replace with actual URLs)
+      PROXY_INDIA_URL: "http://user:pass@proxy.india.example.com:8080"
+      PROXY_SOUTH_AFRICA_URL: "http://user:pass@proxy.za.example.com:8080"
+      PROXY_MEXICO_URL: "http://user:pass@proxy.mexico.example.com:8080"
+      PROXY_BRAZIL_URL: "http://user:pass@proxy.brazil.example.com:8080"
+      PROXY_THAILAND_URL: "http://user:pass@proxy.thailand.example.com:8080"
+      PROXY_PHILIPPINES_URL: "http://user:pass@proxy.philippines.example.com:8080"
+      PROXY_VIETNAM_URL: "http://user:pass@proxy.vietnam.example.com:8080"
+      PROXY_COLOMBIA_URL: "http://user:pass@proxy.colombia.example.com:8080"
+      PROXY_INDONESIA_URL: "http://user:pass@proxy.indonesia.example.com:8080"
+      PROXY_MALAYSIA_URL: "http://user:pass@proxy.malaysia.example.com:8080"
+      
+      # Security
+      ALLOWED_PROXY_HOSTS: "proxy.india.example.com,proxy.za.example.com"
+      
+      # Application settings
+      COMPARISON_CURRENCY: "EUR"
+      NODE_ENV: "development"
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+    
+    ports:
+      - "3000:3000"
+    
+    volumes:
+      # Mount source code for hot reload in development
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    
+    depends_on:
+      postgres:
+        condition: service_healthy
+    
+    networks:
+      - flights-network
+    
+    restart: unless-stopped
+    
+    # Enable Docker logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  # PostgreSQL data persistence
+  postgres_data:
+    driver: local
+
+networks:
+  flights-network:
+    driver: bridge
+
+# ============================================================================
+# Usage:
+# ============================================================================
+# Start services:
+#   docker-compose up -d
+#
+# View logs:
+#   docker-compose logs -f app
+#   docker-compose logs -f postgres
+#
+# Run migrations:
+#   docker-compose exec app npx prisma migrate dev --name init
+#
+# Access PostgreSQL:
+#   docker-compose exec postgres psql -U flightuser -d flights_scanner
+#
+# Stop services:
+#   docker-compose down
+#
+# Stop and remove volumes:
+#   docker-compose down -v
+#
+# Rebuild after code changes:
+#   docker-compose up -d --build

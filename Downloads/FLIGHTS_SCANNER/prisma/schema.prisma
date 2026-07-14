@@ -1,0 +1,144 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Comparison {
+  id                    String                  @id @default(cuid())
+  status                String                  @default("DRAFT")
+  searchRequest         Json
+  selectedLocations     String[]
+  comparisonCurrency    String
+  locations             ComparisonLocation[]
+  ipVerifications       IpVerification[]
+  exchangeRateSnapshots ExchangeRateSnapshot[]
+  evidenceRecord        EvidenceRecord?
+  providerRequestLogs   ProviderRequestLog[]
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+}
+
+model ComparisonLocation {
+  id              String       @id @default(cuid())
+  comparisonId    String
+  comparison      Comparison   @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  locationKey     String
+  verifiedIpCountry String?
+  status          String       @default("PENDING")
+  offers          FlightOffer[]
+  matchedOffers   MatchedOffer[]
+  checkedAt       DateTime?
+  createdAt       DateTime     @default(now())
+
+  @@unique([comparisonId, locationKey])
+}
+
+model FlightOffer {
+  id                    String                @id @default(cuid())
+  locationId            String
+  location              ComparisonLocation    @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  providerOfferId       String
+  airline               String
+  fareClass             String
+  cabinClass            String
+  totalPrice            Float
+  baseFare              Float
+  taxes                 Float
+  bookingFees           Float
+  currency              String
+  originalCurrency      String
+  marketCountry         String
+  effectiveIpCountry    String?
+  stops                 Int
+  totalDurationMinutes  Int
+  segments              Json
+  handLuggage           String?
+  checkedBaggage        String?
+  refundability         String?
+  changeConditions      String?
+  deepLink              String?
+  provider              String
+  retrievedAt           DateTime
+  createdAt             DateTime              @default(now())
+}
+
+model MatchedOffer {
+  id                    String            @id @default(cuid())
+  locationId            String
+  location              ComparisonLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  baselineOfferId       String
+  regionalOfferId       String
+  matchConfidence       String
+  normalizedPrice       Float
+  normalizedCurrency    String
+  exchangeRate          Float
+  priceDifference       Float?
+  savingPercentage      Float?
+  pricingLabel          String
+  createdAt             DateTime           @default(now())
+}
+
+model IpVerification {
+  id                  String     @id @default(cuid())
+  comparisonId        String
+  comparison          Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  locationKey         String
+  effectiveIp         String?
+  detectedCountryCode String?
+  requestedCountry    String?
+  proxyApplied        Boolean
+  status              String
+  warning             String?
+  verifiedAt          DateTime
+  createdAt           DateTime   @default(now())
+}
+
+model ExchangeRateSnapshot {
+  id           String     @id @default(cuid())
+  comparisonId String
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  fromCurrency String
+  toCurrency   String
+  rate         Float
+  provider     String
+  timestamp    DateTime
+  createdAt    DateTime   @default(now())
+}
+
+model EvidenceRecord {
+  id                       String     @id @default(cuid())
+  comparisonId             String     @unique
+  comparison               Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  status                   String
+  searchRequest            Json
+  selectedLocations        String[]
+  effectiveIpVerification  Json
+  providerResponseMetadata Json
+  currencyRates            Json
+  normalizationLogicVersion String
+  offerMatchingVersion     String
+  requestTimestamps        Json
+  errors                   Json
+  finalDecisionSummary     Json
+  evidenceHash             String?
+  createdAt                DateTime   @default(now())
+}
+
+model ProviderRequestLog {
+  id           String     @id @default(cuid())
+  comparisonId String
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  provider     String
+  locationKey  String
+  status       String
+  errorCode    String?
+  errorMessage String?
+  retries      Int
+  startedAt    DateTime
+  completedAt  DateTime?
+  createdAt    DateTime   @default(now())
+}
