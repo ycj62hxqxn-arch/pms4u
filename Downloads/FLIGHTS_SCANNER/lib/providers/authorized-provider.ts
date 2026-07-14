@@ -44,8 +44,13 @@ export class AuthorizedFlightProvider implements FlightProvider {
 
   private get requiredConfiguration() {
     return {
-      apiKey: process.env.AUTHORIZED_FLIGHT_API_KEY,
-      baseUrl: process.env.AUTHORIZED_FLIGHT_API_BASE_URL,
+      apiKey:
+        process.env.LIVE_PROVIDER_API_KEY ??
+        process.env.AUTHORIZED_FLIGHT_API_KEY,
+      apiSecret: process.env.LIVE_PROVIDER_API_SECRET,
+      baseUrl:
+        process.env.LIVE_PROVIDER_BASE_URL ??
+        process.env.AUTHORIZED_FLIGHT_API_BASE_URL,
     };
   }
 
@@ -55,7 +60,7 @@ export class AuthorizedFlightProvider implements FlightProvider {
       throw new ProviderIntegrationError({
         code: "PROVIDER_NOT_CONFIGURED",
         message:
-          "Authorized provider is not configured. Set AUTHORIZED_FLIGHT_API_KEY and AUTHORIZED_FLIGHT_API_BASE_URL.",
+          "Authorized provider is not configured. Set LIVE_PROVIDER_API_KEY and LIVE_PROVIDER_BASE_URL.",
         retryable: false,
         provider: this.name,
       });
@@ -114,8 +119,14 @@ export class AuthorizedFlightProvider implements FlightProvider {
 
   async healthCheck(): Promise<ProviderHealth> {
     const configured =
-      !!process.env.AUTHORIZED_FLIGHT_API_KEY &&
-      !!process.env.AUTHORIZED_FLIGHT_API_BASE_URL;
+      !!(
+        process.env.LIVE_PROVIDER_API_KEY ??
+        process.env.AUTHORIZED_FLIGHT_API_KEY
+      ) &&
+      !!(
+        process.env.LIVE_PROVIDER_BASE_URL ??
+        process.env.AUTHORIZED_FLIGHT_API_BASE_URL
+      );
 
     return {
       provider: this.name,
@@ -123,7 +134,7 @@ export class AuthorizedFlightProvider implements FlightProvider {
       checkedAt: new Date().toISOString(),
       details: configured
         ? "Configured. Endpoint contract not attached yet."
-        : "Missing AUTHORIZED_FLIGHT_API_KEY or AUTHORIZED_FLIGHT_API_BASE_URL",
+        : "Missing LIVE_PROVIDER_API_KEY or LIVE_PROVIDER_BASE_URL",
     };
   }
 }
