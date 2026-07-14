@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
+import { applyRateLimit, asRateLimitFailure, buildRateLimitKey, getClientIp, getRateLimitActor } from "../../../../../lib/security/rate-limit";
 
 type PromptItem = {
   index: number;
@@ -151,6 +152,31 @@ export async function POST(request: Request) {
   const provider = process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-1";
 
   try {
+    const ip = getClientIp(request);
+    const actor = getRateLimitActor(request) ?? "anonymous";
+    const limiter = await applyRateLimit({
+      key: buildRateLimitKey(["rate", "yai", "image-assets", actor, ip]),
+      windowSeconds: 10 * 60,
+      maxRequests: 5,
+    });
+
+    if (!limiter.ok) {
+      const failure = asRateLimitFailure(limiter);
+      return NextResponse.json(
+        {
+          message: failure.message,
+          code: failure.code,
+          requestId,
+        },
+        {
+          status: failure.code === "RATE_LIMITED" ? 429 : 503,
+          headers: {
+            "Retry-After": String(failure.retryAfterSeconds),
+          },
+        }
+      );
+    }
+
     const body = ((await request.json().catch(() => ({}))) ?? {}) as AssetsRequest;
     const plan = parsePlan(body.plan);
 

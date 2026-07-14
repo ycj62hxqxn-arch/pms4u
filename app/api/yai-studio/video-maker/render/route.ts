@@ -8,6 +8,8 @@ import { spawn } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
+import { applyRateLimit, asRateLimitFailure, buildRateLimitKey, getClientIp, getRateLimitActor } from "../../../../../lib/security/rate-limit";
+import { asSafeFetchFailure, safeFetchBinary } from "../../../../../lib/security/safe-fetch";
 
 type StoryScene = {
   atSec: number;
@@ -258,6 +260,30 @@ export async function POST(request: Request) {
   let workingDir = "";
 
   try {
+    const ip = getClientIp(request);
+    const actor = getRateLimitActor(request) ?? "anonymous";
+    const renderRate = await applyRateLimit({
+      key: buildRateLimitKey(["rate", "yai", "video-render", actor, ip]),
+      windowSeconds: 15 * 60,
+      maxRequests: 2,
+    });
+
+    if (!renderRate.ok) {
+      const failure = asRateLimitFailure(renderRate);
+      return NextResponse.json(
+        {
+          message: failure.message,
+          code: failure.code,
+        },
+        {
+          status: failure.code === "RATE_LIMITED" ? 429 : 503,
+          headers: {
+            "Retry-After": String(failure.retryAfterSeconds),
+          },
+        }
+      );
+    }
+
     const body = ((await request.json().catch(() => ({}))) ?? {}) as RenderRequest;
     const plan = parsePlan(body.plan);
 
@@ -293,12 +319,19 @@ export async function POST(request: Request) {
           await sharp(Buffer.from(svgText)).png().toFile(framePath);
         }
       } else if (sceneImage && /^https?:\/\//.test(sceneImage)) {
-        const imageResponse = await fetch(sceneImage);
-        if (!imageResponse.ok) {
-          throw new Error(`Failed to fetch scene image (${imageResponse.status})`);
+        const safeImage = await safeFetchBinary(sceneImage, {
+          maxBytes: 8 * 1024 * 1024,
+          timeoutMs: 8000,
+          maxRedirects: 2,
+          allowedMimeTypes: [/^image\/(png|jpeg|jpg|webp|gif|bmp|svg\+xml)$/i],
+        });
+
+        if (!safeImage.ok) {
+          const failure = asSafeFetchFailure(safeImage);
+          throw new Error(`Scene image rejected: ${failure.code}`);
         }
-        const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
-        await sharp(imageBuffer).png().toFile(framePath);
+
+        await sharp(safeImage.body).png().toFile(framePath);
       } else {
         const svg = makeSceneSvg(scene, plan, i);
         await sharp(Buffer.from(svg)).png().toFile(framePath);

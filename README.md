@@ -15,21 +15,21 @@ PMS4U should be read as an operational governance platform, not a loose collecti
 ```
 PMS4U
 │
-├── Constitutional Layer
 ├── Runtime Authority
 ├── Admissibility Engine
-├── Evidence Spine
 ├── Execution Gate
+├── Evidence Spine
+├── Constitutional Layer
 └── Reference Implementations
 ```
 
 ### Core runtime stack
 
-1. **Constitutional Layer** — defines authority, constraints, evidence obligations, and consequence ownership outside the runtime verifier.
-2. **Runtime Authority** — resolves who may request consequence-bearing execution in the live context.
-3. **Admissibility Engine** — determines whether the requested action is constitutionally allowed using current authority, policy state, and evidentiary sufficiency.
-4. **Evidence Spine** — supplies the proof material required for admissibility and then seals receipts, hashes, media, and replay objects after the decision.
-5. **Execution Gate** — blocks or releases mutation only after runtime checks pass.
+1. **Runtime Authority** — resolves who may request consequence-bearing execution.
+2. **Admissibility Engine** — determines whether the requested action is constitutionally allowed.
+3. **Execution Gate** — blocks or releases mutation only after runtime checks pass.
+4. **Evidence Spine** — seals request, hashes, media, receipts, and runtime proof objects.
+5. **Constitutional Layer** — preserves the doctrine, release discipline, and replayability rules.
 6. **Reference Implementations** — GTCS4U, CARSHUNTER, YAI, investor surfaces, and governed messaging flows.
 
 ### Evaluation lens
@@ -38,7 +38,7 @@ For enterprise or technical review, the repository should be understood in this 
 
 - **Governance model first**
 - **Runtime enforcement second**
-- **Evidence in decision and replay third**
+- **Evidence and replay third**
 - **Reference products fourth**
 
 That means the operative story is not “AI connected to messaging.” The operative story is:
@@ -259,6 +259,37 @@ Operator demo flow:
 3. Use one of the starter prompts.
 4. Confirm the response includes `source`, `model`, and a `YAI-...` trace ID.
 5. If fallback mode is active, treat it as simulation only and do not execute external mutations.
+
+---
+
+## Security Hardening Baseline
+
+- Server-side remote media fetches in render flows use SSRF defenses:
+	- HTTPS-only targets
+	- hostname and IP block rules for localhost/private/link-local/metadata ranges
+	- DNS resolution checks and redirect re-validation
+	- response MIME and size enforcement
+- Expensive/public API routes enforce distributed rate limiting.
+- Rate limits are keyed by actor identity (when available via `x-user-id`, `x-session-id`, `x-api-key`, or Bearer token hash) plus source IP.
+- Production suitability: distributed execution uses Upstash Redis (`@upstash/redis`) and is safe for Vercel/serverless multi-instance deployments.
+- Production fail behavior: when the distributed limiter backend is unavailable, protected routes fail closed with `503 RATE_LIMIT_UNAVAILABLE`.
+- Receipt signing routes require `PMS_RECEIPT_SIGNING_SECRET` (minimum 32 chars). Production fails closed if missing.
+- Global baseline response headers are enabled, including CSP in report-only mode during rollout.
+
+Required production env vars:
+
+- `PMS_RECEIPT_SIGNING_SECRET`
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+Validation commands:
+
+```bash
+npm run typecheck
+npm run lint
+npm run test:security
+npm run build
+```
 
 ---
 

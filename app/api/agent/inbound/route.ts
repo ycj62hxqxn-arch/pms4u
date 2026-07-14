@@ -1,6 +1,8 @@
 import { createHmac, randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { createLedgerAppender, getLedgerReference } from "../../../../lib/agentLedger";
+import { getReceiptSigningSecret } from "../../../../lib/security/secrets";
+import { requireSharedSecretAuth } from "../../../../lib/security/webhook-auth";
 
 type GateDecision = "ALLOW" | "DENY" | "NEED_REVIEW";
 
@@ -55,7 +57,6 @@ const POLICY_PACKS: Record<PolicyPack["id"], PolicyPack> = {
   },
 };
 
-const RECEIPT_SIGNING_SECRET = process.env.PMS_RECEIPT_SIGNING_SECRET ?? "dev-only-unsafe";
 const OPENAI_TIMEOUT_MS = Number(process.env.OPENAI_TIMEOUT_MS ?? "12000");
 
 function selectPolicyPack(input: InboundRequest): PolicyPack {
@@ -138,8 +139,9 @@ function evaluateGate(input: InboundRequest): {
 }
 
 function signReceiptPayload(payload: Record<string, unknown>): string {
+  const receiptSigningSecret = getReceiptSigningSecret();
   const canonical = JSON.stringify(payload);
-  return createHmac("sha256", RECEIPT_SIGNING_SECRET).update(canonical).digest("hex");
+  return createHmac("sha256", receiptSigningSecret).update(canonical).digest("hex");
 }
 
 
@@ -250,6 +252,11 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
+    const authResult = requireSharedSecretAuth(request);
+    if ("response" in authResult) {
+      return authResult.response;
+    }
+
     const executionId = randomUUID();
     const appendLedgerEntry = await createLedgerAppender(executionId);
     const body = parseInboundRequest(await request.json().catch(() => ({})));

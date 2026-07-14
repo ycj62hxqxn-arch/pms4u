@@ -1,8 +1,8 @@
 import { createHash, createHmac } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getLedgerReference, readAllLedgerEntries, type LedgerEntry } from "../../../../../lib/agentLedger";
-
-const RECEIPT_SIGNING_SECRET = process.env.PMS_RECEIPT_SIGNING_SECRET ?? "dev-only-unsafe";
+import { getReceiptSigningSecret } from "../../../../../lib/security/secrets";
+import { requireSharedSecretAuth } from "../../../../../lib/security/webhook-auth";
 
 function computeHash(entry: Omit<LedgerEntry, "hash">): string {
   return createHash("sha256")
@@ -32,7 +32,8 @@ function verifyReceipt(entry: LedgerEntry): { ok: boolean; reason?: string } {
   const payload = { ...entry.payload };
   delete payload.signature;
   const canonical = JSON.stringify(payload);
-  const expected = createHmac("sha256", RECEIPT_SIGNING_SECRET).update(canonical).digest("hex");
+  const receiptSigningSecret = getReceiptSigningSecret();
+  const expected = createHmac("sha256", receiptSigningSecret).update(canonical).digest("hex");
 
   return expected === signature
     ? { ok: true }
@@ -42,6 +43,11 @@ function verifyReceipt(entry: LedgerEntry): { ok: boolean; reason?: string } {
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const authResult = requireSharedSecretAuth(request);
+  if ("response" in authResult) {
+    return authResult.response;
+  }
+
   const { searchParams } = new URL(request.url);
   const executionId = searchParams.get("executionId")?.trim();
 

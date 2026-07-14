@@ -32,6 +32,7 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "public/linkedin/runtime-governance-series/SOCIALMEDIA_APP"
   ]
 }
