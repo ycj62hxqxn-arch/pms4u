@@ -1,0 +1,92 @@
+concepts:
+  THE_BIG_G:
+    label: THE BIG G
+    patterns:
+    - THE BIG G
+    - BIG G Doctrine
+    - THE BIG G v1.0
+  PMS_GOVERN:
+    label: PMS_GOVERN
+    patterns:
+    - PMS_GOVERN
+    - PMS Governance
+    - PMS Governance System
+  SET:
+    label: SET
+    patterns:
+    - SET v1.0
+    - Execution Governance Standard
+    - SET execution governance
+  EXECUTION_GOVERNANCE:
+    label: Execution Governance
+    patterns:
+    - Execution Governance
+    - governed execution
+  AUTHORITY:
+    label: Authority
+    patterns:
+    - authority validation
+    - authority resolution
+    - authority rules
+    - authority floor
+  ADMISSIBILITY:
+    label: Admissibility
+    patterns:
+    - admissibility
+    - admissibility layer
+    - admissible execution
+  QGED:
+    label: QGED
+    patterns:
+    - QGED
+    - QGED boundary
+    - QGED gate
+  EGA:
+    label: EGA
+    patterns:
+    - EGA
+    - Execution Governance Architecture
+  CEI:
+    label: CEI
+    patterns:
+    - Constitutional Execution Infrastructure
+    - CEI
+  RUNTIME_GOVERNANCE:
+    label: Runtime Governance
+    patterns:
+    - runtime governance
+    - runtime enforcement
+  EVIDENCE:
+    label: Evidence
+    patterns:
+    - evidence ledger
+    - evidence record
+    - execution evidence
+    - audit evidence
+  REPLAY:
+    label: Replay
+    patterns:
+    - evidence replay
+    - replay governance
+    - replayable
+  PMS4U:
+    label: PMS4U
+    patterns:
+    - PMS4U
+  GTCS4U:
+    label: GTCS4U
+    patterns:
+    - GTCS4U
+  CARSHUNTER:
+    label: CARSHUNTER
+    patterns:
+    - CARSHUNTER
+    - CARSHUNTER 1447
+    - CARSHUNTER Governance
+    - CARSHUNTER Operations
+  YAI:
+    label: YAI
+    patterns:
+    - YAI Studio
+    - YAI governance
+    - YAI Governance
