@@ -12,6 +12,11 @@ from runtime.gql_bridge import (
     execute_governance_query,
 )
 
+from runtime.nlp_router import (
+    NaturalLanguageRoutingError,
+    translate_question,
+)
+
 
 ROOT = Path.home() / "PMS_EVIDENCE_V4"
 DB = ROOT / "database" / "evidence.db"
@@ -31,6 +36,16 @@ class QueryRequest(BaseModel):
         ...,
         min_length=1,
         examples=["WHY EXECUTION_GOVERNANCE"],
+    )
+
+
+class ChatRequest(BaseModel):
+    question: str = Field(
+        ...,
+        min_length=1,
+        examples=[
+            "Why is Execution Governance important?"
+        ],
     )
 
 
@@ -170,3 +185,35 @@ def execute_query(request: QueryRequest):
             status_code=400,
             detail=str(exc),
         ) from exc
+
+@app.post("/chat")
+def chat(request: ChatRequest):
+    try:
+        translation = translate_question(request.question)
+
+        answer = execute_governance_query(
+            translation["translated_query"]
+        )
+
+        return {
+            "status": "EXECUTED",
+            "question": request.question,
+            "intent": translation["intent"],
+            "concepts": translation["concepts"],
+            "translated_query": translation["translated_query"],
+            "translation_mode": translation["translation_mode"],
+            "answer": answer,
+        }
+
+    except NaturalLanguageRoutingError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    except GQLBridgeError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
