@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from pathlib import Path
 import json
 import sqlite3
@@ -7,11 +5,15 @@ import sqlite3
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from runtime.decision_receipt import (
+    DecisionReceiptError,
+    create_decision_receipt,
+    persist_decision_receipt,
+)
 from runtime.gql_bridge import (
     GQLBridgeError,
     execute_governance_query,
 )
-
 from runtime.nlp_router import (
     NaturalLanguageRoutingError,
     translate_question,
@@ -21,13 +23,10 @@ from runtime.nlp_router import (
 ROOT = Path.home() / "PMS_EVIDENCE_V4"
 DB = ROOT / "database" / "evidence.db"
 
+
 app = FastAPI(
     title="Governance Runtime API",
-    description=(
-        "Deterministic runtime interface for PMS4U governance "
-        "profiles, explanations, traces, and Governance Query Language."
-    ),
-    version="0.1.1",
+    version="0.2.0",
 )
 
 
@@ -43,9 +42,7 @@ class ChatRequest(BaseModel):
     question: str = Field(
         ...,
         min_length=1,
-        examples=[
-            "Why is Execution Governance important?"
-        ],
+        examples=["Why is Execution Governance important?"],
     )
 
 
@@ -64,16 +61,17 @@ def normalize_concept(value: str) -> str:
         .replace("-", "_")
         .replace(" ", "_")
     )
+
     return CONCEPT_ALIASES.get(key, key)
 
 
-def _connection() -> sqlite3.Connection:
+def _c() -> sqlite3.Connection:
     connection = sqlite3.connect(DB)
     connection.row_factory = sqlite3.Row
     return connection
 
 
-def _deserialize_row(row: sqlite3.Row) -> dict:
+def _d(row: sqlite3.Row) -> dict:
     data = dict(row)
 
     for key, value in list(data.items()):
@@ -92,38 +90,26 @@ def root():
         "status": "UP",
         "service": "Governance Runtime API",
         "version": app.version,
-        "gql": "CONNECTED",
+        "gql_connected": True,
+        "natural_language_router": True,
+        "decision_receipts": True,
     }
 
 
 @app.get("/health")
 def health():
-    if not DB.exists():
-        raise HTTPException(
-            status_code=503,
-            detail=f"Database not found: {DB}",
-        )
+    with _c() as connection:
+        governance_profiles = connection.execute(
+            "SELECT COUNT(*) FROM governance_profiles"
+        ).fetchone()[0]
 
-    try:
-        with _connection() as connection:
-            governance_profiles = connection.execute(
-                "SELECT COUNT(*) FROM governance_profiles"
-            ).fetchone()[0]
-
-            concept_explanations = connection.execute(
-                "SELECT COUNT(*) FROM concept_explanations"
-            ).fetchone()[0]
-
-    except sqlite3.Error as exc:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Database unavailable: {exc}",
-        ) from exc
+        concept_explanations = connection.execute(
+            "SELECT COUNT(*) FROM concept_explanations"
+        ).fetchone()[0]
 
     return {
         "status": "UP",
-        "database": "CONNECTED",
-        "gql_engine": "CONNECTED",
+        "database": str(DB),
         "governance_profiles": governance_profiles,
         "concept_explanations": concept_explanations,
     }
@@ -133,7 +119,7 @@ def health():
 def get_concept(concept: str):
     concept_key = normalize_concept(concept)
 
-    with _connection() as connection:
+    with _c() as connection:
         row = connection.execute(
             """
             SELECT *
@@ -143,20 +129,20 @@ def get_concept(concept: str):
             (concept_key,),
         ).fetchone()
 
-    if row is None:
+    if not row:
         raise HTTPException(
             status_code=404,
             detail=f"Concept not found: {concept_key}",
         )
 
-    return _deserialize_row(row)
+    return _d(row)
 
 
 @app.get("/trace/{concept}")
 def get_trace(concept: str):
     concept_key = normalize_concept(concept)
 
-    with _connection() as connection:
+    with _c() as connection:
         row = connection.execute(
             """
             SELECT *
@@ -166,17 +152,17 @@ def get_trace(concept: str):
             (concept_key,),
         ).fetchone()
 
-    if row is None:
+    if not row:
         raise HTTPException(
             status_code=404,
-            detail=f"Concept trace not found: {concept_key}",
+            detail=f"Concept not found: {concept_key}",
         )
 
-    return _deserialize_row(row)
+    return _d(row)
 
 
 @app.post("/query")
-def execute_query(request: QueryRequest):
+def query(request: QueryRequest):
     try:
         return execute_governance_query(request.query)
 
@@ -185,6 +171,7 @@ def execute_query(request: QueryRequest):
             status_code=400,
             detail=str(exc),
         ) from exc
+
 
 @app.post("/chat")
 def chat(request: ChatRequest):
@@ -195,6 +182,17 @@ def chat(request: ChatRequest):
             translation["translated_query"]
         )
 
+        receipt = create_decision_receipt(
+            question=request.question,
+            intent=translation["intent"],
+            concepts=translation["concepts"],
+            translated_query=translation["translated_query"],
+            translation_mode=translation["translation_mode"],
+            answer=answer,
+        )
+
+        persist_decision_receipt(receipt)
+
         return {
             "status": "EXECUTED",
             "question": request.question,
@@ -203,17 +201,15 @@ def chat(request: ChatRequest):
             "translated_query": translation["translated_query"],
             "translation_mode": translation["translation_mode"],
             "answer": answer,
+            "receipt": receipt,
         }
 
-    except NaturalLanguageRoutingError as exc:
+    except (
+        NaturalLanguageRoutingError,
+        GQLBridgeError,
+        DecisionReceiptError,
+    ) as exc:
         raise HTTPException(
             status_code=400,
             detail=str(exc),
         ) from exc
-
-    except GQLBridgeError as exc:
-        raise HTTPException(
-            status_code=400,
-            detail=str(exc),
-        ) from exc
-
