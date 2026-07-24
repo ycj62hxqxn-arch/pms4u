@@ -1,5 +1,17 @@
 import { store } from "./store";
 
+function getErrorCode(error: unknown): unknown {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error
+  ) {
+    return (error as { code?: unknown }).code;
+  }
+
+  return undefined;
+}
+
 export type PostComment = {
   id: string;
   authorId?: string;
@@ -44,7 +56,7 @@ export async function writePosts(posts: PostRecord[]) {
     console.error("[FEED] writePosts failed:", {
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      code: error instanceof Error && "code" in error ? (error as any).code : undefined,
+      code: getErrorCode(error),
     });
     throw error;
   }

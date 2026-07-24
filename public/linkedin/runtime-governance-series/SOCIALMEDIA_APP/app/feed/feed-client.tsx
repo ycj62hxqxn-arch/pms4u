@@ -83,7 +83,43 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
     }
   }
 
-  useEffect(() => { void loadPosts(); }, []);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch("/api/posts", {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load posts: ${response.status}`);
+        }
+
+        return (await response.json()) as { posts?: Post[] };
+      })
+      .then((json) => {
+        setPosts(Array.isArray(json.posts) ? json.posts : []);
+      })
+      .catch((loadError: unknown) => {
+        if (
+          loadError instanceof DOMException &&
+          loadError.name === "AbortError"
+        ) {
+          return;
+        }
+
+        setError("Failed to load posts.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const canPost = useMemo(() => composerText.trim().length > 0 || mediaFile !== null, [composerText, mediaFile]);
 

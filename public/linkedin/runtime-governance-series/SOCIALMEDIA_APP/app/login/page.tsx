@@ -15,9 +15,18 @@ export default function LoginPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const value = params.get("verified");
-    if (value === "0" || value === "1") {
-      setVerified(value);
+
+    if (value !== "0" && value !== "1") {
+      return;
     }
+
+    const timeoutId = window.setTimeout(() => {
+      setVerified(value);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {

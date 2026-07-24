@@ -1,3 +1,6 @@
+import type { UserRecord } from "./auth";
+import type { PostRecord } from "./feed";
+
 /**
  * In-memory user store for development and Vercel ephemeral environment.
  * For persistent production, migrate to Vercel Postgres, Neon, Supabase, or PostgreSQL.
@@ -6,11 +9,11 @@
  * Each new deployment resets the store unless env is properly configured with a real database.
  */
 
-const userStore: Map<string, any> = new Map();
-const postStore: Map<string, any> = new Map();
+const userStore = new Map<string, UserRecord>();
+const postStore = new Map<string, PostRecord>();
 
 // Seed initial data
-const seedUsers = [
+const seedUsers: UserRecord[] = [
   {
     id: "e93c1547-816a-442a-a002-2ef674ef2968",
     name: "QA User",
@@ -116,23 +119,23 @@ initializeStore();
 // Export store object for centralized access
 export const store = {
   readUsers: () => Array.from(userStore.values()),
-  writeUsers: (users: any[]) => {
+  writeUsers: (users: UserRecord[]) => {
     userStore.clear();
     users.forEach((u) => userStore.set(u.id, u));
   },
   readPosts: () => Array.from(postStore.values()),
-  writePosts: (posts: any[]) => {
+  writePosts: (posts: PostRecord[]) => {
     postStore.clear();
     posts.forEach((p) => postStore.set(p.id, p));
   },
   getUserByEmail: (email: string) =>
     Array.from(userStore.values()).find((u) => u.email === email),
   getUserById: (id: string) => userStore.get(id),
-  createUser: (user: any) => {
+  createUser: (user: UserRecord) => {
     userStore.set(user.id, user);
     return user;
   },
-  updateUser: (id: string, updates: any) => {
+  updateUser: (id: string, updates: Partial<UserRecord>) => {
     const user = userStore.get(id);
     if (!user) throw new Error("User not found");
     const updated = { ...user, ...updates };

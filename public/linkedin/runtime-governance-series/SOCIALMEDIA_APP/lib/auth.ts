@@ -30,6 +30,18 @@ type PublicUser = Pick<
 
 const SESSION_COOKIE = "pulsenet_session";
 
+function getErrorCode(error: unknown): unknown {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error
+  ) {
+    return (error as { code?: unknown }).code;
+  }
+
+  return undefined;
+}
+
 function getJwtSecret(): Uint8Array {
   const secret = process.env.NEXTAUTH_SECRET || process.env.JWT_SECRET || "pulsenet-dev-secret-change-in-prod";
   return new TextEncoder().encode(secret);
@@ -49,12 +61,12 @@ export async function readUsers(): Promise<UserRecord[]> {
 
 export async function writeUsers(users: UserRecord[]) {
   try {
-    store.writeUsers(users as any);
+    store.writeUsers(users);
   } catch (error) {
     console.error("[AUTH] writeUsers failed:", {
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
-      code: error instanceof Error && "code" in error ? (error as any).code : undefined,
+      code: getErrorCode(error),
     });
     throw error;
   }
