@@ -35,6 +35,7 @@ export type SemanticRelationKind =
   | "BROADER_THAN"
   | "NARROWER_THAN"
   | "GOVERNS"
+  | "GOVERNED_BY"
   | "LIMITS";
 
 export interface SemanticBoundary {
