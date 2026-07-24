@@ -16,3 +16,5 @@ export * from "./query";
 export * from "./conflict";
 
 export * from "./reasoning";
+export * from "./traversal";
+export * from "./explanation";
