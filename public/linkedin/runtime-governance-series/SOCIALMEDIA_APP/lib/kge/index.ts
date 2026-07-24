@@ -10,3 +10,9 @@ export * from "./graph";
 export * from "./ledger";
 export * from "./engine";
 export * from "./navigator";
+
+export * from "./query";
+
+export * from "./conflict";
+
+export * from "./reasoning";
