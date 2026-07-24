@@ -2,6 +2,7 @@ import type {
   CKERNELHealth,
   ConstitutionalEvaluationRequest,
   ConstitutionalReceipt,
+  ConstitutionalVerificationResult,
 } from "./types";
 
 const DEFAULT_CKERNEL_URL = "http://127.0.0.1:8080";
@@ -79,3 +80,26 @@ export function getCKERNELHealth(): Promise<CKERNELHealth> {
     "/v1/system/health",
   );
 }
+
+export function verifyConstitutionalReceipt(
+  receipt: ConstitutionalReceipt,
+): Promise<ConstitutionalVerificationResult> {
+  return request<ConstitutionalVerificationResult>(
+    "/v1/runtime/verify",
+    {
+      method: "POST",
+      body: JSON.stringify({ receipt }),
+    },
+  );
+}
+
+export function getConstitutionalReceipt(
+  receiptId: string,
+): Promise<ConstitutionalReceipt> {
+  return request<ConstitutionalReceipt>(
+    `/v1/runtime/receipt/${encodeURIComponent(
+      receiptId,
+    )}`,
+  );
+}
+

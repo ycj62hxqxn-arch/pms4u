@@ -42,3 +42,9 @@ export type CKERNELHealth = {
   service: string;
   status: string;
 };
+
+export type ConstitutionalVerificationResult = {
+  valid: boolean;
+  reason: string;
+};
+
