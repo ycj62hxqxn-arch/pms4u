@@ -32,6 +32,24 @@ export type PostRecord = {
   comments: PostComment[];
   mediaUrl?: string;
   mediaType?: "image" | "video";
+    constitutionalReceiptId?: string;
+  constitutionalDecision?: "ALLOW" | "DENY" | "REQUIRE_REVIEW";
+  constitutionalHash?: string;
+  constitutionalRuntimeVersion?: string;
+  kgeReasoningTraceId?: string;
+  kgeClaimId?: string;
+  kgeReasoningDecision?:
+    | "SUPPORTED"
+    | "CONTRADICTED"
+    | "CONTESTED"
+    | "INSUFFICIENT_EVIDENCE";
+  kgeReasoningScore?: number;
+  kgeReasoningExplanation?: string;
+  kgeReasoningSummary?: string;
+  kgeConcepts?: string[];
+  kgeNodeCount?: number;
+  kgeRelationCount?: number;
+  kgeEvidenceCount?: number;
 };
 
 export async function readPosts(): Promise<PostRecord[]> {

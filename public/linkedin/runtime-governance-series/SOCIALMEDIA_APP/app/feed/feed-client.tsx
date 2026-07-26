@@ -3,15 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
-type Comment = {
-  id: string;
-  authorId?: string;
-  authorName: string;
-  authorEmail?: string;
-  text: string;
-  createdAt: string;
-};
-
 type Post = {
   id: string;
   authorId?: string;
@@ -23,7 +14,36 @@ type Post = {
   comments: Comment[];
   mediaUrl?: string;
   mediaType?: "image" | "video";
+
+  constitutionalReceiptId?: string;
+  constitutionalDecision?: "ALLOW" | "DENY" | "REQUIRE_REVIEW";
+  constitutionalHash?: string;
+  constitutionalRuntimeVersion?: string;
+  kgeReasoningTraceId?: string;
+  kgeClaimId?: string;
+  kgeReasoningDecision?:
+    | "SUPPORTED"
+    | "CONTRADICTED"
+    | "CONTESTED"
+    | "INSUFFICIENT_EVIDENCE";
+  kgeReasoningScore?: number;
+  kgeReasoningExplanation?: string;
+  kgeReasoningSummary?: string;
+  kgeConcepts?: string[];
+  kgeNodeCount?: number;
+  kgeRelationCount?: number;
+  kgeEvidenceCount?: number;
 };
+type Comment = {
+  id: string;
+  authorId?: string;
+  authorName: string;
+  authorEmail?: string;
+  text: string;
+  createdAt: string;
+};
+
+
 
 type Props = {
   currentUserId: string;
@@ -377,6 +397,124 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
                       {post.likes.length > 0 && <span>{post.likes.length} like{post.likes.length !== 1 ? "s" : ""}</span>}
                       {post.comments.length > 0 && <span>{post.comments.length} comment{post.comments.length !== 1 ? "s" : ""}</span>}
                     </div>
+                  )}
+<div className="flex items-start gap-3">
+  <Link href={profileHref}><Avatar name={post.authorName} /></Link>
+  <div className="flex-1 min-w-0">
+    <Link href={profileHref} className="text-sm font-semibold text-white hover:text-violet-300 transition-colors">
+      {post.authorName}
+    </Link>
+    <p className="text-xs text-zinc-600">{timeAgo(post.createdAt)} ago</p>
+  </div>
+</div>{post.constitutionalReceiptId && (
+  <div className="mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-2.5">
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="flex items-center gap-2">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 text-xs text-emerald-300">
+          ✓
+        </span>
+
+        <div>
+          <p className="text-xs font-semibold text-emerald-300">
+            Governed by CKERNEL
+          </p>
+          <p className="text-[11px] text-zinc-500">
+            Constitutionally evaluated before publication
+          </p>
+        </div>
+      </div>
+
+      <span
+        className={`rounded-full border px-2.5 py-1 text-[10px] font-bold tracking-wide ${
+          post.constitutionalDecision === "ALLOW"
+            ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+            : post.constitutionalDecision === "REQUIRE_REVIEW"
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
+              : "border-rose-500/30 bg-rose-500/10 text-rose-300"
+        }`}
+      >
+        {post.constitutionalDecision ?? "UNKNOWN"}
+      </span>
+    </div>
+
+    <div className="mt-2 grid gap-1 text-[11px] text-zinc-500 sm:grid-cols-2">
+      <p className="truncate">
+        <span className="text-zinc-600">Receipt:</span>{" "}
+        <span className="font-mono text-zinc-400">
+          {post.constitutionalReceiptId.slice(0, 16)}…
+        </span>
+      </p>
+
+      {post.constitutionalRuntimeVersion && (
+        <p>
+          <span className="text-zinc-600">Runtime:</span>{" "}
+          <span className="font-mono text-zinc-400">
+            {post.constitutionalRuntimeVersion}
+          </span>
+        </p>
+      )}
+
+      {post.constitutionalHash && (
+        <p className="truncate sm:col-span-2">
+          <span className="text-zinc-600">Hash:</span>{" "}
+          <span className="font-mono text-zinc-400">
+            {post.constitutionalHash.slice(0, 24)}…
+          </span>
+        </p>
+      )}
+    </div>
+
+    <Link
+      href={`/constitutional/receipt/${encodeURIComponent(
+  post.constitutionalReceiptId,
+)}`}
+      className="mt-2 inline-flex text-[11px] font-medium text-emerald-400 hover:text-emerald-300"
+    >
+      View constitutional receipt →
+    </Link>
+  </div>
+)}
+                  {post.kgeReasoningTraceId && (
+                    <details className="mx-5 mb-4 rounded-xl border border-sky-500/20 bg-sky-500/[0.05]">
+                      <summary className="cursor-pointer list-none px-3 py-2.5">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div>
+                            <p className="text-xs font-semibold text-sky-300">
+                              Knowledge Graph Reasoning
+                            </p>
+                            <p className="mt-0.5 text-[11px] text-zinc-500">
+                              {post.kgeReasoningSummary ??
+                                "A governed reasoning trace was generated for this contribution."}
+                            </p>
+                          </div>
+                          <span className="rounded-full border border-sky-500/30 bg-sky-500/10 px-2.5 py-1 text-[10px] font-bold tracking-wide text-sky-300">
+                            {post.kgeReasoningDecision ?? "UNKNOWN"}
+                          </span>
+                        </div>
+                      </summary>
+                      <div className="border-t border-sky-500/15 px-3 py-3">
+                        <div className="grid gap-2 text-[11px] text-zinc-500 sm:grid-cols-3">
+                          <p>Score: <span className="font-mono text-zinc-300">{(post.kgeReasoningScore ?? 0).toFixed(2)}</span></p>
+                          <p>Nodes: <span className="font-mono text-zinc-300">{post.kgeNodeCount ?? 0}</span></p>
+                          <p>Relations: <span className="font-mono text-zinc-300">{post.kgeRelationCount ?? 0}</span></p>
+                        </div>
+                        <p className="mt-3 text-xs leading-relaxed text-zinc-400">
+                          {post.kgeReasoningExplanation}
+                        </p>
+                        {post.kgeConcepts && post.kgeConcepts.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {post.kgeConcepts.map((concept) => (
+                              <span key={concept} className="rounded-full border border-sky-500/15 bg-sky-500/[0.05] px-2 py-1 text-[10px] text-sky-300">
+                                {concept}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <p className="mt-3 truncate font-mono text-[10px] text-zinc-600">
+                          Trace: {post.kgeReasoningTraceId}
+                        </p>
+                      </div>
+                    </details>
                   )}
 
                   {/* Actions */}
