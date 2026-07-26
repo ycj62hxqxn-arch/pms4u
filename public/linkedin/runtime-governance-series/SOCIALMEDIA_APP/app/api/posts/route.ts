@@ -7,6 +7,7 @@ import { getSessionCookieName, verifySessionToken } from "@/lib/auth";
 import { readPosts, writePosts } from "@/lib/feed";
 import { evaluateConstitutionalRequest } from "@/lib/ckernel";
 import { buildPostReasoning } from "@/lib/kge";
+import { persistReasoningTrace } from "@/lib/kge/trace";
 
 const createPostSchema = z
   .object({
@@ -134,6 +135,15 @@ export async function POST(request: Request) {
     );
   }
 
+  const persistedKgeTrace = await persistReasoningTrace({
+    ...kgeTrace,
+    postId,
+    constitutionalReceiptId: receipt.receiptId,
+    constitutionalReceiptHash: receipt.hash,
+    actorId: session.userId,
+    actorName: session.name,
+  });
+
   // Read existing posts
   const posts = await readPosts();
 
@@ -155,6 +165,7 @@ export async function POST(request: Request) {
     constitutionalHash: receipt.hash,
     constitutionalRuntimeVersion: receipt.runtimeVersion,
     kgeReasoningTraceId: kgeTrace.traceId,
+    kgeTraceHash: persistedKgeTrace.traceHash,
     kgeClaimId: kgeTrace.claimId,
     kgeReasoningDecision: kgeTrace.decision,
     kgeReasoningScore: kgeTrace.score,
@@ -180,7 +191,7 @@ export async function POST(request: Request) {
       message: "Post created.",
       post,
       receipt,
-      kgeTrace,
+      kgeTrace: persistedKgeTrace,
     },
     { status: 201 },
   );

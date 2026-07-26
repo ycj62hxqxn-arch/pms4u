@@ -37,6 +37,7 @@ export type PostRecord = {
   constitutionalHash?: string;
   constitutionalRuntimeVersion?: string;
   kgeReasoningTraceId?: string;
+  kgeTraceHash?: string;
   kgeClaimId?: string;
   kgeReasoningDecision?:
     | "SUPPORTED"

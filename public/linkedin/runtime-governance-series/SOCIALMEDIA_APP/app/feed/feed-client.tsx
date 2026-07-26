@@ -20,6 +20,7 @@ type Post = {
   constitutionalHash?: string;
   constitutionalRuntimeVersion?: string;
   kgeReasoningTraceId?: string;
+  kgeTraceHash?: string;
   kgeClaimId?: string;
   kgeReasoningDecision?:
     | "SUPPORTED"
@@ -513,6 +514,12 @@ export default function FeedClient({ currentUserId, currentUserEmail, currentUse
                         <p className="mt-3 truncate font-mono text-[10px] text-zinc-600">
                           Trace: {post.kgeReasoningTraceId}
                         </p>
+                        <Link
+                          href={`/kge/trace/${encodeURIComponent(post.kgeReasoningTraceId)}`}
+                          className="mt-3 inline-flex text-[11px] font-medium text-sky-400 hover:text-sky-300"
+                        >
+                          View full reasoning trace →
+                        </Link>
                       </div>
                     </details>
                   )}
