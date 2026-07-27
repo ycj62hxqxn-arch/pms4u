@@ -32,3 +32,6 @@ data/kge_reasoning_traces.jsonl
 .cr-ui-v2-backup/
 .kge-stage2-backup/
 .kge-stage3-backup/
+.kge-stage4-backup/
+
+.kge-stage4-backup/

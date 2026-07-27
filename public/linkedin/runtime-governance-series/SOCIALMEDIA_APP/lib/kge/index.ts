@@ -21,3 +21,4 @@ export * from "./explanation";
 export * from "./semantic";
 export * from "./integration";
 export * from "./trace";
+export * from "./visualization";
